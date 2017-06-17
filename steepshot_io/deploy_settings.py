@@ -52,7 +52,7 @@ VENV_ACTIVATE = os.path.join(VENV_BIN_DIR, 'activate')
 
 ENV_PATH = os.path.join(WORKON_HOME, ENV_NAME)
 
-LOCAL_CONF_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'conf_templates')
+LOCAL_CONF_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'conf_templates')
 
 
 DB_HOST = 'localhost'
