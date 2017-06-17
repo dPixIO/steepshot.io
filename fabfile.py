@@ -233,7 +233,7 @@ def migrate():
     with cd(DEPLOY_DIR):
         with settings(sudo_user=DEPLOYMENT_USER,
                       sudo_prefix=SUDO_PREFIX), prefix('workon steepshot_io'):
-            sudo('python manage.py migrate')
+            sudo('python steepshot_io/manage.py migrate')
 
 
 def config_celery(remote_conf_path):
@@ -255,6 +255,7 @@ def install_service(service_name, context):
     Copies and enables specified systemd service
     to the remote server.
     """
+    import pdb; pdb.set_trace()  # XXX BREAKPOINT
     logger.info('Copying systemd services "%s"', service_name)
     remote_service = _get_systemd_service_path(service_name)
     local_template = os.path.join(LOCAL_CONF_DIR, service_name)
@@ -417,7 +418,7 @@ def deploy_static():
     with settings(sudo_user=DEPLOYMENT_USER,
                   sudo_prefix=SUDO_PREFIX), cd(DEPLOY_DIR):
         with prefix('workon %s' % ENV_NAME):
-            sudo('python manage.py collectstatic --noinput --settings %s'
+            sudo('python steepshot_io/manage.py collectstatic --noinput --settings %s'
                  % env.settings_module)
 
 
@@ -435,7 +436,7 @@ def createsuperuser():
     with settings(sudo_user=DEPLOYMENT_USER,
                   sudo_prefix=SUDO_PREFIX):
         with prefix('workon %s' % ENV_NAME):
-            sudo('python manage.py createsuperuser '
+            sudo('python steepshot_io/manage.py createsuperuser '
                  '--settings ' + env.settings_module)
 
 
@@ -453,7 +454,7 @@ def first_time_deploy():
 @task
 def deploy():
     require('branch', 'user', 'hosts')
-    eploy_files()
+    deploy_files()
     install_req()
     deploy_static()
     update_static_chmod()

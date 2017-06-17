@@ -10,7 +10,7 @@ KEY_FILENAME = '~/.ssh/id_rsa'
 
 REPOSITORY = 'https://github.com/Chainers/steepshot.io'
 
-PROJECT_NAME = 'steepshot_io'
+PROJECT_NAME = 'steepshot.io'
 
 
 # We use non-root user for better security
