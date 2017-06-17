@@ -34,7 +34,7 @@ if os.getenv('DJANGO_LOCAL'):
 else:
     LOCAL = False
 
-PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
