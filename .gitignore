@@ -1,0 +1,28 @@
+# exclude idea files
+/.idea
+
+# Directory with static files
+staticfiles/
+uploads/
+staticfiles/*
+uploads/*
+
+# Vim plugins
+.ropeproject/
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+
+__pycache__/
+
+private.key
+logs
+conf
+logs/*
+conf/*
+
+temp*.py
+
+# Vagrant service directory
+.vagrant
+ipfs_files
