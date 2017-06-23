@@ -103,7 +103,7 @@ def checkout_repository():
 @task
 def create_deploy_dirs():
     with cd(DEPLOY_DIR):
-        sudo('mkdir -p static logs pid uploads',
+        sudo('mkdir -p staticfiles logs pid uploads',
              user=DEPLOYMENT_USER)
 
 @task
