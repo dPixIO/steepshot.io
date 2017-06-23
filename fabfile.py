@@ -418,7 +418,7 @@ def deploy_static():
                   sudo_prefix=SUDO_PREFIX), cd(DEPLOY_DIR):
         with prefix('workon %s' % ENV_NAME):
             sudo('python steepshot_io/manage.py collectstatic --noinput --settings %s'
-                 % env.settings_module)
+                 % env.settings_module.replace('steepshot_io.', ''))
 
 
 @task

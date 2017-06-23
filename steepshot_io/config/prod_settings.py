@@ -66,7 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'steepshot_io.core',
+    'core',
 ]
 
 MIDDLEWARE = [
