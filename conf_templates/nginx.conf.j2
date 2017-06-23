@@ -10,8 +10,8 @@ server {
     {%-if ENV == "VAGRANT" %}
     {# Do not use certificates on vagrant installation #}
     {%- else %}
-    ssl_certificate /etc/ssl/certs/www.steepshot.io.certchain.crt;
-    ssl_certificate_key /etc/ssl/private/steepshot.io.key;
+    ssl_certificate /etc/letsencrypt/live/steepshot.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/steepshot.io/privkey.pem;
     {%- endif %}
 
     access_log {{ DEPLOY_DIR }}/logs/nginx-access.log;
