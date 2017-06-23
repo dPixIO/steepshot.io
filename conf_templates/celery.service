@@ -1,0 +1,17 @@
+[Unit]
+Description=%(PROJECT_NAME)s celery (backend)
+After=nginx.service redis-server.service
+
+[Service]
+User=%(USER)s
+Group=%(GROUP)s
+PIDFile=/run/celery.pid
+ExecStart=%(DEPLOY_DIR)s/conf/celery.sh
+StartLimitInterval=60
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+# When should this service be triggered? (this is the equivalent of SysV's runlevel 3)
+WantedBy=multi-user.target

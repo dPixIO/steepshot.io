@@ -255,7 +255,6 @@ def install_service(service_name, context):
     Copies and enables specified systemd service
     to the remote server.
     """
-    import pdb; pdb.set_trace()  # XXX BREAKPOINT
     logger.info('Copying systemd services "%s"', service_name)
     remote_service = _get_systemd_service_path(service_name)
     local_template = os.path.join(LOCAL_CONF_DIR, service_name)

@@ -41,7 +41,7 @@ if DEBUG:
 else:
     ALLOWED_HOSTS = []
 
-PROJECT_NAME = 'steepshot.io'
+PROJECT_NAME = 'steepshot_io'
 
 STEEM_NODE = 'wss://steemd.steemit.com'
 GOLOS_NODE = 'wss://ws.golos.io'
@@ -66,7 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'steepshot_io.core',
+    'core',
 ]
 
 MIDDLEWARE = [
