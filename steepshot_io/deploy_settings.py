@@ -73,8 +73,8 @@ GUNI_WORKERS = 3
 GUNI_TIMEOUT = 60
 GUNI_GRACEFUL_TIMEOUT = 180
 
-SETTINGS_MODULE = 'steepshot_io.config.prod_settings'
-GOLOS_SETTINGS_MODULE = 'steepshot_io.config.golos_prod_settings'
+SETTINGS_MODULE = 'steepshot_io.prod_settings'
+GOLOS_SETTINGS_MODULE = 'steepshot_io.golos_prod_settings'
 
 
 ENVIRONMENTS = {

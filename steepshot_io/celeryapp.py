@@ -7,7 +7,7 @@ from celery import Celery
 from django.conf import settings
 
 # Indicate Celery to use the default Django settings module
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.prod_settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'prod_settings')
 
 app = Celery('steepshot_io')
 app.config_from_object('django.conf:settings')

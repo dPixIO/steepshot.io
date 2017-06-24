@@ -233,7 +233,7 @@ def migrate():
     with cd(DEPLOY_DIR):
         with settings(sudo_user=DEPLOYMENT_USER,
                       sudo_prefix=SUDO_PREFIX), prefix('workon steepshot_io'):
-            sudo('python steepshot_io/manage.py migrate')
+            sudo('python manage.py migrate')
 
 
 def config_celery(remote_conf_path):
@@ -417,8 +417,8 @@ def deploy_static():
     with settings(sudo_user=DEPLOYMENT_USER,
                   sudo_prefix=SUDO_PREFIX), cd(DEPLOY_DIR):
         with prefix('workon %s' % ENV_NAME):
-            sudo('python steepshot_io/manage.py collectstatic --noinput --settings %s'
-                 % env.settings_module.replace('steepshot_io.', ''))
+            sudo('python manage.py collectstatic --noinput --settings %s'
+                 % env.settings_module)
 
 
 @task
@@ -435,7 +435,7 @@ def createsuperuser():
     with settings(sudo_user=DEPLOYMENT_USER,
                   sudo_prefix=SUDO_PREFIX):
         with prefix('workon %s' % ENV_NAME):
-            sudo('python steepshot_io/manage.py createsuperuser '
+            sudo('python manage.py createsuperuser '
                  '--settings ' + env.settings_module)
 
 
