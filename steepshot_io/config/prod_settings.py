@@ -39,7 +39,8 @@ PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = [
+        'www.steepshot.io', 'steepshot.io', '104.236.41.188']
 
 PROJECT_NAME = 'steepshot_io'
 
@@ -66,7 +67,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'core',
+    'steepshot_io.core',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = 'steepshot_io.config.urls'
 
 TEMPLATES = [
     {

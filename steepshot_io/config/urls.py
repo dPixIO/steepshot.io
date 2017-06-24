@@ -17,7 +17,7 @@ from django.conf import settings
 from django.conf.urls import url
 from django.contrib import admin
 
-from core import views
+from steepshot_io.core import views
 
 urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
