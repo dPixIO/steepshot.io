@@ -19,5 +19,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
-    url(r'', include('core.urls', namespace="core")),
+    url(r'', include('steepshot_io.core.urls', namespace="core")),
 ]
