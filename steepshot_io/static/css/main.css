@@ -833,7 +833,7 @@ input:focus {
         -webkit-transform: rotate(45deg) translate(-8px, -6px) ;
         transform: rotate(45deg) translate(-8px, -6px) ;
     }
-    #header ul{ top: -300px;
+    #header ul{ top: -330px;
     transition: 0.3s;
         display: block !important;
         float:none;
