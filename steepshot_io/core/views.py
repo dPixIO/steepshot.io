@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
@@ -12,6 +13,7 @@ class IndexView(TemplateView):
         form = SubscribeForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'You have successfully subscribed!')
         return render(request, self.template_name, {'form': form})
 
     def get_context_data(self, **kwargs):

@@ -117,6 +117,15 @@ body {
     font-size: 0.8em;
 }
 
+.messages {
+    background-color: #7ED321;
+    list-style-type: none;
+    margin: 0px;
+    padding: 10px;
+    color: white;
+    border-radius: 8px;
+}
+
 .home-icon{
     background-image: url("steepshot_logo@2x.png");
     display: inline-block;
