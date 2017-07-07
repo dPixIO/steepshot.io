@@ -108,10 +108,12 @@
                     We never spam. We`ll only let you know wher new products are here.
                 </h2>
                 <div id="textfield">
-                    <input type="text" id="input-text" name="e-mail" value="">
-                    <label for="input-text">Your E-mail adress </label>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form }}
+                        <input id="submit" class="submit-input" type="submit" value="SEND REQUEST"/>
+                    </form>
                 </div>
-                <div id="submit">SEND REQUEST</div>
             </div>
         </div>
 
@@ -218,8 +220,8 @@
                 }
                 function tl() {
                     var x = document.activeElement.id;
-                    var y = document.getElementById("input-text").value;
-                    if (x == "input-text") {
+                    var y = document.getElementById("id_email").value;
+                    if (x == "id_email") {
                         document.getElementById( "textfield" ).classList.add('active');
                         x=0;
                     }
@@ -332,7 +334,7 @@
                     $('#header').bind('touchstart touchend touchup', function(event) {
                         event.stopPropagation();
                     });
-                    $('#input-text').bind('touchstart touchend touchup', function(event) {
+                    $('#id_email').bind('touchstart touchend touchup', function(event) {
                         event.stopPropagation();
                     });
                     $('#soc_links').bind('touchstart touchend touchup', function(event) {

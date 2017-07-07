@@ -481,6 +481,22 @@ transition: 0.45s;
     border-top: none;
     width: 70%;
 }
+
+#panel3 input.submit-input {
+    border-radius: 8px;
+    width: 240px;
+    text-align: center;
+    text-decoration: none;
+    padding: 16px 70px;
+    margin: 35px 0;
+    font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: 600 !important;
+    background: #7ed321;
+    color: white;
+}
+
 input:focus {
     outline-width: 0;
 }
@@ -506,8 +522,9 @@ input:focus {
     margin: 30px 0;
 }
 #submit {
+    display: block;
     border-radius: 8px;
-    width: 120px;
+    width: 240px;
     text-align: center;
     text-decoration: none;
     padding: 16px 70px;
@@ -617,6 +634,7 @@ input:focus {
     width: 85%;
     text-align: center;
 }
+
 #submit { margin: 35px auto;}
 
 #soc_links {
