@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'googlecharts',
 
     'steepshot_io.core',
+    'steepshot_io.graph',
 ]
 
 MIDDLEWARE = [
