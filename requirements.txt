@@ -16,6 +16,7 @@ pyparsing==2.2.0
 python-dateutil==2.5.3
 pytz==2017.2
 redis==2.10.5
+requests==2.18.2
 six==1.10.0
 # We use aiohttp gunicorn workers
 asyncio==3.4.3

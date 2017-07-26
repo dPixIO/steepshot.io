@@ -1,8 +1,6 @@
+import requests
 from django.shortcuts import render
 from django.views.generic import View
-import requests
-from piston import Steem
-from piston.converter import Converter
 
 
 class GetPostFee(View):
