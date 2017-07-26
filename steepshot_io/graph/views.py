@@ -5,40 +5,16 @@ from piston import Steem
 from piston.converter import Converter
 
 
-def get_steem_per_mvests(steem):
-    s = Converter(steem)
-    return s.steem_per_mvests()
-
-
-def get_steem_rate(currencies):
-    res = requests.get('https://graphs.coinmarketcap.com/currencies/{}/'.format(currencies)).json()
-    return res['price_usd'][-1][1]
-
-
-def convert_vests_in_usd(vests, steem_per_mvests, steem_rate):
-    res = vests * steem_per_mvests / 1000000 * steem_rate
-    return res
-
-
 class GetPostFee(View):
     template_name = 'fee_posts.html'
 
-    def get_fee_posts(self, currency=None):
+    def get_fee_posts(self, currency='VESTS'):
 
-        if currency == 'usd':
-            currencies = 'steem'
-            steem_obj = Steem()
-            steem_per_mvests = get_steem_per_mvests(steem_obj)
-            steem_rate = get_steem_rate(currencies)
-        values = []
-        res = requests.get('https://qa.steepshot.org/api/v1/posts/fee/daily').json()
+        res = requests.get('https://qa.steepshot.org/api/v1/posts/fee/daily?currency={}'.format(currency)).json()
         res.reverse()
+        values = []
         for i in res:
-            if currency == 'usd':
-                val = convert_vests_in_usd(i['count_fee'], steem_per_mvests, steem_rate)
-                values.append([i['day'], val])
-            else:
-                values.append([i['day'],  i['count_fee']])
+            values.append([i['day'], i['count_fee']])
         return values
 
     def get(self, request, *args, **kwargs):
