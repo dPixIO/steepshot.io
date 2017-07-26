@@ -66,8 +66,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'googlecharts',
 
     'steepshot_io.core',
+    'steepshot_io.graph',
 ]
 
 MIDDLEWARE = [

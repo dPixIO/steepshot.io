@@ -1,7 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic import TemplateView
-
 from steepshot_io.core.forms import SubscribeForm
 
 
@@ -19,3 +18,5 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         kwargs['form'] = SubscribeForm()
         return super(IndexView, self).get_context_data(**kwargs)
+
+
