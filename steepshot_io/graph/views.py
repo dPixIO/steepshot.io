@@ -133,7 +133,7 @@ class GetCountPostDaily(View, ViewExtensions):
         res = requests.get('https://qa.steepshot.org/api/v1/posts/count/daily').json()
         res.reverse()
         values = []
-        for  i in res:
+        for i in res:
             values.append([i['day'], i['count_posts']])
         return values
 
@@ -145,18 +145,46 @@ class GetCountPostDaily(View, ViewExtensions):
 class GetRatioDaily(View):
     template_name = 'ratio_daily.html'
 
-    def get_ratio_daily(self):
-        res = requests.get('https://steepshot.org/api/v1/posts/ratio/daily').json()
-        res = res['result']
-        res.reverse()
-        values = []
-        for i in res[:30]:
-            values.append([i['date'], i['ratio']])
-        return values
+    def get_ratio_daily(self, platform=None):
+
+        if platform == 'steem':
+            res = requests.get('https://steepshot.org/api/v1/posts/ratio/daily').json()
+            res = res['result']
+            res.reverse()
+            values = []
+            for i in res[:30]:
+                values.append([i['date'], i['ratio']])
+            return values
+        elif platform == 'golos':
+            res = requests.get('https://qa.golos.steepshot.org/api/v1/posts/ratio/daily').json()
+            res = res['result']
+            res.reverse()
+            values = []
+            for i in res[:30]:
+                values.append([i['date'], i['ratio']])
+            return values
+        else:
+            res_steem = requests.get('https://steepshot.org/api/v1/posts/ratio/daily').json()
+            res_steem = res_steem['result']
+            res_steem.reverse()
+            res_golos = requests.get('https://qa.golos.steepshot.org/api/v1/posts/ratio/daily').json()
+            res_golos = res_golos['result']
+            res_golos.reverse()
+            values_steem = []
+            values_golos = []
+            for i in res_steem[:30]:
+                values_steem.append([i['date'], i['ratio']])
+            for i in res_golos[:30]:
+                values_golos.append([i['date'], i['ratio']])
+            return values_steem, values_golos
 
     def get(self, request):
-        values = self.get_ratio_daily()
-        return render(request, self.template_name, {'values': values})
+        if 'platform' in request.GET:
+            platform = request.GET['platform'].lower()
+            values = self.get_ratio_daily(platform=platform)
+        else:
+            values, values_2 = self.get_ratio_daily()
+        return render(request, self.template_name, {'values': values, 'values_2':values_2})
 
 
 class GetRatioMonthly(View):
