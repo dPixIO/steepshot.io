@@ -3,16 +3,26 @@
 <div id="count_graph"></div>
 
 {% googlecharts %}
-    {% data values "count" %}
+    {% if flag %}
+            {% data values "count" %}
             {% col "string" "Date" %}"{{ val }}"{% endcol %}
-            {% col "number" "fratio" %}{{ val }}{% endcol %}
-    {% enddata %}
+            {% col "number" "steem" %}{{ val }}{% endcol %}
+            {% col "number" "golos" %}{{ val }}{% endcol %}
+            {% enddata %}
+    {% else %}
+            {% data values "count" %}
+            {% col "string" "Date" %}"{{ val }}"{% endcol %}
+            {% col "number" "ratio" %}{{ val }}{% endcol %}
+            {% enddata %}
+    {% endif %}
+
 
     {% options %}
         kind: "LineChart",
         options: {
         backgroundColor: "#f9f9f9",
-        colors: ["#09f"],
+        color1: ["#09f"],
+        color2: ["#05f"],
         gridlineColor: "#ddd",
         legend: "none",
         vAxis: {minValue: 0},
@@ -21,28 +31,6 @@
         height: 840
     }
     {% endoptions %}
-    {% graph "count_graph" "count" %}
-{% endgooglecharts %}
 
-
-{% googlecharts %}
-    {% data values_2 "count" %}
-            {% col "string" "Date" %}"{{ val }}"{% endcol %}
-            {% col "number" "fratio" %}{{ val }}{% endcol %}
-    {% enddata %}
-
-    {% options %}
-        kind: "LineChart",
-        options: {
-        backgroundColor: "#f9f9f9",
-        colors: ["#09f"],
-        gridlineColor: "#ddd",
-        legend: "none",
-        vAxis: {minValue: 0},
-        chartArea: {left: 140, top: 120, width: 540, height: 580},
-        width: 1000,
-        height: 840
-    }
-    {% endoptions %}
     {% graph "count_graph" "count" %}
 {% endgooglecharts %}

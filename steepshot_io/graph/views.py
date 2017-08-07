@@ -3,20 +3,6 @@ from django.shortcuts import render
 from django.views.generic import View
 
 
-class ViewExtensions:
-
-    def group_steem_golos(self, list_steem, list_golos):
-        res = []
-        idx = 0
-        while True:
-            try:
-                res.append([list_steem[idx][0], list_steem[idx][1] + list_golos[idx][1]])
-            except IndexError:
-                break
-            idx += 1
-        return res
-
-
 class GetPostFee(View):
     template_name = 'fee_posts.html'
 
@@ -38,8 +24,19 @@ class GetPostFee(View):
         return render(request, self.template_name, {'values': values})
 
 
-class GetPostsCountMonthly(View, ViewExtensions):
+class GetPostsCountMonthly(View):
     template_name = 'count_posts.html'
+
+    def group_steem_golos(self, list_steem, list_golos):
+        res = []
+        idx = 0
+        while True:
+            try:
+                res.append([list_steem[idx][0], list_steem[idx][1] + list_golos[idx][1]])
+            except IndexError:
+                break
+            idx += 1
+        return res
 
     def get_posts_count_monthly(self, platform=None):
 
@@ -57,7 +54,6 @@ class GetPostsCountMonthly(View, ViewExtensions):
             for i in res:
                 values.append([i['date_to'], i['posts_count']])
             return values
-
         else:
             res_steem = requests.get('https://steepshot.org/api/v1/posts/count/monthly').json()
             res_steem.reverse()
@@ -82,7 +78,7 @@ class GetPostsCountMonthly(View, ViewExtensions):
         return render(request, self.template_name, {'values': values})
 
 
-class GetActiveUsers(View, ViewExtensions):
+class GetActiveUsers(View, GetPostsCountMonthly):
     template_name = 'active_users.html'
 
     def get_active_users(self, platform=None):
@@ -126,7 +122,7 @@ class GetActiveUsers(View, ViewExtensions):
         return render(request, self.template_name, {'values': values})
 
 
-class GetCountPostDaily(View, ViewExtensions):
+class GetCountPostDaily(View):
     template_name = 'count_post_daily.html'
 
     def get_count_post_daily(self):
@@ -144,6 +140,17 @@ class GetCountPostDaily(View, ViewExtensions):
 
 class GetRatioDaily(View):
     template_name = 'ratio_daily.html'
+
+    def group_steem_golos(self, list_steem, list_golos):
+        res = []
+        idx = 0
+        while True:
+            try:
+                res.append([list_steem[idx][0], list_steem[idx][1], list_golos[idx][1]])
+            except IndexError:
+                break
+            idx += 1
+        return res
 
     def get_ratio_daily(self, platform=None):
 
@@ -178,26 +185,59 @@ class GetRatioDaily(View):
                 values_golos.append([i['date'], i['ratio']])
             return values_steem, values_golos
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             values = self.get_ratio_daily(platform=platform)
+            return render(request, self.template_name, {'values': values})
+
         else:
-            values, values_2 = self.get_ratio_daily()
-        return render(request, self.template_name, {'values': values, 'values_2':values_2})
+            values_steem, values_golos = self.get_ratio_daily()
+            values = self.group_steem_golos(values_steem, values_golos)
+            flag_together = True
+            return render(request, self.template_name, {'values': values, 'flag': flag_together})
 
 
-class GetRatioMonthly(View):
+class GetRatioMonthly(GetRatioDaily):
     template_name = 'ratio_monthly.html'
 
-    def get_ratio_monthly(self):
-        res = requests.get('https://steepshot.org/api/v1/posts/ratio/monthly').json()
-        res.reverse()
-        values = []
-        for i in res:
-            values.append([i['date_to'], i['ratio']])
-        return values
+    def get_ratio_monthly(self, platform=None):
 
-    def get(self, request):
-        values = self.get_ratio_monthly()
-        return render(request, self.template_name, {'values': values})
+        if platform == 'steem':
+            res = requests.get('https://steepshot.org/api/v1/posts/ratio/monthly').json()
+            res.reverse()
+            values = []
+            for i in res:
+                values.append([i['date_to'], i['ratio']])
+            return values
+        elif platform == 'golos':
+            res = requests.get('https://qa.golos.steepshot.org/api/v1/posts/ratio/monthly').json()
+            res.reverse()
+            values = []
+            for i in res:
+                values.append([i['date_to'], i['ratio']])
+            return values
+        else:
+            res_steem = requests.get('https://steepshot.org/api/v1/posts/ratio/monthly').json()
+            res_steem.reverse()
+            res_golos = requests.get('https://qa.golos.steepshot.org/api/v1/posts/ratio/monthly').json()
+            res_golos.reverse()
+            values_steem = []
+            values_golos = []
+            for i in res_steem:
+                values_steem.append([i['date_to'], i['ratio']])
+            for i in res_golos:
+                values_golos.append([i['date_to'], i['ratio']])
+            return values_steem, values_golos
+
+    def get(self, request, *args, **kwargs):
+        if 'platform' in request.GET:
+            platform = request.GET['platform'].lower()
+            values = self.get_ratio_monthly(platform=platform)
+            return render(request, self.template_name, {'values': values})
+
+        else:
+            values_steem, values_golos = self.get_ratio_monthly()
+            values = self.group_steem_golos(values_steem, values_golos)
+            flag_together = True
+            return render(request, self.template_name, {'values': values, 'flag': flag_together})
