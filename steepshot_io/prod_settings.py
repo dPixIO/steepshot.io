@@ -57,8 +57,21 @@ elif IS_GOLOS_CHAIN:
 else:
     CURRENT_NODE = u''
 
-# Application definition
+REQUESTS_URL_GOLOS = {'posts_count_monthly': 'https://golos.steepshot.org/api/v1/posts/count/monthly',
+                      'active_users': 'https://golos.steepshot.org/api/v1/user/active/monthly',
+                      'ration_daily': 'https://golos.steepshot.org/api/v1/posts/ratio/daily',
+                      'ration_monthly': 'https://golos.steepshot.org/api/v1/posts/ratio/monthly'
+                      }
 
+REQUESTS_URL_STEEM = {'post_fee': 'https://qa.steepshot.org/api/v1/posts/fee/daily?currency=',
+                      'posts_count_daily': 'https://qa.steepshot.org/api/v1/posts/count/daily',
+                      'posts_count_monthly': 'https://steepshot.org/api/v1/posts/count/monthly',
+                      'active_users': 'https://steepshot.org/api/v1/user/active/monthly',
+                      'ration_daily': 'https://steepshot.org/api/v1/posts/ratio/daily',
+                      'ration_monthly': 'https://steepshot.org/api/v1/posts/ratio/monthly'
+                      }
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
