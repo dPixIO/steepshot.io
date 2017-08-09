@@ -160,7 +160,7 @@ class GetRatioDaily(View):
             res = res['result']
             res.reverse()
             values = []
-            for i in res[30:]:
+            for i in res:
                 values.append([i['date'], i['ratio']])
             return values
         elif platform == 'golos':
@@ -168,7 +168,7 @@ class GetRatioDaily(View):
             res = res['result']
             res.reverse()
             values = []
-            for i in res[30:]:
+            for i in res:
                 values.append([i['date'], i['ratio']])
             return values
         else:
@@ -180,9 +180,9 @@ class GetRatioDaily(View):
             res_golos.reverse()
             values_steem = []
             values_golos = []
-            for i in res_steem[30:]:
+            for i in res_steem:
                 values_steem.append([i['date'], i['ratio']])
-            for i in res_golos[30:]:
+            for i in res_golos:
                 values_golos.append([i['date'], i['ratio']])
             return values_steem, values_golos
 
