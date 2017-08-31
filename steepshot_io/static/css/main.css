@@ -599,9 +599,20 @@ input:focus {
     bottom: 50px;
     z-index: 12;
 }
-#soc_links a{
+#soc_links a, #stile_faq a{
     color: #374657;
     margin:0 5em 0 0;
+}
+
+#stile_faq{
+    font-size: 14px;
+    font-family:"Open Sans", sans-serif;
+    font-style: normal;
+    position: absolute;
+    z-index: 12;
+    padding: 40px;
+    font-weight: 600
+
 }
 
 

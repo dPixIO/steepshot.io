@@ -1,0 +1,91 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block contentmidle %}
+    <h3>Q: What is Steepshot?</h3>
+    <p>Steepshot is a platform that rewards people for sharing their lifestyle and visual experience built on the basis of Steem blockchain.</p>
+    <h3>Q: Why Steepshot?</h3>
+    <p>Steep means rising sharply, at the same time, it means something very expensive. We believe that Steepshot name aptly describes the phenomenon of the explosive interest in photos in the social networks. On the other hand, the name tells us that such an interest is well monetized.</p>
+    <h3>Q: Who is Steepshot for?</h3>
+    <p>Steepshot is for everyone who wants to share pictures, bright and remarkable moments of life made by smartphone. You can use it to share cool pics & videos you've taken with your mobile phone, curate and comment photos your friends made.</p>
+    <p>So Steepshot is for socially active people, travellers, photographers, photo/video bloggers, artists and other people that will find their inspiration. </p>
+    <h3>Q: What is the target content of Steepshot?</h3>
+    <ul>
+    <li>photos</li>
+    <li>short videos</li>
+    <li>stories / albums</li>
+    </ul>
+    <h3>Q: How is it different from Instagram?</h3>
+    <p>The main difference is decentralized nature and crypto rewards.
+    Today users all over the world spend around 150 000 000 hours daily on Instagram. Instagram capitalization is now somewhere between $35-84 bln. However, the platform still never rewards users for their contributions and has the right for content censorship.</p>
+
+    <p>Our project provides blockchain-based censorship-resistant way of sharing photos. We have many ideas for the future functionality. We plan to discuss it all with community closer to the beta-launch.</p>
+    <h3>Q: How do you filter content from Steem blockchain to have only pics?</h3>
+    <p>For alpha test version, we're using regular expressions to parse picture URLs out of the content of existing Steem posts and showing the first picture from each post.
+    In future, we'll only show the content created by our application, filtering out the content made by other clients.</p>
+    <h3>Q: How to login to Steepshot app?</h3>
+    <p>You can follow the <a href="https://www.youtube.com/watch?v=XAVapBwbS1U" target="_blank"> video guide</a> on Youtube.</p>
+
+    <p>Follow the next few steps:</p>
+    <ol>
+    <li> If you’re not on Login screen press the LOGIN button</li>
+    <li> Type your Steem username.
+        If you have no Steem registration, plz go to <a href="https://steemit.com/" target="_blank"> https://steemit.com/</a>
+        This username will be used as Steepshot username.</li>
+        <li> Paste your <b>Steem Private Posting Key</b><br>
+    Go to Settings -> Wallet -> Permissions. At the right side of the “POSTING” section tap button “show private key”. Copy this key and paste it to “posting key” field as shown in picture: You can also scan the corresponding QR code.</li>
+    </ol>
+
+    <img src="{% static 'img/scrin_faq.png' %}"/>
+
+    <p>DONE!</p>
+
+    <h3>Q: How do I log in to Steepshot?</h3>
+    <p>Once you’re finished with the registration, you can just type in Steem username and Steepshot password.</p>
+    <h3>Q: Why registration process looks like bulky one?</h3>
+    <p>We are currently working on improvements to sign in / sign up functionality.
+    K.I.S.S. principles are high priority.</p>
+    <h3>Q: (Security) Why should I trust you?</h3>
+    <p>Our app never asks you for your active key or owner key. However, it sends your posting key (encrypted) to our server for posting transactions signing. If you don't trust us your posting key but still want to try Steepshot, feel free to register a separate account on Steemit or wait until we release the .NET lib and integrate it with Steepshot that will help us in moving transaction signing to the client side.</p>
+    <h3>Q: Is this going to be open source?</h3>
+    <p>We plan to make it open source gradually as far as it is practical for us.
+        The code of the <a href="https://github.com/AnCh7/sweetshot/" target="_blank"> client</a> that our app is using is already open.</p>
+    <h3>Q: Is it a fork of Steemit?</h3>
+    <p>No, there’s no plan to take Steepshot away from Steemit blockchain as for today at least. We believe in Steemit community growth and we do not want to divide it.</p>
+    <h3>Q: What is the current architecture of the app?</h3>
+    <img src="{% static 'img/scheme_faq.png' %}"/>
+    <h3>Q: Who are the people behind Steepshot?</h3>
+    <p>Our team has changed more than once, but steadily continues to grow up.
+    These are the main people who are currently making an active contribution to the development of the project:
+    <i>@pmartynov, @vitality, @anch, @korzunav, @nikitz, @kirill.volkov</i></p>
+    <h3>Q: How do developers get rewarded for their work?</h3>
+    <p>For now, we are grateful for any donations to @steepshot account.</p>
+
+    <p>According to Steemit Roadmap 2017, Q2 Post Reward Sharing rewards for developers will be implemented. Since then, our team will be able to receive compensation for the development of the project by taking percentage out of the user rewards earned by using our apps.</p>
+    <h1>Golos blockchain</h1>
+    <h3>Q: How to switch to Golos account when you are signed with Steem account?</h3>
+
+    <p>Here is the guide:</p>
+    <ol>
+    <li> Click **Profile** in the action bar</li>
+    <li> Click **Settings** in the right top corner</li>
+    <li> Press **Add account**</li>
+    </ol>
+    <h3>Q: How to log in to your Golos account with posting key using QR-code?</h3>
+
+    <p>Golos yet not added QR-code support on its wallet page. But there is a simple solution solving this issue:</p>
+    <ol>
+    <li> Go to your Golos wallet. Press Permissions. Press Show private key. Copy this key to clipboard.</li>
+    <li> Follow link http://goqr.me/.  Paste in the key to the text field. QR-code is generated!</li>
+    <li> Press "SCAN PRIVATE POSTING KEY" in Steepshot app.</li>
+    </ol>
+    <p>Enjoy!</p>
+{% endblock %}
+    {% block footer %}
+        <div id="stile_faq">
+            <a href="https://www.facebook.com/steepshot/" target="_blank">Facebook</a>
+            <a href="https://twitter.com/steepshot" target="_blank">Twitter</a>
+            <a href="https://t.me/steepshot_en" target="_blank">Telegram</a>
+        </div>
+        </div>
+{% endblock %}

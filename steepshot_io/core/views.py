@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from steepshot_io.core.forms import SubscribeForm
 
 
@@ -20,3 +20,8 @@ class IndexView(TemplateView):
         return super(IndexView, self).get_context_data(**kwargs)
 
 
+class GetFAQ(View):
+    template_name = 'faq.html'
+
+    def get(self, request):
+        return render(request, self.template_name)
