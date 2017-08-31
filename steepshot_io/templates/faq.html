@@ -2,6 +2,7 @@
 {% load staticfiles %}
 
 {% block contentmidle %}
+    <p><a href="{% url 'core:index' %}"> Back to the main page </a></p>
     <h3>Q: What is Steepshot?</h3>
     <p>Steepshot is a platform that rewards people for sharing their lifestyle and visual experience built on the basis of Steem blockchain.</p>
     <h3>Q: Why Steepshot?</h3>
@@ -80,6 +81,8 @@
     <li> Press "SCAN PRIVATE POSTING KEY" in Steepshot app.</li>
     </ol>
     <p>Enjoy!</p>
+    <p><a href="{% url 'core:index' %}"> Back to the main page </a></p>
+
 {% endblock %}
     {% block footer %}
         <div id="stile_faq">
