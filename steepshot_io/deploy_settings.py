@@ -43,6 +43,7 @@ UBUNTU_PACKAGES = [
     'redis-server',
     'systemd-sysv',
     # 'upstart-sysv'
+    'python-certbot-nginx',
 ]
 
 WORKON_HOME = os.path.join(REMOTE_DEPLOY_DIR, '.virtualenvs')
@@ -86,5 +87,6 @@ ENVIRONMENTS = {
         'CURRENT_HOST': 'steepshot.io',
         'SETTINGS_MODULE': SETTINGS_MODULE,
         'KEY_FILENAME': KEY_FILENAME,
+        'IS_CERTBOT_CERT': True,
     },
 }

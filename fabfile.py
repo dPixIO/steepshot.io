@@ -1,6 +1,10 @@
-import os
-import logging
 import datetime
+import logging
+import os
+
+from fabric.api import env, task, sudo, prefix, cd, settings, require
+from fabric.contrib.files import upload_template, contains, append, exists
+from fabric.operations import put
 
 from steepshot_io.deploy_settings import (
     USER, HOST, REMOTE_DEPLOY_DIR, PROJECT_NAME, REPOSITORY,
@@ -12,9 +16,6 @@ from steepshot_io.deploy_settings import (
     USER_PROFILE_FILE, VENV_ACTIVATE,
     BACKEND_SERVICE, CELERY_SERVICE
 )
-
-from fabric.api import env, task, sudo, prefix, run, cd, settings, local, require
-from fabric.contrib.files import upload_template, contains, append, exists
 
 # This allows us to have .profile to be read when calling sudo
 # and virtualenvwrapper being activated using non-SSH user
@@ -53,6 +54,7 @@ def _load_environment(env_name: str):
     env.env_name = env_name
     env.settings_module = _env['SETTINGS_MODULE']
     env.key_filename = _env['KEY_FILENAME']
+    env.is_certbot_cert = _env.get('IS_CERTBOT_CERT')
 
 
 @task
@@ -80,11 +82,21 @@ def shell():
 @task
 def install_system_packages():
     sudo('add-apt-repository ppa:fkrull/deadsnakes -y')
+
+    if env.is_certbot_cert:
+        sudo('add-apt-repository ppa:certbot/certbot -y')
+
     sudo('sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927')
-    sudo('echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list')
+    sudo('echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" | sudo tee '
+         '/etc/apt/sources.list.d/mongodb-org-3.2.list')
     with settings(warn_only=True):
         sudo('apt-get update')
-    sudo('apt-get -y --no-upgrade install %s' % ' '.join(UBUNTU_PACKAGES))
+
+    if env.is_certbot_cert:
+        sudo('apt-get -y --no-upgrade install %s' % ' '.join(UBUNTU_PACKAGES))
+    else:
+        UBUNTU_PACKAGES.remove('python-certbot-nginx')
+        sudo('apt-get -y --no-upgrade install %s' % ' '.join(UBUNTU_PACKAGES))
 
 
 @task
@@ -106,6 +118,7 @@ def create_deploy_dirs():
         sudo('mkdir -p staticfiles logs pid uploads',
              user=DEPLOYMENT_USER)
 
+
 @task
 def enable_and_start_redis():
     """
@@ -113,6 +126,7 @@ def enable_and_start_redis():
     """
     sudo('systemctl enable redis-server')
     sudo('systemctl start redis-server')
+
 
 @task
 def prepare():
@@ -174,6 +188,8 @@ def config_virtualenv():
     postactivate_context = {
         'DATABASE_URL': DATABASE_URL,
         'SETTINGS_MODULE': env.settings_module,
+        'IS_CERTBOT_CERT': env.is_certbot_cert,
+        'DOMAIN_NAME': env.current_host,
     }
     upload_template(os.path.join(LOCAL_CONF_DIR, 'postactivate'),
                     remote_postactivate_path, context=postactivate_context,
@@ -189,7 +205,8 @@ def create_database():
     with settings(warn_only=True):
         # Create database user
         with prefix("export PGPASSWORD=%s" % DB_PASSWORD):
-            sudo('psql -c "CREATE ROLE %s WITH CREATEDB CREATEUSER LOGIN ENCRYPTED PASSWORD \'%s\';"' % (DB_USER, DB_PASSWORD),
+            sudo('psql -c "CREATE ROLE %s WITH CREATEDB CREATEUSER LOGIN ENCRYPTED PASSWORD \'%s\';"' % (
+            DB_USER, DB_PASSWORD),
                  user='postgres')
             sudo('psql -c "CREATE DATABASE %s WITH OWNER %s"' % (DB_NAME, DB_USER),
                  user='postgres')
@@ -215,6 +232,22 @@ def deploy_files():
         sudo('git reset --hard')
         sudo('git checkout {}'.format(env.branch))
         sudo('git pull origin {}'.format(env.branch))
+
+
+@task
+def config_crontab():
+    crontab_file = os.path.join(LOCAL_CONF_DIR, 'crontab')
+
+    with settings(warn_only=True):
+        # There may be no previous crontab so
+        # crontab will fail
+        backup_file = '/tmp/crontab-%s' % _get_current_datetime()
+        logger.info("Backing up existing crontab")
+        sudo('crontab -l > %s' % backup_file)
+    logger.info("Uploading new crontab")
+    put(crontab_file, '/tmp/new-crontab')
+    logger.info("Setting new crontab")
+    sudo('crontab < /tmp/new-crontab')
 
 
 @task
@@ -244,10 +277,10 @@ def config_celery(remote_conf_path):
     upload_template(os.path.join(LOCAL_CONF_DIR, 'celery.sh'),
                     remote_conf_path,
                     context={
-        'DEPLOY_DIR': DEPLOY_DIR,
-        'ENV_PATH': ENV_PATH,
-        'SETTINGS_MODULE': env.settings_module,
-    }, mode=0o0750, use_sudo=True)
+                        'DEPLOY_DIR': DEPLOY_DIR,
+                        'ENV_PATH': ENV_PATH,
+                        'SETTINGS_MODULE': env.settings_module,
+                    }, mode=0o0750, use_sudo=True)
 
 
 def install_service(service_name, context):
@@ -374,7 +407,6 @@ def restart():
     for service_name in services_to_restart:
         restart_systemd_service(service_name)
 
-
     sudo('service nginx restart')
 
 
@@ -454,6 +486,7 @@ def first_time_deploy():
 def deploy():
     require('branch', 'user', 'hosts')
     deploy_files()
+    config_crontab()
     install_req()
     deploy_static()
     update_static_chmod()
