@@ -1,6 +1,10 @@
-import os
-import logging
 import datetime
+import logging
+import os
+
+from fabric.api import env, task, sudo, prefix, cd, settings, require
+from fabric.contrib.files import upload_template, contains, append, exists
+from fabric.operations import put
 
 from steepshot_io.deploy_settings import (
     USER, HOST, REMOTE_DEPLOY_DIR, PROJECT_NAME, REPOSITORY,
@@ -12,9 +16,6 @@ from steepshot_io.deploy_settings import (
     USER_PROFILE_FILE, VENV_ACTIVATE,
     BACKEND_SERVICE, CELERY_SERVICE
 )
-
-from fabric.api import env, task, sudo, prefix, run, cd, settings, local, require
-from fabric.contrib.files import upload_template, contains, append, exists
 
 # This allows us to have .profile to be read when calling sudo
 # and virtualenvwrapper being activated using non-SSH user
@@ -188,6 +189,7 @@ def config_virtualenv():
         'DATABASE_URL': DATABASE_URL,
         'SETTINGS_MODULE': env.settings_module,
         'IS_CERTBOT_CERT': env.is_certbot_cert,
+        'DOMAIN_NAME': env.current_host,
     }
     upload_template(os.path.join(LOCAL_CONF_DIR, 'postactivate'),
                     remote_postactivate_path, context=postactivate_context,
@@ -230,6 +232,22 @@ def deploy_files():
         sudo('git reset --hard')
         sudo('git checkout {}'.format(env.branch))
         sudo('git pull origin {}'.format(env.branch))
+
+
+@task
+def config_crontab():
+    crontab_file = os.path.join(LOCAL_CONF_DIR, 'crontab')
+
+    with settings(warn_only=True):
+        # There may be no previous crontab so
+        # crontab will fail
+        backup_file = '/tmp/crontab-%s' % _get_current_datetime()
+        logger.info("Backing up existing crontab")
+        sudo('crontab -l > %s' % backup_file)
+    logger.info("Uploading new crontab")
+    put(crontab_file, '/tmp/new-crontab')
+    logger.info("Setting new crontab")
+    sudo('crontab < /tmp/new-crontab')
 
 
 @task
@@ -468,6 +486,7 @@ def first_time_deploy():
 def deploy():
     require('branch', 'user', 'hosts')
     deploy_files()
+    config_crontab()
     install_req()
     deploy_static()
     update_static_chmod()
