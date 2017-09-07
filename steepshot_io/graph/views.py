@@ -242,3 +242,80 @@ class GetRatioMonthly(GetRatioDaily):
             values = self.group_steem_golos(values_steem, values_golos)
             flag_together = True
             return render(request, self.template_name, {'values': values, 'flag': flag_together})
+
+
+
+class CoutNewUsers(GetRatioDaily):
+    template_name = 'stats_users.html'
+
+    def get_data(self, platform=None, url=None, data_x=None, data_y=None, reverce=True):
+        if platform == 'steem':
+            res = requests.get(REQUESTS_URL_STEEM[url]).json()
+            if reverce:
+                res.reverse()
+            values = []
+            for i in res:
+                values.append([i[data_x], i[data_y]])
+            return values
+        elif platform == 'golos':
+            res = requests.get(REQUESTS_URL_GOLOS[url]).json()
+            if reverce:
+                res.reverse()
+            values = []
+            for i in res:
+                values.append([i[data_x], i[data_y]])
+            return values
+        else:
+            res_steem = requests.get(REQUESTS_URL_STEEM[url]).json()
+            if reverce:
+                res_steem.reverse()
+            res_golos = requests.get(REQUESTS_URL_GOLOS[url]).json()
+            if reverce:
+                res_golos.reverse()
+            values_steem = []
+            values_golos = []
+            for i in res_steem:
+                values_steem.append([i[data_x], i[data_y]])
+            for i in res_golos:
+                values_golos.append([i[data_x], i[data_y]])
+            return values_steem, values_golos
+
+    def get(self, request, *args, **kwargs):
+        if 'platform' in request.GET:
+            platform = request.GET['platform'].lower()
+            values = self.get_data(platform=platform, url='new_users', data_x='day', data_y='count_users', reverce=False)
+            return render(request, self.template_name, {'values': values})
+        else:
+            values_steem, values_golos = self.get_data(url='new_users', data_x='day', data_y='count_users', reverce=False)
+            values = self.group_steem_golos(values_steem, values_golos)
+            flag_together = True
+            return render(request, self.template_name, {'values': values, 'flag': flag_together})
+
+
+class CoutNewUsersMonthly(CoutNewUsers):
+
+    def get(self, request, *args, **kwargs):
+        if 'platform' in request.GET:
+            platform = request.GET['platform'].lower()
+            values = self.get_data(platform=platform, url='new_users_monthly', data_x='date_to', data_y='count_new_users')
+            return render(request, self.template_name, {'values': values})
+        else:
+            values_steem, values_golos = self.get_data(url='new_users_monthly', data_x='date_to', data_y='count_new_users')
+            values = self.group_steem_golos(values_steem, values_golos)
+            flag_together = True
+            return render(request, self.template_name, {'values': values, 'flag': flag_together})
+
+
+class CoutPercentUsersDaily(CoutNewUsers):
+    template_name = 'percent_users.html'
+
+    def get(self, request, *args, **kwargs):
+        if 'platform' in request.GET:
+            platform = request.GET['platform'].lower()
+            values = self.get_data(platform=platform, url='users_percent_daily', data_x='day', data_y='percent', reverce=False)
+            return render(request, self.template_name, {'values': values})
+        else:
+            values_steem, values_golos = self.get_data(url='users_percent_daily', data_x='day', data_y='percent', reverce=False)
+            values = self.group_steem_golos(values_steem, values_golos)
+            flag_together = True
+            return render(request, self.template_name, {'values': values, 'flag': flag_together})
