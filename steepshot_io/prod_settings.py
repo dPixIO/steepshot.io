@@ -60,7 +60,10 @@ else:
 REQUESTS_URL_GOLOS = {'posts_count_monthly': 'https://golos.steepshot.org/api/v1/posts/count/monthly',
                       'active_users': 'https://golos.steepshot.org/api/v1/user/active/monthly',
                       'ration_daily': 'https://golos.steepshot.org/api/v1/posts/ratio/daily',
-                      'ration_monthly': 'https://golos.steepshot.org/api/v1/posts/ratio/monthly'
+                      'ration_monthly': 'https://golos.steepshot.org/api/v1/posts/ratio/monthly',
+                      'new_users': 'https://qa.golos.steepshot.org/api/v1/user/count/daily',
+                      'new_users_monthly': 'https://qa.golos.steepshot.org/api/v1/user/count/unique',
+                      'users_percent_daily': 'https://qa.golos.steepshot.org/api/v1/user/percent/unique'
                       }
 
 REQUESTS_URL_STEEM = {'post_fee': 'https://qa.steepshot.org/api/v1/posts/fee/daily?currency=',
@@ -68,7 +71,10 @@ REQUESTS_URL_STEEM = {'post_fee': 'https://qa.steepshot.org/api/v1/posts/fee/dai
                       'posts_count_monthly': 'https://steepshot.org/api/v1/posts/count/monthly',
                       'active_users': 'https://steepshot.org/api/v1/user/active/monthly',
                       'ration_daily': 'https://steepshot.org/api/v1/posts/ratio/daily',
-                      'ration_monthly': 'https://steepshot.org/api/v1/posts/ratio/monthly'
+                      'ration_monthly': 'https://steepshot.org/api/v1/posts/ratio/monthly',
+                      'new_users': 'https://qa.steepshot.org/api/v1/user/count/daily',
+                      'new_users_monthly': 'https://qa.steepshot.org/api/v1/user/count/unique',
+                      'users_percent_daily': 'https://qa.steepshot.org/api/v1/user/percent/unique'
                       }
 
 # Application definition
