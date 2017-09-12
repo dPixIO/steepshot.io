@@ -63,7 +63,18 @@ REQUESTS_URL_GOLOS = {'posts_count_monthly': 'https://golos.steepshot.org/api/v1
                       'ration_monthly': 'https://golos.steepshot.org/api/v1/posts/ratio/monthly',
                       'new_users': 'https://qa.golos.steepshot.org/api/v1/user/count/daily',
                       'new_users_monthly': 'https://qa.golos.steepshot.org/api/v1/user/count/unique',
-                      'users_percent_daily': 'https://qa.golos.steepshot.org/api/v1/user/percent/unique'
+                      'users_percent_daily': 'https://qa.golos.steepshot.org/api/v1/user/percent/unique',
+                      'count_posts_weekly': 'https://qa.golos.steepshot.org/api/v1/posts/count/weekly',
+                      'posts_average_weekly': 'https://qa.golos.steepshot.org/api/v1/posts/average/daily',
+                      'posts_average_author': 'https://qa.golos.steepshot.org/api/v1/posts/average/avtor',
+                      'count_votes_weekly': 'https://qa.golos.steepshot.org/api/v1/posts/count/votes',
+                      'votes_average_weekly': 'https://qa.golos.steepshot.org/api/v1/posts/average/votes',
+                      'count_comments_weekly': 'https://qa.golos.steepshot.org/api/v1/posts/count/comments',
+                      'users_count_session': 'https://qa.golos.steepshot.org/api/v1/user/count/sessions',
+                      'posts_fee_weekly': 'https://qa.golos.steepshot.org/api/v1/posts/fee/weekly',
+                      'posts_fee_users': 'https://qa.golos.steepshot.org/api/v1/posts/fee/users',
+                      'posts_fee_author': 'https://qa.golos.steepshot.org/api/v1/posts/fee/author'
+
                       }
 
 REQUESTS_URL_STEEM = {'post_fee': 'https://qa.steepshot.org/api/v1/posts/fee/daily?currency=',
@@ -74,7 +85,18 @@ REQUESTS_URL_STEEM = {'post_fee': 'https://qa.steepshot.org/api/v1/posts/fee/dai
                       'ration_monthly': 'https://steepshot.org/api/v1/posts/ratio/monthly',
                       'new_users': 'https://qa.steepshot.org/api/v1/user/count/daily',
                       'new_users_monthly': 'https://qa.steepshot.org/api/v1/user/count/unique',
-                      'users_percent_daily': 'https://qa.steepshot.org/api/v1/user/percent/unique'
+                      'users_percent_daily': 'https://qa.steepshot.org/api/v1/user/percent/unique',
+                      'count_posts_weekly': 'https://qa.steepshot.org/api/v1/posts/count/weekly',
+                      'posts_average_weekly': 'https://qa.steepshot.org/api/v1/posts/average/daily',
+                      'posts_average_author': 'https://qa.steepshot.org/api/v1/posts/average/avtor',
+                      'count_votes_weekly': 'https://qa.steepshot.org/api/v1/posts/count/votes',
+                      'votes_average_weekly': 'https://qa.steepshot.org/api/v1/posts/average/votes',
+                      'count_comments_weekly': 'https://qa.steepshot.org/api/v1/posts/count/comments',
+                      'users_count_session': 'https://qa.steepshot.org/api/v1/user/count/sessions',
+                      'posts_fee_weekly': 'https://qa.steepshot.org/api/v1/posts/fee/weekly',
+                      'posts_fee_users': 'https://qa.steepshot.org/api/v1/posts/fee/users',
+                      'posts_fee_author': 'https://qa.steepshot.org/api/v1/posts/fee/author'
+
                       }
 
 # Application definition
