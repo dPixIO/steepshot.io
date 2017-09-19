@@ -312,10 +312,10 @@ class CoutPercentUsersDaily(CoutNewUsers):
     def get(self, request, *args, **kwargs):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
-            values = self.get_data(platform=platform, url='users_percent_daily', data_x='day', data_y='percent', reverce=False)
+            values = self._get_data(platform=platform, url='users_percent_daily', data_x='day', data_y='percent', reverce=False)
             return render(request, self.template_name, {'values': values})
         else:
-            values_steem, values_golos = self.get_data(url='users_percent_daily', data_x='day', data_y='percent', reverce=False)
+            values_steem, values_golos = self._get_data(url='users_percent_daily', data_x='day', data_y='percent', reverce=False)
             values = self.group_steem_golos(values_steem, values_golos)
             flag_together = True
             return render(request, self.template_name, {'values': values, 'flag': flag_together})
@@ -426,8 +426,6 @@ class PostsFeeWeekly(CountPostWeekly):
 
     def get(self, request, *args, **kwargs):
         current_url = request.resolver_match.url_name
-        import pdb
-        pdb.set_trace()
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             values = self._get_data(platform=platform, url=current_url, data_x='day', data_y='fee')
