@@ -1,0 +1,45 @@
+server {
+    server_name {{ WEBAPP_HOST }};
+
+    {%-if ENV == "VAGRANT" %}
+        listen      80;
+    {%- else %}
+        listen      443 ssl;
+
+        ssl_certificate /etc/letsencrypt/live/{{ WEBAPP_HOST }}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/{{ WEBAPP_HOST }}/privkey.pem;
+    {%- endif %}
+
+    access_log {{ DEPLOY_DIR }}/logs/nginx-frontend-access.log;
+    error_log  {{ DEPLOY_DIR }}/logs/nginx-frontend-error.log;
+
+    client_max_body_size 10M;
+
+    add_header 'Access-Control-Allow-Origin' '*';
+    add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS';
+    add_header 'Access-Control-Allow-Headers' 'X-Requested-With,Accept,Content-Type, Origin';
+
+    location / {
+        root {{ STATIC_DIR }};
+        try_files $uri /index.html;
+    }
+
+    location /static/ {
+        alias {{ STATIC_DIR }}/;
+    }
+
+}
+
+{%-if ENV != "VAGRANT" %}
+server {
+    server_name www.{{ WEBAPP_HOST }};
+    listen 80;
+    return 301 https://{{ WEBAPP_HOST }}$request_uri;
+}
+
+server {
+    server_name {{ WEBAPP_HOST }};
+    listen 80;
+    return 301 https://{{ WEBAPP_HOST }}$request_uri;
+}
+{%-endif %}
