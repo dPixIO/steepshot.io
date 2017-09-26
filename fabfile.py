@@ -1,8 +1,9 @@
 import datetime
 import logging
 import os
+import sys
 
-from fabric.api import env, task, sudo, prefix, cd, settings, require
+from fabric.api import env, lcd, task, sudo, local, prefix, cd, settings, require
 from fabric.contrib.files import upload_template, contains, append, exists
 from fabric.operations import put
 
@@ -14,12 +15,15 @@ from steepshot_io.deploy_settings import (
     STATIC_ROOT, STATIC_URL, MEDIA_ROOT, MEDIA_URL,
     DEPLOYMENT_USER, DEPLOYMENT_GROUP, ENVIRONMENTS,
     USER_PROFILE_FILE, VENV_ACTIVATE,
-    BACKEND_SERVICE, CELERY_SERVICE
+    BACKEND_SERVICE, CELERY_SERVICE,
+    WEBAPP_HOST, WEBAPP_STATIC_DIR,
 )
 
 # This allows us to have .profile to be read when calling sudo
 # and virtualenvwrapper being activated using non-SSH user
 SUDO_PREFIX = 'sudo -i'
+FRONTEND_LOCAL_DIR = os.path.abspath(os.path.join('..', 'steepshot-web'))
+FRONTEND_BUILD_COMMAND = 'gulp build'
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('fabfile')
@@ -72,6 +76,11 @@ def prod():
     Makes sure prod environment is enabled
     """
     _load_environment('PROD')
+
+
+@task
+def spa():
+    _load_environment('SPA')
 
 
 @task
@@ -469,6 +478,56 @@ def createsuperuser():
         with prefix('workon %s' % ENV_NAME):
             sudo('python manage.py createsuperuser '
                  '--settings ' + env.settings_module)
+
+
+@task
+def build_spa():
+    if not os.path.exists(FRONTEND_LOCAL_DIR):
+        logger.warning('Could not find repository '
+                       'of the frontend application, '
+                       'please clone it under the required '
+                       'dir ("%s")', FRONTEND_LOCAL_DIR)
+        sys.exit(1)
+    with lcd(FRONTEND_LOCAL_DIR):
+        local(FRONTEND_BUILD_COMMAND)
+
+
+@task
+def copy_spa():
+    """
+    Copies artifacts created
+    after the front-end build
+    """
+    with lcd(FRONTEND_LOCAL_DIR):
+        with settings(sudo_user=DEPLOYMENT_USER,
+                      sudo_prefix=SUDO_PREFIX):
+            put('dist/*', WEBAPP_STATIC_DIR)
+
+
+@task
+def deploy_spa_nginx_config():
+    remote_sa_path = '/etc/nginx/sites-available/%s' % WEBAPP_HOST
+    context = {
+        'WEBAPP_HOST': WEBAPP_HOST,
+        'ENV': env.env_name,
+        'DEPLOY_DIR': DEPLOY_DIR,
+        'STATIC_DIR': WEBAPP_STATIC_DIR,
+    }
+    upload_template(template_dir=LOCAL_CONF_DIR,
+                    filename='web_app.nginx.conf.j2',
+                    destination=remote_sa_path,
+                    context=context,
+                    use_sudo=True,
+                    use_jinja=True)
+    sudo('ln -sf %s /etc/nginx/sites-enabled' % remote_sa_path)
+
+
+@task
+def deploy_spa():
+    require('current_host', 'hosts')
+    build_spa()
+    copy_spa()
+    deploy_spa_nginx_config()
 
 
 @task

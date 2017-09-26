@@ -89,4 +89,16 @@ ENVIRONMENTS = {
         'KEY_FILENAME': KEY_FILENAME,
         'IS_CERTBOT_CERT': True,
     },
+    'SPA': {
+        'HOST': HOST,
+        'SSH_PORT': '22',
+        'USER': USER,
+        'CURRENT_HOST': 'alpha.steepshot.io',
+        'SETTINGS_MODULE': SETTINGS_MODULE,
+        'GIT_BRANCH': 'master',
+        'KEY_FILENAME': KEY_FILENAME,
+    }
 }
+
+WEBAPP_HOST = 'alpha.steepshot.io'
+WEBAPP_STATIC_DIR = '/home/steepshot_io/frontend'
