@@ -12,7 +12,8 @@ class Subscribe(models.Model):
 class TeamMembers(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    link_github = models.CharField(max_length=255)
+    link_github = models.CharField(max_length=255, blank=True)
+    link_linkedin = models.CharField(max_length=255,  blank=True)
     position = models.CharField(max_length=50)
     photo = models.ImageField(upload_to='team/')
 

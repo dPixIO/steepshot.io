@@ -11,7 +11,12 @@
                         </div>
                         <ul>
                             <li>position : {{  member.position }}</li>
+                            {% if member.link_github %}
                             <li>github: {{ member.link_github }}</li>
+                            {% endif %}
+                            {% if member.link_linkedin %}
+                            <li>linkedIn : {{ member.link_linkedin }}</li>
+                            {% endif %}
 
                         </ul>
                     </div>
