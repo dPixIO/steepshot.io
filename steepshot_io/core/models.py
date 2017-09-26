@@ -7,3 +7,15 @@ class Subscribe(models.Model):
 
     def __str__(self):
         return self.email
+
+
+class TeamMembers(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    link_github = models.CharField(max_length=255)
+    position = models.CharField(max_length=50)
+    photo = models.ImageField(upload_to='team/')
+
+    def __str__(self):
+        return self.last_name
+

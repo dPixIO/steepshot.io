@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
 from steepshot_io.core.forms import SubscribeForm
+from steepshot_io.core.models import TeamMembers
 
 
 class IndexView(TemplateView):
@@ -25,3 +26,12 @@ class GetFAQ(View):
 
     def get(self, request):
         return render(request, self.template_name)
+
+class GetTeam(View):
+    template_name = 'team.html'
+
+    def get(self, request):
+        team = TeamMembers.objects.all()
+
+        return render(request, self.template_name, {"team": team})
+

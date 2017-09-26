@@ -1,7 +1,7 @@
 import requests
 from django.shortcuts import render
 from django.views.generic import View
-from steepshot_io.prod_settings import REQUESTS_URL_GOLOS, REQUESTS_URL_STEEM
+from django.conf  import settings
 
 
 class GetPostFee(View):
@@ -9,7 +9,7 @@ class GetPostFee(View):
 
     def get_fee_posts(self, currency='VESTS'):
 
-        res = requests.get(REQUESTS_URL_STEEM['post_fee'] + currency).json()
+        res = requests.get(settings.REQUESTS_URL_STEEM['post_fee'] + currency).json()
         res.reverse()
         values = []
         for i in res:
@@ -42,23 +42,23 @@ class GetPostsCountMonthly(View):
     def get_posts_count_monthly(self, platform=None):
 
         if platform == 'steem':
-            res = requests.get(REQUESTS_URL_STEEM['posts_count_monthly']).json()
+            res = requests.get(settings.REQUESTS_URL_STEEM['posts_count_monthly']).json()
             res.reverse()
             values = []
             for i in res:
                 values.append([i['date_to'], i['posts_count']])
             return values
         elif platform =='golos':
-            res = requests.get(REQUESTS_URL_GOLOS['posts_count_monthly']).json()
+            res = requests.get(settings.REQUESTS_URL_GOLOS['posts_count_monthly']).json()
             res.reverse()
             values = []
             for i in res:
                 values.append([i['date_to'], i['posts_count']])
             return values
         else:
-            res_steem = requests.get(REQUESTS_URL_STEEM['posts_count_monthly']).json()
+            res_steem = requests.get(settings.REQUESTS_URL_STEEM['posts_count_monthly']).json()
             res_steem.reverse()
-            res_golos = requests.get(REQUESTS_URL_GOLOS['posts_count_monthly']).json()
+            res_golos = requests.get(settings.REQUESTS_URL_GOLOS['posts_count_monthly']).json()
             res_golos.reverse()
             values_steem = []
             values_golos = []
@@ -84,14 +84,14 @@ class GetActiveUsers(GetPostsCountMonthly):
 
     def get_active_users(self, platform=None):
         if platform == 'steem':
-            res = requests.get(REQUESTS_URL_STEEM['active_users']).json()
+            res = requests.get(settings.REQUESTS_URL_STEEM['active_users']).json()
             res.reverse()
             values = []
             for i in res:
                 values.append([i['date_to'], i['active_users']])
             return values
         elif platform == 'golos':
-            res = requests.get(REQUESTS_URL_GOLOS['active_users']).json()
+            res = requests.get(settings.REQUESTS_URL_GOLOS['active_users']).json()
             res.reverse()
             values = []
             for i in res:
@@ -99,9 +99,9 @@ class GetActiveUsers(GetPostsCountMonthly):
             return values
 
         else:
-            res_steem = requests.get(REQUESTS_URL_STEEM['active_users']).json()
+            res_steem = requests.get(settings.REQUESTS_URL_STEEM['active_users']).json()
             res_steem.reverse()
-            res_golos = requests.get(REQUESTS_URL_GOLOS['active_users']).json()
+            res_golos = requests.get(settings.REQUESTS_URL_GOLOS['active_users']).json()
             res_golos.reverse()
             values_steem = []
             values_golos = []
@@ -127,7 +127,7 @@ class GetCountPostDaily(View):
     template_name = 'count_post_daily.html'
 
     def get_count_post_daily(self):
-        res = requests.get(REQUESTS_URL_STEEM['posts_count_daily']).json()
+        res = requests.get(settings.REQUESTS_URL_STEEM['posts_count_daily']).json()
         res.reverse()
         values = []
         for i in res:
@@ -156,7 +156,7 @@ class GetRatioDaily(View):
     def get_ratio_daily(self, platform=None):
 
         if platform == 'steem':
-            res = requests.get(REQUESTS_URL_STEEM['ration_daily']).json()
+            res = requests.get(settings.REQUESTS_URL_STEEM['ration_daily']).json()
             res = res['result']
             res.reverse()
             values = []
@@ -164,7 +164,7 @@ class GetRatioDaily(View):
                 values.append([i['date'], i['ratio']])
             return values
         elif platform == 'golos':
-            res = requests.get(REQUESTS_URL_GOLOS['ration_daily']).json()
+            res = requests.get(settings.REQUESTS_URL_GOLOS['ration_daily']).json()
             res = res['result']
             res.reverse()
             values = []
@@ -172,10 +172,10 @@ class GetRatioDaily(View):
                 values.append([i['date'], i['ratio']])
             return values
         else:
-            res_steem = requests.get(REQUESTS_URL_STEEM['ration_daily']).json()
+            res_steem = requests.get(settings.REQUESTS_URL_STEEM['ration_daily']).json()
             res_steem = res_steem['result']
             res_steem.reverse()
-            res_golos = requests.get(REQUESTS_URL_GOLOS['ration_daily']).json()
+            res_golos = requests.get(settings.REQUESTS_URL_GOLOS['ration_daily']).json()
             res_golos = res_golos['result']
             res_golos.reverse()
             values_steem = []
@@ -205,23 +205,23 @@ class GetRatioMonthly(GetRatioDaily):
     def get_ratio_monthly(self, platform=None):
 
         if platform == 'steem':
-            res = requests.get(REQUESTS_URL_STEEM['ration_monthly']).json()
+            res = requests.get(settings.REQUESTS_URL_STEEM['ration_monthly']).json()
             res.reverse()
             values = []
             for i in res:
                 values.append([i['date_to'], i['ratio']])
             return values
         elif platform == 'golos':
-            res = requests.get(REQUESTS_URL_GOLOS['ration_monthly']).json()
+            res = requests.get(settings.REQUESTS_URL_GOLOS['ration_monthly']).json()
             res.reverse()
             values = []
             for i in res:
                 values.append([i['date_to'], i['ratio']])
             return values
         else:
-            res_steem = requests.get(REQUESTS_URL_STEEM['ration_monthly']).json()
+            res_steem = requests.get(settings.REQUESTS_URL_STEEM['ration_monthly']).json()
             res_steem.reverse()
-            res_golos = requests.get(REQUESTS_URL_GOLOS['ration_monthly']).json()
+            res_golos = requests.get(settings.REQUESTS_URL_GOLOS['ration_monthly']).json()
             res_golos.reverse()
             values_steem = []
             values_golos = []
@@ -250,7 +250,7 @@ class CoutNewUsers(GetRatioDaily):
 
     def _get_data(self, platform=None, url=None, data_x=None, data_y=None, reverce=True):
         if platform == 'steem':
-            res = requests.get(REQUESTS_URL_STEEM[url]).json()
+            res = requests.get(settings.REQUESTS_URL_STEEM[url]).json()
             if reverce:
                 res.reverse()
             values = []
@@ -258,7 +258,7 @@ class CoutNewUsers(GetRatioDaily):
                 values.append([i[data_x], i[data_y]])
             return values
         elif platform == 'golos':
-            res = requests.get(REQUESTS_URL_GOLOS[url]).json()
+            res = requests.get(settings.REQUESTS_URL_GOLOS[url]).json()
             if reverce:
                 res.reverse()
             values = []
@@ -266,10 +266,10 @@ class CoutNewUsers(GetRatioDaily):
                 values.append([i[data_x], i[data_y]])
             return values
         else:
-            res_steem = requests.get(REQUESTS_URL_STEEM[url]).json()
+            res_steem = requests.get(settings.REQUESTS_URL_STEEM[url]).json()
             if reverce:
                 res_steem.reverse()
-            res_golos = requests.get(REQUESTS_URL_GOLOS[url]).json()
+            res_golos = requests.get(settings.REQUESTS_URL_GOLOS[url]).json()
             if reverce:
                 res_golos.reverse()
             values_steem = []

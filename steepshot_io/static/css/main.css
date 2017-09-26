@@ -1235,3 +1235,32 @@ input:focus {
     }
 }
 /*made by ds_drummer (Alex Osipenko)*/
+
+.col-md-4{
+    float: left;
+    width: 33.33%;
+}
+
+.team_image {
+     width: 250px;
+     height: 300px;
+     }
+
+.col-md-4:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.container_team{
+    position: absolute;
+}
+
+
+.clear{
+    float: none;
+    clear: both;
+}
+
+
+

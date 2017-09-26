@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block contentmidle %}
+    <div class="container_team">
+    {% for member in team %}
+             <div class="col-md-4">
+                    <div class="panel-heading"> {{ member.last_name }} {{ member.first_name }}
+                        <div>
+                            <img src="{{member.photo.url}}" class="team_image"  alt="Image"/>
+                        </div>
+                        <ul>
+                            <li>position : {{  member.position }}</li>
+                            <li>github: {{ member.link_github }}</li>
+
+                        </ul>
+                    </div>
+                </div>
+{% endfor %}
+
+{% endblock %}
+
+{% block footer %}
+        <div class="clear"></div>
+        <div id="stile_faq">
+            <a href="https://www.facebook.com/steepshot/" target="_blank">Facebook</a>
+            <a href="https://twitter.com/steepshot" target="_blank">Twitter</a>
+            <a href="https://t.me/steepshot_en" target="_blank">Telegram</a>
+        </div>
+    </div>
+{% endblock %}

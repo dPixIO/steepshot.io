@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from steepshot_io.core.models import Subscribe
+from steepshot_io.core.models import Subscribe, TeamMembers
 
 
 class SubscribeAdmin(admin.ModelAdmin):
@@ -12,4 +12,10 @@ class SubscribeAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
+
+class TeamMembersAdmin(admin.ModelAdmin):
+    list_filter = ['last_name']
+
+
 admin.site.register(Subscribe, SubscribeAdmin)
+admin.site.register(TeamMembers, TeamMembersAdmin)
