@@ -518,8 +518,10 @@ def deploy_spa_nginx_config():
                     destination=remote_sa_path,
                     context=context,
                     use_sudo=True,
-                    use_jinja=True)
+                    use_jinja=True,
+                    backup=False)
     sudo('ln -sf %s /etc/nginx/sites-enabled' % remote_sa_path)
+    sudo('service nginx restart')
 
 
 @task
