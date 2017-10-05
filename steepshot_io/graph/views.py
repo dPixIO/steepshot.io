@@ -141,30 +141,46 @@ class GetRatioDaily(View):
 
     def _get_data_dict(self, platform=None, reverse=True, data_x=None, data_y=None, name_url=None):
         if platform == 'steem':
-            res = requests.get(settings.REQUESTS_URL_STEEM[name_url]).json()
-            res = res['result']
-            res.reverse()
-            values = []
+            try:
+                res = requests.get(settings.REQUESTS_URL_STEEM[name_url]).json()
+                res = res['result']
+                res.reverse()
+                values = []
+            except Exception as e:
+                logger.error(e)
+                res = []
+                return res
             for i in res:
                 values.append([i[data_x], i[data_y]])
             return values
         elif platform == 'golos':
-            res = requests.get(settings.REQUESTS_URL_GOLOS[name_url]).json()
-            res = res['result']
-            res.reverse()
-            values = []
+            try:
+                res = requests.get(settings.REQUESTS_URL_GOLOS[name_url]).json()
+                res = res['result']
+                res.reverse()
+                values = []
+            except Exception as e:
+                logger.error(e)
+                res = []
+                return res
             for i in res:
                 values.append([i[data_x], i[data_y]])
             return values
         else:
-            res_steem = requests.get(settings.REQUESTS_URL_STEEM[name_url]).json()
-            res_steem = res_steem['result']
-            res_steem.reverse()
-            res_golos = requests.get(settings.REQUESTS_URL_GOLOS[name_url]).json()
-            res_golos = res_golos['result']
-            res_golos.reverse()
-            values_steem = []
-            values_golos = []
+            try:
+                res_steem = requests.get(settings.REQUESTS_URL_STEEM[name_url]).json()
+                res_steem = res_steem['result']
+                res_steem.reverse()
+                res_golos = requests.get(settings.REQUESTS_URL_GOLOS[name_url]).json()
+                res_golos = res_golos['result']
+                res_golos.reverse()
+                values_steem = []
+                values_golos = []
+            except Exception as e:
+                logger.error(e)
+                res = []
+                res_2 = []
+                return res, res_2
             for i in res_steem:
                 values_steem.append([i[data_x], i[data_y]])
             for i in res_golos:
