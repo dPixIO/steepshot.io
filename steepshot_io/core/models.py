@@ -20,3 +20,7 @@ class TeamMembers(models.Model):
     def __str__(self):
         return self.last_name
 
+
+class Vanancy(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()

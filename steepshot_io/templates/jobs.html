@@ -1,0 +1,11 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+{% block contentmidle %}
+    <div>
+        {% for i in jobs %}
+            <div class="jobs"><a href="{% url 'core:job_one' i.id %}"> <h2>{{ i.title }}</h2></a></div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
