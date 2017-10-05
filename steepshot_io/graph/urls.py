@@ -3,7 +3,7 @@ from django.conf.urls import url
 from .views import *
 
 urlpatterns = [
-    url(r'^posts/count/monthly', GetPostsCountMonthly.as_view(), name='count_posts'),
+    url(r'^posts/count/monthly$', GetPostsCountMonthly.as_view(), name='count_posts'),
     url(r'^posts/count/daily$', GetCountPostDaily.as_view(), name='count_posts_daily'),
     url(r'^posts/ratio/daily$', GetRatioDaily.as_view(), name='ratio_daily'),
     url(r'^posts/ratio/monthly$', GetRatioMonthly.as_view(), name='ratio_monthly'),

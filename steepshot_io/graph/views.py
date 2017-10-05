@@ -55,7 +55,7 @@ class GetPostsCountMonthly(View):
             idx += 1
         return res
 
-    def _get_data(self, platform=None, reverse=True, data_x=None, data_y=None, name_url=None):
+    def _get_data(self, platform=None, reverse=True, data_x=None, data_y=None, name_url=None, return_dict=False):
         list_urls = []
         if platform == 'steem':
             list_urls.append(settings.STEEM_V1)
@@ -64,31 +64,33 @@ class GetPostsCountMonthly(View):
         else:
             list_urls.extend([settings.STEEM_V1, settings.GOLOS_V1])
 
-        def __request_data_url():
-            res = []
-            for url in list_urls:
-                try:
-                    cur_url = settings.REQUESTS_URL[name_url].format(url=url)
-                    get_data = requests.get(cur_url).json()
-                except JSONDecodeError as e:
-                    logger.error('Failed to parse json {}'.format(e))
-                except (ConnectionError, HTTPError) as e:
-                    logger.error('Failed to connect to {}'.format(e))
-                except Exception as e:
-                    logger.error(e)
-                if reverse:
-                    get_data.reverse()
-                res.append([(i[data_x], i[data_y]) for i in get_data])
-            return res
-        values_total = [i for i in __request_data_url()]
+        res = []
+        for url in list_urls:
+            try:
+                cur_url = settings.REQUESTS_URL[name_url].format(url=url)
+                get_data = requests.get(cur_url).json()
+                if return_dict:
+                    get_data = get_data['result']
+            except JSONDecodeError as e:
+                logger.error('Failed to parse json {}'.format(e))
+            except (ConnectionError, HTTPError) as e:
+                logger.error('Failed to connect to {}'.format(e))
+            except Exception as e:
+                logger.error(e)
+            if reverse:
+                get_data.reverse()
+            res.append([(i[data_x], i[data_y]) for i in get_data])
+        values_total = [i for i in res]
         return values_total
 
     def get(self, request):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
-            values = self._get_data(platform=platform, name_url='posts_count_monthly', data_y='posts_count', data_x='date_to')
+            values = self._get_data(platform=platform, name_url='posts_count_monthly',
+                                    data_y='posts_count', data_x='date_to')[0]
         else:
-            values_steem, values_golos = self._get_data(name_url='posts_count_monthly', data_y='posts_count', data_x='date_to')
+            values_steem, values_golos = self._get_data(name_url='posts_count_monthly',
+                                                        data_y='posts_count', data_x='date_to')
             values = self.group_steem_golos(values_steem, values_golos)
         name = 'counts posts'
         return render(request, self.template_name, {'values': values, 'name_1': name})
@@ -98,9 +100,11 @@ class GetActiveUsers(GetPostsCountMonthly):
     def get(self, request):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
-            values = self._get_data(platform=platform, name_url='active_users', data_y='active_users', data_x='date_to')
+            values = self._get_data(platform=platform, name_url='active_users',
+                                    data_y='active_users', data_x='date_to')[0]
         else:
-            values_steem, values_golos= self._get_data(name_url='active_users', data_y='active_users', data_x='date_to')
+            values_steem, values_golos = self._get_data(name_url='active_users',
+                                                        data_y='active_users', data_x='date_to')
             values = self.group_steem_golos(values_steem, values_golos)
         name = 'active users'
         return render(request, self.template_name, {'values': values, 'name_1': name})
@@ -113,7 +117,7 @@ class GetCountPostDaily(GetPostFee):
         return render(request, self.template_name, {'values': values, 'name_1': name})
 
 
-class GetRatioDaily(View):
+class GetRatioDaily(GetPostsCountMonthly):
     template_name = 'graph.html'
 
     def _group_steem_golos(self, list_steem, list_golos):
@@ -127,68 +131,23 @@ class GetRatioDaily(View):
             idx += 1
         return res
 
-    def _get_data_dict(self, platform=None, reverse=True, data_x=None, data_y=None, name_url=None):
-        if platform == 'steem':
-            try:
-                res = requests.get(settings.REQUESTS_URL_STEEM[name_url]).json()
-                res = res['result']
-                res.reverse()
-                values = []
-            except Exception as e:
-                logger.error(e)
-                res = []
-                return res
-            for i in res:
-                values.append([i[data_x], i[data_y]])
-            return values
-        elif platform == 'golos':
-            try:
-                res = requests.get(settings.REQUESTS_URL_GOLOS[name_url]).json()
-                res = res['result']
-                res.reverse()
-                values = []
-            except Exception as e:
-                logger.error(e)
-                res = []
-                return res
-            for i in res:
-                values.append([i[data_x], i[data_y]])
-            return values
-        else:
-            try:
-                res_steem = requests.get(settings.REQUESTS_URL_STEEM[name_url]).json()
-                res_steem = res_steem['result']
-                res_steem.reverse()
-                res_golos = requests.get(settings.REQUESTS_URL_GOLOS[name_url]).json()
-                res_golos = res_golos['result']
-                res_golos.reverse()
-                values_steem = []
-                values_golos = []
-            except Exception as e:
-                logger.error(e)
-                res = []
-                res_2 = []
-                return res, res_2
-            for i in res_steem:
-                values_steem.append([i[data_x], i[data_y]])
-            for i in res_golos:
-                values_golos.append([i[data_x], i[data_y]])
-            return values_steem, values_golos
-
     def get(self, request, *args, **kwargs):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'ratio ' + platform
-            values = self._get_data_dict(platform=platform, data_y='ratio', name_url='ration_daily', data_x='date')
+            values = self._get_data(platform=platform, data_y='ratio',
+                                    name_url='ration_daily', data_x='date', return_dict=True)[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
 
         else:
             name_1 = 'ratio steem'
             name_2 = 'ratio golos'
-            values_steem, values_golos = self._get_data_dict(data_y='ratio', name_url='ration_daily', data_x='date')
+            values_steem, values_golos = self._get_data(data_y='ratio', name_url='ration_daily',
+                                                        data_x='date', return_dict=True)
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
-            return render(request, self.template_name, {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+            return render(request, self.template_name, {'values': values, 'flag': flag_together,
+                                                        'name_1': name_1, 'name_2': name_2})
 
 
 class GetRatioMonthly(GetRatioDaily, GetPostsCountMonthly):
@@ -197,7 +156,7 @@ class GetRatioMonthly(GetRatioDaily, GetPostsCountMonthly):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'ratio ' + platform
-            values = self._get_data(platform=platform, data_x='date_to', data_y='ratio', name_url='ration_monthly')
+            values = self._get_data(platform=platform, data_x='date_to', data_y='ratio', name_url='ration_monthly')[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
 
         else:
@@ -206,7 +165,8 @@ class GetRatioMonthly(GetRatioDaily, GetPostsCountMonthly):
             values_steem, values_golos = self._get_data(data_x='date_to', data_y='ratio', name_url='ration_monthly')
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
-            return render(request, self.template_name, {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+            return render(request, self.template_name, {'values': values, 'flag': flag_together,
+                                                        'name_1': name_1, 'name_2': name_2})
 
 
 class CoutNewUsers(GetRatioDaily, GetPostsCountMonthly):
@@ -214,15 +174,18 @@ class CoutNewUsers(GetRatioDaily, GetPostsCountMonthly):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'new_users ' + platform
-            values = self._get_data(platform=platform, name_url='new_users', data_x='day', data_y='count_users', reverse=False)
+            values = self._get_data(platform=platform, name_url='new_users',
+                                    data_x='day', data_y='count_users', reverse=False)[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
         else:
             name_1 = 'new users steem'
             name_2 = 'new users golos'
-            values_steem, values_golos = self._get_data(name_url='new_users', data_x='day', data_y='count_users', reverse=False)
+            values_steem, values_golos = self._get_data(name_url='new_users',
+                                                        data_x='day', data_y='count_users', reverse=False)
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
-            return render(request, self.template_name, {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+            return render(request, self.template_name, {'values': values, 'flag': flag_together,
+                                                        'name_1': name_1, 'name_2': name_2})
 
 
 class CoutNewUsersMonthly(CoutNewUsers):
@@ -231,15 +194,18 @@ class CoutNewUsersMonthly(CoutNewUsers):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'new_users ' + platform
-            values = self._get_data(platform=platform, name_url='new_users_monthly', data_x='date_to', data_y='count_new_users')
+            values = self._get_data(platform=platform, name_url='new_users_monthly',
+                                    data_x='date_to', data_y='count_new_users')[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
         else:
-            values_steem, values_golos = self._get_data(name_url='new_users_monthly', data_x='date_to', data_y='count_new_users')
+            values_steem, values_golos = self._get_data(name_url='new_users_monthly',
+                                                        data_x='date_to', data_y='count_new_users')
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
             name_1 = 'new users steem'
             name_2 = 'new users golos'
-            return render(request, self.template_name, {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+            return render(request, self.template_name, {'values': values, 'flag': flag_together,
+                                                        'name_1': name_1, 'name_2': name_2})
 
 
 class CoutPercentUsersDaily(CoutNewUsers):
@@ -248,37 +214,44 @@ class CoutPercentUsersDaily(CoutNewUsers):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'users percent daily ' + platform
-            values = self._get_data(platform=platform, name_url='users_percent_daily', data_x='day', data_y='percent', reverse=False)
+            values = self._get_data(platform=platform, name_url='users_percent_daily',
+                                    data_x='day', data_y='percent', reverse=False)[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
         else:
-            values_steem, values_golos = self._get_data(name_url='users_percent_daily', data_x='day', data_y='percent', reverse=False)
+            values_steem, values_golos = self._get_data(name_url='users_percent_daily',
+                                                        data_x='day', data_y='percent', reverse=False)
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
             name_1 = 'users percent daily steem'
             name_2 = 'users percent daily golos'
-            return render(request, self.template_name, {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+            return render(request, self.template_name, {'values': values, 'flag': flag_together,
+                                                        'name_1': name_1, 'name_2': name_2})
+
 
 class CountPostWeekly(CoutNewUsers):
     def get(self, request, *args, **kwargs):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'count posts ' + platform
-            values = self._get_data(platform=platform, name_url='count_posts_weekly', data_x='day', data_y='count_post', reverse=False)
+            values = self._get_data(platform=platform, name_url='count_posts_weekly',
+                                    data_x='day', data_y='count_post', reverse=False)[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
         else:
-            values_steem, values_golos = self._get_data(name_url='count_posts_weekly', data_x='day', data_y='count_post', reverse=False)
+            values_steem, values_golos = self._get_data(name_url='count_posts_weekly',
+                                                        data_x='day', data_y='count_post', reverse=False)
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
             name_1 = 'count posts steem'
             name_2 = 'count posts golos'
-            return render(request, self.template_name, {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+            return render(request, self.template_name, {'values': values, 'flag': flag_together,
+                                                        'name_1': name_1, 'name_2': name_2})
 
 
 # class PostsAverageWeekly(CountPostWeekly):
 #     def get(self, request, *args, **kwargs):
 #         if 'platform' in request.GET:
 #             platform = request.GET['platform'].lower()
-#             values = self._get_data(platform=platform, name_url='posts_average_weekly', data_x='day', data_y='count_post')
+#             values = self._get_data(platform=platform, name_url='posts_average_weekly', data_x='day', data_y='count_post')[0]
 #             name_1 = 'posts average ' + platform
 #             return render(request, self.template_name, {'values': values, 'name_1': name_1})
 #         else:
@@ -296,15 +269,18 @@ class PostsAverageAuthor(CountPostWeekly):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'posts average ' + platform
-            values = self._get_data(platform=platform, name_url='posts_average_author', data_x='day', data_y='count_posts', reverse=False)
+            values = self._get_data(platform=platform, name_url='posts_average_author',
+                                    data_x='day', data_y='count_posts', reverse=False)[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
         else:
-            values_steem, values_golos = self._get_data(name_url='posts_average_author', data_x='day', data_y='count_posts', reverse=False)
+            values_steem, values_golos = self._get_data(name_url='posts_average_author',
+                                                        data_x='day', data_y='count_posts', reverse=False)
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
             name_1 = 'posts average steem'
             name_2 = 'posts average golos'
-            return render(request, self.template_name, {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+            return render(request, self.template_name, {'values': values, 'flag': flag_together,
+                                                        'name_1': name_1, 'name_2': name_2})
 
 
 class CountVotesWeekly(CountPostWeekly):
@@ -313,10 +289,12 @@ class CountVotesWeekly(CountPostWeekly):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'count votes ' + platform
-            values = self._get_data(platform=platform, name_url='count_votes_weekly', data_x='day', data_y='count_votes', reverse=False)
+            values = self._get_data(platform=platform, name_url='count_votes_weekly',
+                                    data_x='day', data_y='count_votes', reverse=False)[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
         else:
-            values_steem, values_golos = self._get_data(name_url='count_votes_weekly', data_x='day', data_y='count_votes', reverse=False)
+            values_steem, values_golos = self._get_data(name_url='count_votes_weekly',
+                                                        data_x='day', data_y='count_votes', reverse=False)
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
             name_1 = 'count votes steem'
@@ -348,10 +326,12 @@ class CountCommentsWeekly(CountPostWeekly):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'count comments ' + platform
-            values = self._get_data(platform=platform, name_url='count_comments_weekly', data_x='day', data_y='count_comments', reverse=False)
+            values = self._get_data(platform=platform, name_url='count_comments_weekly',
+                                    data_x='day', data_y='count_comments', reverse=False)[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
         else:
-            values_steem, values_golos = self._get_data(name_url='count_comments_weekly', data_x='day', data_y='count_comments', reverse=False)
+            values_steem, values_golos = self._get_data(name_url='count_comments_weekly',
+                                                        data_x='day', data_y='count_comments', reverse=False)
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
             name_1 = 'count comments steem'
@@ -387,10 +367,12 @@ class PostsFeeWeekly(CountPostWeekly):
         if 'platform' in request.GET:
             platform = request.GET['platform'].lower()
             name_1 = 'fee ' + platform
-            values = self._get_data(platform=platform, name_url=current_url, data_x='day', data_y='fee', reverse=False)
+            values = self._get_data(platform=platform, name_url=current_url,
+                                    data_x='day', data_y='fee', reverse=False)[0]
             return render(request, self.template_name, {'values': values, 'name_1': name_1})
         else:
-            values_steem, values_golos = self._get_data(name_url=current_url, data_x='day', data_y='fee', reverse=False)
+            values_steem, values_golos = self._get_data(name_url=current_url,
+                                                        data_x='day', data_y='fee', reverse=False)
             values = self._group_steem_golos(values_steem, values_golos)
             flag_together = True
             name_1 = 'fee steem'
