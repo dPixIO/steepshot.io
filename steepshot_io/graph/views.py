@@ -3,7 +3,8 @@ import logging
 from django.shortcuts import render
 from django.views.generic import View
 from django.conf import settings
-
+from json.decoder import JSONDecodeError
+from requests.exceptions import HTTPError
 
 logger = logging.getLogger(__name__)
 
@@ -12,17 +13,22 @@ class GetPostFee(View):
     template_name = 'graph.html'
 
     def _get_data(self, currency='VESTS', name_key=None, name_url=None, use_fee=True):
+        values = []
         try:
             if not use_fee:
                 currency = ''
-            res = requests.get(settings.REQUESTS_URL_STEEM[name_url] + currency).json()
+            cur_url = settings.REQUESTS_URL[name_url].format(url=settings.STEEM_V1)
+            res = requests.get(cur_url + currency).json()
             res.reverse()
             values = []
             for i in res:
                 values.append([i['day'], i[name_key]])
+        except JSONDecodeError as e:
+            logger.error('Failed to parse json {}'.format(e))
+        except (ConnectionError, HTTPError) as e:
+            logger.error('Failed to connect to {}'.format(e))
         except Exception as e:
             logger.error(e)
-            values = []
         return values
 
     def get(self, request, *args, **kwargs):
@@ -50,50 +56,32 @@ class GetPostsCountMonthly(View):
         return res
 
     def _get_data(self, platform=None, reverse=True, data_x=None, data_y=None, name_url=None):
+        list_urls = []
         if platform == 'steem':
-            try:
-                res = requests.get(settings.REQUESTS_URL_STEEM[name_url]).json()
-            except Exception as e:
-                logger.error(e)
-                res = []
-                return res
-            if reverse:
-                res.reverse()
-            values = []
-            for i in res:
-                values.append([i[data_x], i[data_y]])
-            return values
-        elif platform =='golos':
-            try:
-                res = requests.get(settings.REQUESTS_URL_GOLOS[name_url]).json()
-            except Exception as e:
-                logger.error(e)
-                res = []
-                return res
-            if reverse:
-                res.reverse()
-            values = []
-            for i in res:
-                values.append([i[data_x], i[data_y]])
-            return values
+            list_urls.append(settings.STEEM_V1)
+        elif platform == 'golos':
+            list_urls.append(settings.GOLOS_V1)
         else:
-            try:
-                res_steem = requests.get(settings.REQUESTS_URL_STEEM[name_url]).json()
-                res_golos = requests.get(settings.REQUESTS_URL_GOLOS[name_url]).json()
-            except Exception as e:
-                logger.error(e)
-                res = []
-                return res
-            if reverse:
-                res_steem.reverse()
-                res_golos.reverse()
-            values_steem = []
-            values_golos = []
-            for i in res_steem:
-                values_steem.append([i[data_x], i[data_y]])
-            for i in res_golos:
-                values_golos.append([i[data_x], i[data_y]])
-            return values_steem, values_golos
+            list_urls.extend([settings.STEEM_V1, settings.GOLOS_V1])
+
+        def __request_data_url():
+            res = []
+            for url in list_urls:
+                try:
+                    cur_url = settings.REQUESTS_URL[name_url].format(url=url)
+                    get_data = requests.get(cur_url).json()
+                except JSONDecodeError as e:
+                    logger.error('Failed to parse json {}'.format(e))
+                except (ConnectionError, HTTPError) as e:
+                    logger.error('Failed to connect to {}'.format(e))
+                except Exception as e:
+                    logger.error(e)
+                if reverse:
+                    get_data.reverse()
+                res.append([(i[data_x], i[data_y]) for i in get_data])
+            return res
+        values_total = [i for i in __request_data_url()]
+        return values_total
 
     def get(self, request):
         if 'platform' in request.GET:
