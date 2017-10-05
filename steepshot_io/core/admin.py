@@ -10,8 +10,7 @@ class SubscribeAdmin(admin.ModelAdmin):
     list_display = ['email', 'created_at']
 
     def has_add_permission(self, request):
-        rsearch_fields = ['email']
-
+        return False
 
 class TeamMembersAdmin(admin.ModelAdmin):
     list_filter = ['last_name']
