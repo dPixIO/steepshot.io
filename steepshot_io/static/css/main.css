@@ -1262,5 +1262,8 @@ input:focus {
     clear: both;
 }
 
+.jobs{
+    height: 50px;
+}
 
 
