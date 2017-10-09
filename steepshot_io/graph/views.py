@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.conf import settings
 from json.decoder import JSONDecodeError
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, ConnectionError
 
 logger = logging.getLogger(__name__)
 
@@ -80,8 +80,7 @@ class GetPostsCountMonthly(View):
             if reverse:
                 get_data.reverse()
             res.append([(i[data_x], i[data_y]) for i in get_data])
-        values_total = [i for i in res]
-        return values_total
+        return res
 
     def get(self, request):
         if 'platform' in request.GET:
@@ -91,6 +90,7 @@ class GetPostsCountMonthly(View):
         else:
             values_steem, values_golos = self._get_data(name_url='posts_count_monthly',
                                                         data_y='posts_count', data_x='date_to')
+
             values = self.group_steem_golos(values_steem, values_golos)
         name = 'counts posts'
         return render(request, self.template_name, {'values': values, 'name_1': name})
@@ -105,6 +105,7 @@ class GetActiveUsers(GetPostsCountMonthly):
         else:
             values_steem, values_golos = self._get_data(name_url='active_users',
                                                         data_y='active_users', data_x='date_to')
+
             values = self.group_steem_golos(values_steem, values_golos)
         name = 'active users'
         return render(request, self.template_name, {'values': values, 'name_1': name})
