@@ -45,15 +45,10 @@ class GetPostsCountMonthly(View):
     template_name = 'graph.html'
 
     def group_steem_golos(self, *args):
-        """
-            Merge lists by first element of sublist and sum the second
-
-            Example:
-            l1 = [('2017-09-08', 10), ('2017-09-09', 12)]
-            l2 = [('2017-09-08', 40), ('2017-09-09', 51)]
-            result = [('2017-09-08', 50), ('2017-09-09', 63)]
-        """
-        return list(map(lambda x: (x[0][0], sum([y[1] for y in x])), zip(*args)))
+        if args:
+            return list(map(lambda x: (x[0][0], sum([y[1] for y in x])), zip(*args)))
+        else:
+            return []
 
     def _get_data(self, platform=None, reverse=True, data_x=None, data_y=None, name_url=None, return_dict=False):
         list_urls = []
