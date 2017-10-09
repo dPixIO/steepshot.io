@@ -44,16 +44,16 @@ class GetPostFee(View):
 class GetPostsCountMonthly(View):
     template_name = 'graph.html'
 
-    def group_steem_golos(self, list_steem, list_golos):
-        res = []
-        idx = 0
-        while True:
-            try:
-                res.append([list_steem[idx][0], list_steem[idx][1] + list_golos[idx][1]])
-            except IndexError:
-                break
-            idx += 1
-        return res
+    def group_steem_golos(self, *args):
+        """
+            Merge lists by first element of sublist and sum the second
+
+            Example:
+            l1 = [('2017-09-08', 10), ('2017-09-09', 12)]
+            l2 = [('2017-09-08', 40), ('2017-09-09', 51)]
+            result = [('2017-09-08', 50), ('2017-09-09', 63)]
+        """
+        return list(map(lambda x: (x[0][0], sum([y[1] for y in x])), zip(*args)))
 
     def _get_data(self, platform=None, reverse=True, data_x=None, data_y=None, name_url=None, return_dict=False):
         list_urls = []
@@ -83,30 +83,28 @@ class GetPostsCountMonthly(View):
         return res
 
     def get(self, request):
-        if 'platform' in request.GET:
-            platform = request.GET['platform'].lower()
-            values = self._get_data(platform=platform, name_url='posts_count_monthly',
-                                    data_y='posts_count', data_x='date_to')[0]
-        else:
-            values_steem, values_golos = self._get_data(name_url='posts_count_monthly',
-                                                        data_y='posts_count', data_x='date_to')
-
-            values = self.group_steem_golos(values_steem, values_golos)
+        values = self.group_steem_golos(
+            *self._get_data(
+                platform=request.GET.get('platform'),
+                name_url='posts_count_monthly',
+                data_x='date_to',
+                data_y='posts_count'
+            )
+        )
         name = 'counts posts'
         return render(request, self.template_name, {'values': values, 'name_1': name})
 
 
 class GetActiveUsers(GetPostsCountMonthly):
     def get(self, request):
-        if 'platform' in request.GET:
-            platform = request.GET['platform'].lower()
-            values = self._get_data(platform=platform, name_url='active_users',
-                                    data_y='active_users', data_x='date_to')[0]
-        else:
-            values_steem, values_golos = self._get_data(name_url='active_users',
-                                                        data_y='active_users', data_x='date_to')
-
-            values = self.group_steem_golos(values_steem, values_golos)
+        values = self.group_steem_golos(
+            *self._get_data(
+                platform=request.GET.get('platform'),
+                name_url='active_users',
+                data_x='date_to',
+                data_y='active_users'
+            )
+        )
         name = 'active users'
         return render(request, self.template_name, {'values': values, 'name_1': name})
 
@@ -119,7 +117,6 @@ class GetCountPostDaily(GetPostFee):
 
 
 class GetRatioDaily(GetPostsCountMonthly):
-    template_name = 'graph.html'
 
     def _group_steem_golos(self, list_steem, list_golos):
         res = []
@@ -361,7 +358,6 @@ class CountCommentsWeekly(CountPostWeekly):
 
 
 class PostsFeeWeekly(CountPostWeekly):
-    template_name = 'graph.html'
 
     def get(self, request, *args, **kwargs):
         current_url = request.resolver_match.url_name
