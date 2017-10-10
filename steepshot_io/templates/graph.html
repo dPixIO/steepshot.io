@@ -1,0 +1,45 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      google.charts.load('current', {'packages':['corechart']});
+
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Date');
+        data.addColumn('number', '{{ name_1 }}');
+          {% if flag %}
+            data.addColumn('number', '{{ name_2 }}');
+                    data.addRows([
+                        {% for i , j, k in values %}
+                            ['{{ i }}', {{ j }}, {{ k }}],
+                        {% endfor %}
+                            ]);
+          {% else %}
+            data.addRows([
+                {% for i , j in values %}
+                    ['{{ i }}', {{ j }}],
+                {% endfor %}
+                ]);
+          {% endif %}
+
+        var options = {
+          title: 'Graph',
+          hAxis: {title: 'Date',  titleTextStyle: {color: '#333'}},
+        };
+
+       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+
+  <body>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+  </body>
+</html>

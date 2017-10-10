@@ -57,47 +57,35 @@ elif IS_GOLOS_CHAIN:
 else:
     CURRENT_NODE = u''
 
-REQUESTS_URL_GOLOS = {'posts_count_monthly': 'https://golos.steepshot.org/api/v1/posts/count/monthly',
-                      'active_users': 'https://golos.steepshot.org/api/v1/user/active/monthly',
-                      'ration_daily': 'https://golos.steepshot.org/api/v1/posts/ratio/daily',
-                      'ration_monthly': 'https://golos.steepshot.org/api/v1/posts/ratio/monthly',
-                      'new_users': 'https://golos.steepshot.org/api/v1/user/count/daily',
-                      'new_users_monthly': 'https://golos.steepshot.org/api/v1/user/count/unique',
-                      'users_percent_daily': 'https://golos.steepshot.org/api/v1/user/percent/unique',
-                      'count_posts_weekly': 'https://golos.steepshot.org/api/v1/posts/count/weekly',
-                      'posts_average_weekly': 'https://golos.steepshot.org/api/v1/posts/average/daily',
-                      'posts_average_author': 'https://golos.steepshot.org/api/v1/posts/average/author',
-                      'count_votes_weekly': 'https://golos.steepshot.org/api/v1/posts/count/votes',
-                      'votes_average_weekly': 'https://golos.steepshot.org/api/v1/posts/average/votes',
-                      'count_comments_weekly': 'https://golos.steepshot.org/api/v1/posts/count/comments',
-                      'users_count_session': 'https://golos.steepshot.org/api/v1/user/count/sessions',
-                      'posts_fee_weekly': 'https://golos.steepshot.org/api/v1/posts/fee/weekly',
-                      'posts_fee_users': 'https://golos.steepshot.org/api/v1/posts/fee/users',
-                      'posts_fee_author': 'https://golos.steepshot.org/api/v1/posts/fee/author'
 
-                      }
+STEEM_V1 = 'https://steepshot.org/api/v1'
+STEEM_QA_V1 = 'https://qa.steepshot.org/api/v1'
+GOLOS_V1 = 'https://golos.steepshot.org/api/v1'
+GOLOS_QA_V1 = 'https://qa.golos.steepshot.org/api/v1'
 
-REQUESTS_URL_STEEM = {'post_fee': 'https://qa.steepshot.org/api/v1/posts/fee/daily?currency=',
-                      'posts_count_daily': 'https://qa.steepshot.org/api/v1/posts/count/daily',
-                      'posts_count_monthly': 'https://steepshot.org/api/v1/posts/count/monthly',
-                      'active_users': 'https://steepshot.org/api/v1/user/active/monthly',
-                      'ration_daily': 'https://steepshot.org/api/v1/posts/ratio/daily',
-                      'ration_monthly': 'https://steepshot.org/api/v1/posts/ratio/monthly',
-                      'new_users': 'https://steepshot.org/api/v1/user/count/daily',
-                      'new_users_monthly': 'https://steepshot.org/api/v1/user/count/unique',
-                      'users_percent_daily': 'https://steepshot.org/api/v1/user/percent/unique',
-                      'count_posts_weekly': 'https://steepshot.org/api/v1/posts/count/weekly',
-                      'posts_average_weekly': 'https://steepshot.org/api/v1/posts/average/daily',
-                      'posts_average_author': 'https://steepshot.org/api/v1/posts/average/author',
-                      'count_votes_weekly': 'https://steepshot.org/api/v1/posts/count/votes',
-                      'votes_average_weekly': 'https://steepshot.org/api/v1/posts/average/votes',
-                      'count_comments_weekly': 'https://steepshot.org/api/v1/posts/count/comments',
-                      'users_count_session': 'https://steepshot.org/api/v1/user/count/sessions',
-                      'posts_fee_weekly': 'https://steepshot.org/api/v1/posts/fee/weekly',
-                      'posts_fee_users': 'https://steepshot.org/api/v1/posts/fee/users',
-                      'posts_fee_author': 'https://steepshot.org/api/v1/posts/fee/author'
 
-                      }
+REQUESTS_URL = {
+    'post_fee': '{url}/posts/fee/daily?currency=',
+    'posts_count_daily': '{url}/posts/count/daily',
+    'posts_count_monthly': '{url}/posts/count/monthly',
+    'active_users': '{url}/user/active/monthly',
+    'ration_daily': '{url}/posts/ratio/daily',
+    'ration_monthly': '{url}/posts/ratio/monthly',
+    'new_users': '{url}/user/count/daily',
+    'new_users_monthly': '{url}/user/count/unique',
+    'users_percent_daily': '{url}/user/percent/unique',
+    'count_posts_weekly': '{url}/posts/count/weekly',
+    'posts_average_weekly': '{url}/posts/average/daily',
+    'posts_average_author': '{url}/posts/average/author',
+    'count_votes_weekly': '{url}/posts/count/votes',
+    'votes_average_weekly': '{url}/posts/average/votes',
+    'count_comments_weekly': '{url}/posts/count/comments',
+    'users_count_session': '{url}/user/count/sessions',
+    'posts_fee_weekly': '{url}/posts/fee/weekly',
+    'posts_fee_users': '{url}/posts/fee/users',
+    'posts_fee_author': '{url}/posts/fee/author',
+}
+
 
 # Application definition
 INSTALLED_APPS = [
