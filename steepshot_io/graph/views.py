@@ -1,6 +1,7 @@
 import logging
 from collections import OrderedDict
 from json.decoder import JSONDecodeError
+from typing import Dict
 
 import requests
 from django.conf import settings
@@ -48,18 +49,20 @@ class GetPostFee(View):
 
 class GetPostsCountMonthly(View):
     template_name = 'graph.html'
+    title = 'Posts count'
+    subtitle = ''
 
     def group_data(self, *args):
         return list(map(lambda x: (x[0][0], sum([y[1] for y in x])), zip(*args)))
 
-    def get_data(self, platform=None, reverse=True, data_x=None, data_y=None, name_url=None, return_dict=False):
+    def get_data(self, data_x=None, data_y=None, name_url=None, platform=None, reverse=True, return_dict=False) -> Dict:
         endpoint_urls = OrderedDict(
             steem=settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1),
             golos=settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.GOLOS_V1)
         )
 
         res = {
-            'headers': [{'Date': 'string'}, {'Steem': 'string'}, {'Golos': 'string'}],
+            'headers': [{'Date': 'string'}, {'Steem': 'number'}, {'Golos': 'number'}],
             'data': []
         }
         res_data_idx_map = {}
@@ -73,7 +76,7 @@ class GetPostsCountMonthly(View):
                 logger.error('Failed to parse json: {err}.'.format(err=e))
                 continue
             except (ConnectionError, HTTPError) as e:
-                logger.error('Failed to connect to {platform} server: {err}.'.format(platform=platform.upper(), err=e))
+                logger.error('Failed to connect to {platform} server: {err}.'.format(platform=url.upper(), err=e))
                 continue
             except Exception as e:
                 logger.error('Unexpected error: {err}'.format(err=e))
@@ -98,9 +101,11 @@ class GetPostsCountMonthly(View):
             data_x='date_to',
             data_y='posts_count'
         )
-        values = []
-        name = 'counts posts'
-        return render(request, self.template_name, {'values': values, 'name_1': name})
+        data.update({
+            'title': self.title,
+            'subtitle': self.subtitle
+        })
+        return render(request, self.template_name, data)
 
 
 # class GetPostsCountMonthly(View):
