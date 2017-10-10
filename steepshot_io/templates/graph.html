@@ -27,7 +27,14 @@
                     subtitle: '{{ subtitle }}'
                 },
                 width: window.innerWidth * 0.97,
-                height: window.innerHeight * 0.97
+                height: window.innerHeight * 0.97,
+                vAxis: {
+                    title: '{{ title }}',
+                    format: 'decimal'
+                },
+                hAxis: {
+                    gridlines: { count: 1 }
+                }
             };
 
             var chart = new google.charts.Line(document.getElementById('chart_div'));
