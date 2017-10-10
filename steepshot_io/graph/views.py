@@ -55,14 +55,26 @@ class GetPostsCountMonthly(View):
     def group_data(self, *args):
         return list(map(lambda x: (x[0][0], sum([y[1] for y in x])), zip(*args)))
 
-    def get_data(self, data_x=None, data_y=None, name_url=None, platform=None, reverse=True, return_dict=False) -> Dict:
+    def get_data(self,
+                 data_x=None,
+                 data_y=None,
+                 name_url=None,
+                 summ=True,
+                 average=True,
+                 platform=None,
+                 reverse=True,
+                 return_dict=False) -> Dict:
         endpoint_urls = OrderedDict(
             steem=settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1),
             golos=settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.GOLOS_V1)
         )
 
         res = {
-            'headers': [{'Date': 'string'}, {'Steem': 'number'}, {'Golos': 'number'}],
+            'headers': [
+                {'Date': 'string'},
+                {'Steem': 'number'},
+                {'Golos': 'number'}
+            ],
             'data': []
         }
         res_data_idx_map = {}
@@ -92,6 +104,17 @@ class GetPostsCountMonthly(View):
                 res['data'][res_data_idx][i] = d.get(data_y)
 
         res['data'] = sorted(res['data'], key=lambda x: x[0])
+
+        if summ:
+            res['headers'].append({'Sum': 'number'})
+            for i, row in enumerate(res['data']):
+                res['data'][i] += [sum(row[1:3])]
+
+        if average:
+            res['headers'].append({'Average': 'number'})
+            for i, row in enumerate(res['data']):
+                res['data'][i] += [sum(row[1:3]) / 2]
+
         return res
 
     def get(self, request):
