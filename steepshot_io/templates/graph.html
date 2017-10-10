@@ -26,8 +26,8 @@
                     title: '{{ title }}',
                     subtitle: '{{ subtitle }}'
                 },
-                width: 900,
-                height: 500
+                width: window.innerWidth * 0.97,
+                height: window.innerHeight * 0.97
             };
 
             var chart = new google.charts.Line(document.getElementById('chart_div'));
@@ -38,6 +38,6 @@
 </head>
 
 <body>
-<div id="chart_div" ></div>
+<div id="chart_div"></div>
 </body>
 </html>
