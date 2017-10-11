@@ -25,7 +25,7 @@ class BaseView(View):
     subtitle = ''
 
     def fetch_data(self,
-                   apis=ApiUrls.all,
+                   apis=None,
                    name_url=None,
                    average=True,
                    amount=True,
@@ -45,14 +45,14 @@ class BaseView(View):
             ],
             'data': []
         }
-        if apis == ApiUrls.all:
+        if not apis:
             res['headers'].extend([{k.value.capitalize(): 'number'} for k in endpoint_urls])
+        else:
+            if isinstance(apis, ApiUrls):
+                apis = [apis]
 
-        if isinstance(apis, ApiUrls):
-            apis = [apis]
-
-        for i in apis:
-            res['headers'].extend([{i.value.capitalize(): 'number'}])
+            for i in apis:
+                res['headers'].extend([{i.value.capitalize(): 'number'}])
 
         res_data_idx_map = {}
 
