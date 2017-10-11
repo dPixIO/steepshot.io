@@ -1,5 +1,4 @@
 import logging
-from statistics import mean
 from enum import Enum
 from json.decoder import JSONDecodeError
 from typing import Dict
@@ -9,6 +8,8 @@ from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import View
 from requests.exceptions import HTTPError, ConnectionError
+
+from steepshot_io.graph.data_modifiers import SumModifier, AverageModifier, BaseModifier
 
 logger = logging.getLogger(__name__)
 
@@ -27,8 +28,7 @@ class BaseView(View):
                    apis=None,
                    api_query=None,
                    name_url=None,
-                   average=True,
-                   amount=True,
+                   modifiers=None,
                    data_x=None,
                    data_y=None) -> Dict:
         all_endpoint_urls = {
@@ -44,9 +44,8 @@ class BaseView(View):
         }
         if not apis:
             apis = ApiUrls
-        else:
-            if isinstance(apis, ApiUrls):
-                apis = [apis]
+        elif isinstance(apis, ApiUrls):
+            apis = [apis]
 
         for i in apis:
             res['headers'].extend([{i.value.capitalize(): 'number'}])
@@ -79,16 +78,12 @@ class BaseView(View):
 
         res['data'] = sorted(res['data'], key=lambda x: x[0])
 
-        if len(apis) > 1:
-            if amount:
-                res['headers'].append({'Sum': 'number'})
-                for i, row in enumerate(res['data']):
-                    res['data'][i] += [sum(row[1:len(apis) + 1])]
-
-            if average:
-                res['headers'].append({'Average': 'number'})
-                for i, row in enumerate(res['data']):
-                    res['data'][i] += [mean(row[1:len(apis) + 1])]
+        if len(apis) > 1 and modifiers:
+            if not isinstance(modifiers, list):
+                modifiers = [modifiers]
+            for modifier in modifiers:
+                if BaseModifier in modifier.__bases__:
+                    modifier.modify(res, len(apis))
 
         return res
 
@@ -125,7 +120,7 @@ class PostsCountMonthly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='posts_count_monthly',
-            average=False,
+            modifiers=SumModifier,
             data_x='date_to',
             data_y='posts_count'
         )
@@ -138,7 +133,7 @@ class PostsCountWeekly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='count_posts_weekly',
-            average=False,
+            modifiers=SumModifier,
             data_x='day',
             data_y='count_post'
         )
@@ -152,8 +147,6 @@ class PostsCountDaily(BaseView):
         return self.fetch_data(
             apis=ApiUrls.steem,
             name_url='posts_count_daily',
-            amount=False,
-            average=False,
             data_x='day',
             data_y='count_posts'
         )
@@ -166,7 +159,7 @@ class UsersActive(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='active_users',
-            average=False,
+            modifiers=SumModifier,
             data_x='date_to',
             data_y='active_users'
         )
@@ -179,7 +172,7 @@ class PostsRatioDaily(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='ratio_daily',
-            amount=False,
+            modifiers=AverageModifier,
             data_x='date',
             data_y='ratio'
         )
@@ -192,7 +185,7 @@ class PostsRatioMonthly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='ratio_monthly',
-            amount=False,
+            modifiers=AverageModifier,
             data_x='date_to',
             data_y='ratio'
         )
@@ -205,7 +198,7 @@ class UsersNewCountDaily(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='new_users',
-            average=False,
+            modifiers=SumModifier,
             data_x='day',
             data_y='count_users'
         )
@@ -218,7 +211,7 @@ class UsersNewCountMonthly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='new_users_monthly',
-            average=False,
+            modifiers=SumModifier,
             data_x='date_to',
             data_y='count_new_users'
         )
@@ -231,7 +224,7 @@ class UsersCountPercentDaily(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='users_percent_daily',
-            amount=False,
+            modifiers=AverageModifier,
             data_x='day',
             data_y='percent'
         )
@@ -244,7 +237,7 @@ class PostsAverageWeekly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='posts_average_weekly',
-            amount=False,
+            modifiers=AverageModifier,
             data_x='day',
             data_y='count_post'
         )
@@ -257,7 +250,7 @@ class PostsAverageAuthor(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='posts_average_author',
-            amount=False,
+            modifiers=AverageModifier,
             data_x='day',
             data_y='count_posts'
         )
@@ -270,7 +263,7 @@ class VotesCountWeekly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='count_votes_weekly',
-            average=False,
+            modifiers=SumModifier,
             data_x='day',
             data_y='count_votes'
         )
@@ -283,7 +276,7 @@ class AverageVotesWeekly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='votes_average_weekly',
-            average=False,
+            modifiers=AverageModifier,
             data_x='day',
             data_y='votes_count'
         )
@@ -296,7 +289,7 @@ class CommentsCountWeekly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='count_comments_weekly',
-            average=False,
+            modifiers=SumModifier,
             data_x='day',
             data_y='count_comments'
         )
@@ -309,7 +302,7 @@ class CountUsersSessions(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='users_count_session',
-            amount=False,
+            modifiers=SumModifier,
             data_x='day',
             data_y='count_sessions'
         )
@@ -322,7 +315,7 @@ class PostsFeeWeekly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='posts_fee_weekly',
-            average=False,
+            modifiers=SumModifier,
             data_x='day',
             data_y='fee'
         )
@@ -335,7 +328,7 @@ class PostsFeeUsers(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='posts_fee_users',
-            average=False,
+            modifiers=SumModifier,
             data_x='day',
             data_y='fee'
         )
@@ -348,7 +341,7 @@ class PostsFeeAuthor(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='posts_fee_author',
-            average=False,
+            modifiers=SumModifier,
             data_x='day',
             data_y='fee'
         )
