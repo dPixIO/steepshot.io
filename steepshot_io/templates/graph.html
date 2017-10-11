@@ -4,6 +4,7 @@
 <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+        'use strict';
         google.charts.load('current', {'packages': ['line']});
         google.charts.setOnLoadCallback(drawChart);
 
@@ -17,7 +18,11 @@
             {% endfor %}
             data.addRows([
                 {% for i in data %}
-                    ['{{ i.0 }}', {{ i.1 }}, {{ i.2 }}, {{ i.3 }}, {{ i.4 }}],
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseInt(itm)}),
                 {% endfor %}
             ]);
 
