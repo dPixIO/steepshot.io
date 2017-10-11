@@ -25,6 +25,7 @@ class BaseView(View):
 
     def fetch_data(self,
                    apis=None,
+                   api_query=None,
                    name_url=None,
                    average=True,
                    amount=True,
@@ -54,7 +55,7 @@ class BaseView(View):
 
         for i, api in enumerate(apis, start=1):
             try:
-                data = requests.get(all_endpoint_urls.get(api), ).json()
+                data = requests.get(all_endpoint_urls.get(api), params=api_query).json()
                 if 'result' in data:
                     data = data['result']
             except JSONDecodeError as e:
@@ -82,12 +83,12 @@ class BaseView(View):
             if amount:
                 res['headers'].append({'Sum': 'number'})
                 for i, row in enumerate(res['data']):
-                    res['data'][i] += [sum(row[1:len(apis)])]
+                    res['data'][i] += [sum(row[1:len(apis) + 1])]
 
             if average:
                 res['headers'].append({'Average': 'number'})
                 for i, row in enumerate(res['data']):
-                    res['data'][i] += [mean(row[1:len(apis)])]
+                    res['data'][i] += [mean(row[1:len(apis) + 1])]
 
         return res
 
@@ -109,40 +110,12 @@ class GetPostFee(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            name_url='posts_count_monthly',
-            average=False,
-            data_x='date_to',
-            data_y='posts_count'
+            apis=ApiUrls.steem,
+            api_query=self.request.GET,
+            name_url='post_fee',
+            data_x='day',
+            data_y='count_fee'
         )
-
-    # TODO: Steem only!
-    def _get_data(self, currency='VESTS', name_key=None, name_url=None, use_fee=True):
-        values = []
-        try:
-            if not use_fee:
-                currency = ''
-            cur_url = settings.REQUESTS_URL[name_url].format(url=settings.STEEM_V1)
-            res = requests.get(cur_url + currency).json()
-            res.reverse()
-            values = []
-            for i in res:
-                values.append([i['day'], i[name_key]])
-        except JSONDecodeError as e:
-            logger.error('Failed to parse json {}'.format(e))
-        except (ConnectionError, HTTPError) as e:
-            logger.error('Failed to connect to {}'.format(e))
-        except Exception as e:
-            logger.error(e)
-        return values
-
-    def get(self, request, *args, **kwargs):
-        if 'currency' in request.GET:
-            currency = request.GET['currency'].lower()
-            values = self._get_data(currency=currency, name_key='count_fee', name_url='post_fee')
-        else:
-            values = self._get_data(name_key='count_fee', name_url='post_fee')
-        name = 'fee in day'
-        return render(request, self.template_name, {'values': values, 'name_1': name})
 
 
 class PostsCountMonthly(BaseView):
