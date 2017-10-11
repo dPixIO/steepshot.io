@@ -1,6 +1,6 @@
 import logging
+from statistics import mean
 from enum import Enum
-from collections import OrderedDict
 from json.decoder import JSONDecodeError
 from typing import Dict
 
@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 class ApiUrls(Enum):
     steem = 'steem'
     golos = 'golos'
-    all = 'all'
 
 
 class BaseView(View):
@@ -34,10 +33,10 @@ class BaseView(View):
                    platform=None,
                    reverse=True,
                    return_dict=False) -> Dict:
-        endpoint_urls = OrderedDict({
+        all_endpoint_urls = {
             ApiUrls.steem: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1),
             ApiUrls.golos: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.GOLOS_V1)
-        })
+        }
 
         res = {
             'headers': [
@@ -46,19 +45,19 @@ class BaseView(View):
             'data': []
         }
         if not apis:
-            res['headers'].extend([{k.value.capitalize(): 'number'} for k in endpoint_urls])
+            apis = ApiUrls
         else:
             if isinstance(apis, ApiUrls):
                 apis = [apis]
 
-            for i in apis:
-                res['headers'].extend([{i.value.capitalize(): 'number'}])
+        for i in apis:
+            res['headers'].extend([{i.value.capitalize(): 'number'}])
 
         res_data_idx_map = {}
 
-        for i, url in enumerate(endpoint_urls, start=1):
+        for i, api in enumerate(apis, start=1):
             try:
-                data = requests.get(endpoint_urls[url]).json()
+                data = requests.get(all_endpoint_urls.get(api), ).json()
                 if 'result' in data:
                     data = data['result']
             except JSONDecodeError as e:
@@ -77,20 +76,21 @@ class BaseView(View):
                 if res_data_idx is None:
                     res_data_idx = len(res['data'])
                     res_data_idx_map[key] = res_data_idx
-                    res['data'].append([key] + [0 for i in endpoint_urls])
+                    res['data'].append([key] + [0 for i in apis])
                 res['data'][res_data_idx][i] = d.get(data_y)
 
         res['data'] = sorted(res['data'], key=lambda x: x[0])
 
-        if amount:
-            res['headers'].append({'Sum': 'number'})
-            for i, row in enumerate(res['data']):
-                res['data'][i] += [sum(row[1:3])]
+        if len(apis) > 1:
+            if amount:
+                res['headers'].append({'Sum': 'number'})
+                for i, row in enumerate(res['data']):
+                    res['data'][i] += [sum(row[1:len(apis)])]
 
-        if average:
-            res['headers'].append({'Average': 'number'})
-            for i, row in enumerate(res['data']):
-                res['data'][i] += [sum(row[1:3]) / 2]
+            if average:
+                res['headers'].append({'Average': 'number'})
+                for i, row in enumerate(res['data']):
+                    res['data'][i] += [mean(row[1:len(apis)])]
 
         return res
 
@@ -144,7 +144,7 @@ class GetPostsCountMonthly(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            apis=ApiUrls.golos,
+            apis=[ApiUrls.golos, ApiUrls.steem],
             name_url='posts_count_monthly',
             average=False,
             data_x='date_to',
