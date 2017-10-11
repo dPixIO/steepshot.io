@@ -65,25 +65,25 @@ GOLOS_QA_V1 = 'https://qa.golos.steepshot.org/api/v1'
 
 
 REQUESTS_URL = {
-    'post_fee': '{url}/posts/fee/daily?currency=',
+    'posts_average_weekly': '{url}/posts/average/daily',
+    'posts_average_author': '{url}/posts/average/author',
     'posts_count_daily': '{url}/posts/count/daily',
     'posts_count_monthly': '{url}/posts/count/monthly',
+    'post_fee': '{url}/posts/fee/daily?currency=',
+    'posts_fee_author': '{url}/posts/fee/author',
+    'posts_fee_users': '{url}/posts/fee/users',
+    'posts_fee_weekly': '{url}/posts/fee/weekly',
     'active_users': '{url}/user/active/monthly',
-    'ration_daily': '{url}/posts/ratio/daily',
-    'ration_monthly': '{url}/posts/ratio/monthly',
+    'ratio_daily': '{url}/posts/ratio/daily',
+    'ratio_monthly': '{url}/posts/ratio/monthly',
     'new_users': '{url}/user/count/daily',
     'new_users_monthly': '{url}/user/count/unique',
     'users_percent_daily': '{url}/user/percent/unique',
     'count_posts_weekly': '{url}/posts/count/weekly',
-    'posts_average_weekly': '{url}/posts/average/daily',
-    'posts_average_author': '{url}/posts/average/author',
     'count_votes_weekly': '{url}/posts/count/votes',
     'votes_average_weekly': '{url}/posts/average/votes',
     'count_comments_weekly': '{url}/posts/count/comments',
     'users_count_session': '{url}/user/count/sessions',
-    'posts_fee_weekly': '{url}/posts/fee/weekly',
-    'posts_fee_users': '{url}/posts/fee/users',
-    'posts_fee_author': '{url}/posts/fee/author',
 }
 
 

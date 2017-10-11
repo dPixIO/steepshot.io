@@ -1,45 +1,60 @@
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+        google.charts.load('current', {'packages': ['line']});
+        google.charts.setOnLoadCallback(drawChart);
 
-      google.charts.load('current', {'packages':['corechart']});
+        function drawChart() {
 
-      google.charts.setOnLoadCallback(drawChart);
-      function drawChart() {
-
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Date');
-        data.addColumn('number', '{{ name_1 }}');
-          {% if flag %}
-            data.addColumn('number', '{{ name_2 }}');
-                    data.addRows([
-                        {% for i , j, k in values %}
-                            ['{{ i }}', {{ j }}, {{ k }}],
-                        {% endfor %}
-                            ]);
-          {% else %}
-            data.addRows([
-                {% for i , j in values %}
-                    ['{{ i }}', {{ j }}],
+            var data = new google.visualization.DataTable();
+            {% for itm in headers %}
+                {% for k, v in itm.items %}
+                    data.addColumn('{{ v }}', '{{ k }}');
                 {% endfor %}
-                ]);
-          {% endif %}
+            {% endfor %}
+            data.addRows([
+                {% for i in data %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
 
-        var options = {
-          title: 'Graph',
-          hAxis: {title: 'Date',  titleTextStyle: {color: '#333'}},
-        };
+            var options = {
+                chart: {
+                    title: '{{ title }}',
+                    subtitle: '{{ subtitle }}'
+                },
+                width: window.innerWidth * 0.97,
+                height: window.innerHeight * 0.97,
+                vAxis: {
+                    title: '{{ title }}',
+                    format: 'decimal',
+                    textStyle: {
+                        fontSize: 16
+                    }
+                },
+                hAxis: {
+                    gridlines: { count: 1 },
+                    textStyle: {
+                        fontSize: 16
+                    }
+                }
+            };
 
-       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
+            var chart = new google.charts.Line(document.getElementById('chart_div'));
+
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        }
     </script>
-  </head>
+</head>
 
-  <body>
-    <div id="chart_div" style="width: 100%; height: 500px;"></div>
-  </body>
+<body>
+<div id="chart_div"></div>
+</body>
 </html>
