@@ -1,4 +1,5 @@
 import logging
+from enum import Enum
 from collections import OrderedDict
 from json.decoder import JSONDecodeError
 from typing import Dict
@@ -11,8 +12,11 @@ from requests.exceptions import HTTPError, ConnectionError
 
 logger = logging.getLogger(__name__)
 
-_STEEM_API_NAME = 'steem'
-_GOLOS_API_NAME = 'golos'
+
+class ApiUrls(Enum):
+    steem = 'steem'
+    golos = 'golos'
+    all = 'all'
 
 
 class BaseView(View):
@@ -21,18 +25,19 @@ class BaseView(View):
     subtitle = ''
 
     def fetch_data(self,
+                   apis=ApiUrls.all,
+                   name_url=None,
+                   average=True,
+                   amount=True,
                    data_x=None,
                    data_y=None,
-                   name_url=None,
-                   amount=True,
-                   average=True,
                    platform=None,
                    reverse=True,
                    return_dict=False) -> Dict:
-        endpoint_urls = OrderedDict(
-            steem=settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1),
-            golos=settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.GOLOS_V1)
-        )
+        endpoint_urls = OrderedDict({
+            ApiUrls.steem: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1),
+            ApiUrls.golos: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.GOLOS_V1)
+        })
 
         res = {
             'headers': [
@@ -40,7 +45,15 @@ class BaseView(View):
             ],
             'data': []
         }
-        res['headers'].extend([{k.capitalize(): 'number'} for k in endpoint_urls])
+        if apis == ApiUrls.all:
+            res['headers'].extend([{k.value.capitalize(): 'number'} for k in endpoint_urls])
+
+        if isinstance(apis, ApiUrls):
+            apis = [apis]
+
+        for i in apis:
+            res['headers'].extend([{i.value.capitalize(): 'number'}])
+
         res_data_idx_map = {}
 
         for i, url in enumerate(endpoint_urls, start=1):
@@ -131,6 +144,7 @@ class GetPostsCountMonthly(BaseView):
 
     def get_data(self):
         return self.fetch_data(
+            apis=ApiUrls.golos,
             name_url='posts_count_monthly',
             average=False,
             data_x='date_to',
