@@ -109,6 +109,7 @@ class BaseView(View):
 class GetPostFee(View):
     template_name = 'graph.html'
 
+    # TODO: Steem only!
     def _get_data(self, currency='VESTS', name_key=None, name_url=None, use_fee=True):
         values = []
         try:
@@ -138,13 +139,12 @@ class GetPostFee(View):
         return render(request, self.template_name, {'values': values, 'name_1': name})
 
 
-class GetPostsCountMonthly(BaseView):
-    title = 'Posts count'
+class PostsCountMonthly(BaseView):
+    title = 'Posts count monthly'
     subtitle = ''
 
     def get_data(self):
         return self.fetch_data(
-            apis=[ApiUrls.golos, ApiUrls.steem],
             name_url='posts_count_monthly',
             average=False,
             data_x='date_to',
@@ -152,7 +152,35 @@ class GetPostsCountMonthly(BaseView):
         )
 
 
-class GetActiveUsers(BaseView):
+class PostsCountWeekly(BaseView):
+    title = 'Posts count weekly'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='count_posts_weekly',
+            average=False,
+            data_x='day',
+            data_y='count_post'
+        )
+
+
+class PostsCountDaily(BaseView):
+    title = 'Posts count daily'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            apis=ApiUrls.steem,
+            name_url='posts_count_daily',
+            amount=False,
+            average=False,
+            data_x='day',
+            data_y='count_posts'
+        )
+
+
+class UsersActive(BaseView):
     title = 'Monthly active users'
     subtitle = ''
 
@@ -165,14 +193,7 @@ class GetActiveUsers(BaseView):
         )
 
 
-class GetCountPostDaily(GetPostFee):
-    def get(self, request, *args, **kwargs):
-        values = self._get_data(use_fee=False, name_url='posts_count_daily', name_key='count_posts')
-        name = 'count posts'
-        return render(request, self.template_name, {'values': values, 'name_1': name})
-
-
-class GetRatioDaily(BaseView):
+class PostsRatioDaily(BaseView):
     title = 'Daily ratio'
     subtitle = 'Ratio of logged users and posts created by them'
 
@@ -184,20 +205,8 @@ class GetRatioDaily(BaseView):
             data_y='ratio'
         )
 
-    # TODO: REMOVE THIS METHOD!
-    def _group_steem_golos(self, list_steem, list_golos):
-        res = []
-        idx = 0
-        while True:
-            try:
-                res.append([list_steem[idx][0], list_steem[idx][1], list_golos[idx][1]])
-            except IndexError:
-                break
-            idx += 1
-        return res
 
-
-class GetRatioMonthly(BaseView):
+class PostsRatioMonthly(BaseView):
     title = 'Monthly ratio'
     subtitle = 'Ratio of logged users and posts created by them'
 
@@ -210,7 +219,7 @@ class GetRatioMonthly(BaseView):
         )
 
 
-class CountNewUsers(BaseView):
+class UsersNewCountDaily(BaseView):
     title = 'New users count'
     subtitle = 'Daily count of new users'
 
@@ -223,7 +232,7 @@ class CountNewUsers(BaseView):
         )
 
 
-class CountNewUsersMonthly(BaseView):
+class UsersNewCountMonthly(BaseView):
     title = 'New users count'
     subtitle = 'Monthly count of new users'
 
@@ -236,168 +245,131 @@ class CountNewUsersMonthly(BaseView):
         )
 
 
-class CountPercentUsersDaily(CountNewUsers):
-    def get(self, request, *args, **kwargs):
-        if 'platform' in request.GET:
-            platform = request.GET['platform'].lower()
-            name_1 = 'users percent daily ' + platform
-            values = self.fetch_data(platform=platform, name_url='users_percent_daily',
-                                     data_x='day', data_y='percent', reverse=False)[0]
-            return render(request, self.template_name, {'values': values, 'name_1': name_1})
-        else:
-            values_steem, values_golos = self.fetch_data(name_url='users_percent_daily',
-                                                         data_x='day', data_y='percent', reverse=False)
-            values = self._group_steem_golos(values_steem, values_golos)
-            flag_together = True
-            name_1 = 'users percent daily steem'
-            name_2 = 'users percent daily golos'
-            return render(request, self.template_name, {'values': values, 'flag': flag_together,
-                                                        'name_1': name_1, 'name_2': name_2})
+class UsersCountPercentDaily(BaseView):
+    title = 'Users percent daily'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='users_percent_daily',
+            amount=False,
+            data_x='day',
+            data_y='percent'
+        )
 
 
-class CountPostWeekly(CountNewUsers):
-    def get(self, request, *args, **kwargs):
-        if 'platform' in request.GET:
-            platform = request.GET['platform'].lower()
-            name_1 = 'count posts ' + platform
-            values = self.fetch_data(platform=platform, name_url='count_posts_weekly',
-                                     data_x='day', data_y='count_post', reverse=False)[0]
-            return render(request, self.template_name, {'values': values, 'name_1': name_1})
-        else:
-            values_steem, values_golos = self.fetch_data(name_url='count_posts_weekly',
-                                                         data_x='day', data_y='count_post', reverse=False)
-            values = self._group_steem_golos(values_steem, values_golos)
-            flag_together = True
-            name_1 = 'count posts steem'
-            name_2 = 'count posts golos'
-            return render(request, self.template_name, {'values': values, 'flag': flag_together,
-                                                        'name_1': name_1, 'name_2': name_2})
+class PostsAverageWeekly(BaseView):
+    title = 'Post average (weekly)'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_average_weekly',
+            amount=False,
+            data_x='day',
+            data_y='count_post'
+        )
 
 
-# class PostsAverageWeekly(CountPostWeekly):
-#     def get(self, request, *args, **kwargs):
-#         if 'platform' in request.GET:
-#             platform = request.GET['platform'].lower()
-#             values = self._get_data(platform=platform, name_url='posts_average_weekly', data_x='day', data_y='count_post')[0]
-#             name_1 = 'posts average ' + platform
-#             return render(request, self.template_name, {'values': values, 'name_1': name_1})
-#         else:
-#             values_steem, values_golos = self._get_data(name_url='posts_average_weekly', data_x='day', data_y='count_post')
-#             values = self._group_steem_golos(values_steem, values_golos)
-#             flag_together = True
-#             name_1 = 'posts average steem'
-#             name_2 = 'posts average golos'
-#             return render(request, self.template_name, {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+class PostsAverageAuthor(BaseView):
+    title = 'Posts average per author'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_average_author',
+            amount=False,
+            data_x='day',
+            data_y='count_posts'
+        )
 
 
-class PostsAverageAuthor(CountPostWeekly):
-    def get(self, request, *args, **kwargs):
-        if 'platform' in request.GET:
-            platform = request.GET['platform'].lower()
-            name_1 = 'posts average ' + platform
-            values = self.fetch_data(platform=platform, name_url='posts_average_author',
-                                     data_x='day', data_y='count_posts', reverse=False)[0]
-            return render(request, self.template_name, {'values': values, 'name_1': name_1})
-        else:
-            values_steem, values_golos = self.fetch_data(name_url='posts_average_author',
-                                                         data_x='day', data_y='count_posts', reverse=False)
-            values = self._group_steem_golos(values_steem, values_golos)
-            flag_together = True
-            name_1 = 'posts average steem'
-            name_2 = 'posts average golos'
-            return render(request, self.template_name, {'values': values, 'flag': flag_together,
-                                                        'name_1': name_1, 'name_2': name_2})
+class VotesCountWeekly(BaseView):
+    title = 'Votes count (weekly)'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='count_votes_weekly',
+            average=False,
+            data_x='day',
+            data_y='count_votes'
+        )
 
 
-class CountVotesWeekly(CountPostWeekly):
-    def get(self, request, *args, **kwargs):
-        if 'platform' in request.GET:
-            platform = request.GET['platform'].lower()
-            name_1 = 'count votes ' + platform
-            values = self.fetch_data(platform=platform, name_url='count_votes_weekly',
-                                     data_x='day', data_y='count_votes', reverse=False)[0]
-            return render(request, self.template_name, {'values': values, 'name_1': name_1})
-        else:
-            values_steem, values_golos = self.fetch_data(name_url='count_votes_weekly',
-                                                         data_x='day', data_y='count_votes', reverse=False)
-            values = self._group_steem_golos(values_steem, values_golos)
-            flag_together = True
-            name_1 = 'count votes steem'
-            name_2 = 'count votes golos'
-            return render(request, self.template_name,
-                          {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+class AverageVotesWeekly(BaseView):
+    title = 'Average votes (weekly)'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='votes_average_weekly',
+            average=False,
+            data_x='day',
+            data_y='votes_count'
+        )
 
 
-# class AverageVotesWeekly(CountVotesWeekly):
-#     def get(self, request, *args, **kwargs):
-#         if 'platform' in request.GET:
-#             platform = request.GET['platform'].lower()
-#             name_1 = 'average votes ' + platform
-#             values = self._get_data(platform=platform, name_url='votes_average_weekly', data_x='day', data_y='votes_count', reverse=False)
-#             return render(request, self.template_name, {'values': values, 'name_1': name_1})
-#         else:
-#             values_steem, values_golos = self._get_data(name_url='votes_average_weekly', data_x='day', data_y='votes_count', reverse=False)
-#             values = self.group_steem_golos(values_steem, values_golos)
-#             flag_together = True
-#             name_1 = 'average votes steem'
-#             name_2 = 'average votes golos'
-#             return render(request, self.template_name,
-#                           {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+class CommentsCountWeekly(BaseView):
+    title = 'Comments count (weekly)'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='count_comments_weekly',
+            average=False,
+            data_x='day',
+            data_y='count_comments'
+        )
 
 
-class CountCommentsWeekly(CountPostWeekly):
-    def get(self, request, *args, **kwargs):
-        if 'platform' in request.GET:
-            platform = request.GET['platform'].lower()
-            name_1 = 'count comments ' + platform
-            values = self.fetch_data(platform=platform, name_url='count_comments_weekly',
-                                     data_x='day', data_y='count_comments', reverse=False)[0]
-            return render(request, self.template_name, {'values': values, 'name_1': name_1})
-        else:
-            values_steem, values_golos = self.fetch_data(name_url='count_comments_weekly',
-                                                         data_x='day', data_y='count_comments', reverse=False)
-            values = self._group_steem_golos(values_steem, values_golos)
-            flag_together = True
-            name_1 = 'count comments steem'
-            name_2 = 'count comments golos'
-            return render(request, self.template_name,
-                          {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+class CountUsersSessions(BaseView):
+    title = 'User session count (weekly)'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='users_count_session',
+            amount=False,
+            data_x='day',
+            data_y='count_sessions'
+        )
 
 
-# class CountUsersSessions(CountPostWeekly):
-#     template_name = 'graph.html'
-#
-#     def get(self, request, *args, **kwargs):
-#         if 'platform' in request.GET:
-#             platform = request.GET['platform'].lower()
-#             name_1 = 'count session ' + platform
-#             values = self._get_data(platform=platform, name_url='users_count_session', data_x='day', data_y='count_sessions', reverse=False)
-#             return render(request, self.template_name, {'values': values, 'name_1': name_1})
-#         else:
-#             values_steem, values_golos = self._get_data(name_url='users_count_session', data_x='day', data_y='count_sessions', reverse=False)
-#             values = self._group_steem_golos(values_steem, values_golos)
-#             flag_together = True
-#             name_1 = 'count session steem'
-#             name_2 = 'count session golos'
-#             return render(request, self.template_name,
-#                           {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+class PostsFeeWeekly(BaseView):
+    title = 'Posts fee (weekly)'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_fee_weekly',
+            average=False,
+            data_x='day',
+            data_y='fee'
+        )
 
 
-class PostsFeeWeekly(CountPostWeekly):
-    def get(self, request, *args, **kwargs):
-        current_url = request.resolver_match.url_name
-        if 'platform' in request.GET:
-            platform = request.GET['platform'].lower()
-            name_1 = 'fee ' + platform
-            values = self.fetch_data(platform=platform, name_url=current_url,
-                                     data_x='day', data_y='fee', reverse=False)[0]
-            return render(request, self.template_name, {'values': values, 'name_1': name_1})
-        else:
-            values_steem, values_golos = self.fetch_data(name_url=current_url,
-                                                         data_x='day', data_y='fee', reverse=False)
-            values = self._group_steem_golos(values_steem, values_golos)
-            flag_together = True
-            name_1 = 'fee steem'
-            name_2 = 'fee golos'
-            return render(request, self.template_name,
-                          {'values': values, 'flag': flag_together, 'name_1': name_1, 'name_2': name_2})
+class PostsFeeUsers(BaseView):
+    title = 'Posts fee (users)'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_fee_users',
+            average=False,
+            data_x='day',
+            data_y='fee'
+        )
+
+
+class PostsFeeAuthor(BaseView):
+    title = 'Posts fee (author)'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_fee_author',
+            average=False,
+            data_x='day',
+            data_y='fee'
+        )

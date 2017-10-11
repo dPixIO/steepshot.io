@@ -22,7 +22,7 @@
                         {% for j in i %}
                             '{{ j }}',
                         {% endfor %}
-                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseInt(itm)}),
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
                 {% endfor %}
             ]);
 
