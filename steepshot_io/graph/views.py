@@ -29,10 +29,7 @@ class BaseView(View):
                    average=True,
                    amount=True,
                    data_x=None,
-                   data_y=None,
-                   platform=None,
-                   reverse=True,
-                   return_dict=False) -> Dict:
+                   data_y=None) -> Dict:
         all_endpoint_urls = {
             ApiUrls.steem: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1),
             ApiUrls.golos: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.GOLOS_V1)
@@ -64,7 +61,7 @@ class BaseView(View):
                 logger.error('Failed to parse json: {err}.'.format(err=e))
                 continue
             except (ConnectionError, HTTPError) as e:
-                logger.error('Failed to connect to {platform} server: {err}.'.format(platform=url.upper(), err=e))
+                logger.error('Failed to connect to {platform} server: {err}.'.format(platform=api.value, err=e))
                 continue
             except Exception as e:
                 logger.error('Unexpected error: {err}'.format(err=e))
@@ -106,8 +103,17 @@ class BaseView(View):
         return render(request, self.template_name, data)
 
 
-class GetPostFee(View):
-    template_name = 'graph.html'
+class GetPostFee(BaseView):
+    title = 'Posts payment'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_count_monthly',
+            average=False,
+            data_x='date_to',
+            data_y='posts_count'
+        )
 
     # TODO: Steem only!
     def _get_data(self, currency='VESTS', name_key=None, name_url=None, use_fee=True):
