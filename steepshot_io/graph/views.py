@@ -36,12 +36,11 @@ class BaseView(View):
 
         res = {
             'headers': [
-                {'Date': 'string'},
-                {'Steem': 'number'},
-                {'Golos': 'number'}
+                {'Date': 'string'}
             ],
             'data': []
         }
+        res['headers'].extend([{k.capitalize(): 'number'} for k in endpoint_urls])
         res_data_idx_map = {}
 
         for i, url in enumerate(endpoint_urls, start=1):
@@ -65,7 +64,7 @@ class BaseView(View):
                 if res_data_idx is None:
                     res_data_idx = len(res['data'])
                     res_data_idx_map[key] = res_data_idx
-                    res['data'].append([key, 0, 0])
+                    res['data'].append([key] + [0 for i in endpoint_urls])
                 res['data'][res_data_idx][i] = d.get(data_y)
 
         res['data'] = sorted(res['data'], key=lambda x: x[0])
