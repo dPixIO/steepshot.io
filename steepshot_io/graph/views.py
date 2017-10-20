@@ -78,7 +78,7 @@ class BaseView(View):
 
         res['data'] = sorted(res['data'], key=lambda x: x[0])
 
-        if len(apis) > 1 and modifiers:
+        if res['data'] and len(apis) > 1 and modifiers:
             if not isinstance(modifiers, list):
                 modifiers = [modifiers]
             for modifier in modifiers:
