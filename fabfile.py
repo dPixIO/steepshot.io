@@ -488,8 +488,8 @@ def build_spa():
                        'please clone it under the required '
                        'dir ("%s")', FRONTEND_LOCAL_DIR)
         sys.exit(1)
-    with lcd(FRONTEND_LOCAL_DIR):
-        local(FRONTEND_BUILD_COMMAND)
+    # with lcd(FRONTEND_LOCAL_DIR):
+        # local(FRONTEND_BUILD_COMMAND)
 
 
 @task
