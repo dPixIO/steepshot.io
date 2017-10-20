@@ -317,7 +317,7 @@ class PostsFeeWeekly(BaseView):
             name_url='posts_fee_weekly',
             modifiers=SumModifier,
             data_x='day',
-            data_y='fee'
+            data_y='count_fee'
         )
 
 
