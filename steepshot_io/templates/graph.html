@@ -49,12 +49,18 @@
 
             var chart = new google.charts.Line(document.getElementById('chart_div'));
 
+            google.visualization.events.addListener(chart, 'error', function (googleError) {
+                google.visualization.errors.removeError(googleError.id);
+                document.getElementById("error_msg").innerHTML = "No data to display";
+            });
+
             chart.draw(data, google.charts.Line.convertOptions(options));
         }
     </script>
 </head>
 
 <body>
+<span id="error_msg"></span>
 <div id="chart_div"></div>
 </body>
 </html>
