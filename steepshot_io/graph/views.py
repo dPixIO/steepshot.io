@@ -78,7 +78,7 @@ class BaseView(View):
 
         res['data'] = sorted(res['data'], key=lambda x: x[0])
 
-        if len(apis) > 1 and modifiers:
+        if res['data'] and len(apis) > 1 and modifiers:
             if not isinstance(modifiers, list):
                 modifiers = [modifiers]
             for modifier in modifiers:
@@ -145,7 +145,6 @@ class PostsCountDaily(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            apis=ApiUrls.steem,
             name_url='posts_count_daily',
             data_x='day',
             data_y='count_posts'
@@ -317,7 +316,7 @@ class PostsFeeWeekly(BaseView):
             name_url='posts_fee_weekly',
             modifiers=SumModifier,
             data_x='day',
-            data_y='fee'
+            data_y='count_fee'
         )
 
 
