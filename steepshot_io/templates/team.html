@@ -2,26 +2,29 @@
 {% load staticfiles %}
 
 {% block contentmidle %}
-    <div class="container_team">
-    {% for member in team %}
-             <div class="col-md-4">
-                    <div class="panel-heading"> {{ member.last_name }} {{ member.first_name }}
-                        <div>
-                            <img src="{{member.photo.url}}" class="team_image"  alt="Image"/>
-                        </div>
-                        <ul>
-                            <li>position : {{  member.position }}</li>
-                            {% if member.link_github %}
-                            <li>github: {{ member.link_github }}</li>
-                            {% endif %}
-                            {% if member.link_linkedin %}
-                            <li>linkedIn : {{ member.link_linkedin }}</li>
-                            {% endif %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-                        </ul>
+<div class="w3-content" style="max-width:1100px;margin-top:80px;margin-bottom:80px">
+    <div class="w3-row-padding" id="about">
+        {% for member in team %}
+            <div class="w3-third w3-margin-bottom w3-center">
+              <div class="w3-card-4">
+                <img src="{{member.photo.url}}"  style="width:100%"/>
+                  <div class="w3-container">
+                    <h3>{{ member.last_name }} {{ member.first_name }}</h3>
+                    <p class="w3-opacity">{{  member.position }} </p>
+                    <div class="w3-xlarge w3-section">
+                        <a href="{{ member.link_linkedin }}"><i class="fa fa-linkedin w3-hover-opacity"></i></a>
+                        <a href="{{ member.link_github }}"><i class="fa fa-github w3-hover-opacity"></i></a>
                     </div>
                 </div>
-{% endfor %}
+              </div>
+            </div>
+        {% endfor %}
+      </div>
+</div>
+
 
 {% endblock %}
 
