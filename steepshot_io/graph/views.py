@@ -145,7 +145,6 @@ class PostsCountDaily(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            apis=ApiUrls.steem,
             name_url='posts_count_daily',
             data_x='day',
             data_y='count_posts'
