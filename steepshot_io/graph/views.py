@@ -116,8 +116,11 @@ class BaseView(View):
 
 
 class GetPostFee(BaseView):
-    title = 'Posts payment'
-    subtitle = ''
+    title = 'Author reward from created posts'
+    subtitle = '(per day)'
+
+    y_axe_name = 'Total reward per day'
+    x_axe_name = 'Date'
 
     def get_data(self):
         return self.fetch_data(
@@ -130,8 +133,11 @@ class GetPostFee(BaseView):
 
 
 class PostsCountMonthly(BaseView):
-    title = 'Posts count monthly'
-    subtitle = ''
+    title = 'How many posts had been created'
+    subtitle = '(per month)'
+
+    x_axe_name = 'Month'
+    y_axe_name = 'Number of posts'
 
     def get_data(self):
         return self.fetch_data(
@@ -143,8 +149,11 @@ class PostsCountMonthly(BaseView):
 
 
 class PostsCountWeekly(BaseView):
-    title = 'Posts count weekly'
-    subtitle = ''
+    title = 'How many posts had been created'
+    subtitle = '(per week)'
+
+    x_axe_name = 'Date'
+    y_axe_name = 'Number of posts'
 
     def get_data(self):
         return self.fetch_data(
@@ -156,8 +165,8 @@ class PostsCountWeekly(BaseView):
 
 
 class PostsCountDaily(BaseView):
-    title = 'Posts count daily'
-    subtitle = ''
+    title = 'How many posts had been created'
+    subtitle = '(per day)'
 
     def get_data(self):
         return self.fetch_data(
@@ -168,8 +177,13 @@ class PostsCountDaily(BaseView):
 
 
 class UsersActive(BaseView):
-    title = 'Monthly active users'
+    title = ('Monthly active users. User is considered to be active '
+             'in a period of time when he had a log-in '
+             'with a consequitive post creation afterwards')
     subtitle = ''
+
+    x_axe_name = 'Month'
+    y_axe_name = 'Number of active users'
 
     def get_data(self):
         return self.fetch_data(
@@ -181,8 +195,12 @@ class UsersActive(BaseView):
 
 
 class PostsRatioDaily(BaseView):
-    title = 'Daily ratio'
-    subtitle = 'Ratio of logged users and posts created by them'
+    title = ('Ratio of how many unique users had logged in (unique by IP) and '
+             'how many posts had been created')
+    subtitle = '(per day)'
+
+    x_axe_name = 'Users/posts ratio'
+    y_axe_name = 'Date'
 
     def get_data(self):
         return self.fetch_data(
@@ -194,8 +212,12 @@ class PostsRatioDaily(BaseView):
 
 
 class PostsRatioMonthly(BaseView):
-    title = 'Monthly ratio'
-    subtitle = 'Ratio of logged users and posts created by them'
+    title = ('Ratio of how many unique users had logged in (unique by IP) and '
+             'how many posts had been created')
+    subtitle = '(per month)'
+
+    y_axe_name = 'A posts/users ratio.'
+    x_axe_name = 'Month'
 
     def get_data(self):
         return self.fetch_data(
@@ -298,8 +320,10 @@ class AverageVotesWeekly(BaseView):
 
 
 class CommentsCountWeekly(BaseView):
-    title = 'Comments count (weekly)'
-    subtitle = ''
+    title = 'How many comments had been created'
+    subtitle = '(per week)'
+
+    y_axe_name = 'Number of comments'
 
     def get_data(self):
         return self.fetch_data(
