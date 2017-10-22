@@ -33,13 +33,14 @@
                 width: window.innerWidth * 0.97,
                 height: window.innerHeight * 0.97,
                 vAxis: {
-                    title: '{{ title }}',
+                    title: '{{ y_axe_title }}' ? '{{ y_axe_title }}': '{{ title }}',
                     format: 'decimal',
                     textStyle: {
                         fontSize: 16
                     }
                 },
                 hAxis: {
+                    title: '{{ x_axe_title }}' ? '{{ x_axe_title }}': null,
                     gridlines: { count: 1 },
                     textStyle: {
                         fontSize: 16

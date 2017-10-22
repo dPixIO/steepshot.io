@@ -23,6 +23,8 @@ class BaseView(View):
     template_name = 'graph.html'
     title = ''
     subtitle = ''
+    x_axe_name = ''
+    y_axe_name = ''
 
     def fetch_data(self,
                    apis=None,
@@ -84,7 +86,6 @@ class BaseView(View):
             for modifier in modifiers:
                 if BaseModifier in modifier.__bases__:
                     modifier.modify(res, len(apis))
-
         return res
 
     def get_data(self) -> Dict:
@@ -94,7 +95,9 @@ class BaseView(View):
         data = self.get_data()
         data.update({
             'title': self.title,
-            'subtitle': self.subtitle
+            'subtitle': self.subtitle,
+            'x_axe_name': self.x_axe_name,
+            'y_axe_name': self.y_axe_name
         })
         return render(request, self.template_name, data)
 
