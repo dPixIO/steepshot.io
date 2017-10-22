@@ -1,7 +1,7 @@
 import logging
 from enum import Enum
 from json.decoder import JSONDecodeError
-from typing import Dict
+from typing import Dict, List
 
 import requests
 from django.conf import settings
@@ -28,11 +28,24 @@ class BaseView(View):
 
     def fetch_data(self,
                    apis=None,
-                   api_query=None,
-                   name_url=None,
-                   modifiers=None,
+                   api_query: dict=None,
+                   name_url: str=None,
+                   modifiers: List[BaseModifier]=None,
                    data_x=None,
                    data_y=None) -> Dict:
+        """
+        Fetches data from the remote steepshot/Golos URLs,
+        performs transformations and returns data prepared
+        to be plotted.
+
+        :param api_query: a requests' library params dictionary
+        to be passed to underlying Request object
+        :param name_url: name of the API url to be looked
+        for
+        :param modifiers: a list of modifiers describing, how data should
+        be transformed before plotting
+        """
+        modifiers = modifiers or []
         all_endpoint_urls = {
             ApiUrls.steem: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1),
             ApiUrls.golos: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.GOLOS_V1)
