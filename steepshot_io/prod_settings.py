@@ -65,11 +65,10 @@ GOLOS_QA_V1 = 'https://qa.golos.steepshot.org/api/v1'
 
 
 REQUESTS_URL = {
-    'posts_average_weekly': '{url}/posts/average/daily',
     'posts_average_author': '{url}/posts/average/author',
     'posts_count_daily': '{url}/posts/count/daily',
     'posts_count_monthly': '{url}/posts/count/monthly',
-    'post_fee': '{url}/posts/fee/daily?currency=',
+    'post_fee': '{url}/posts/fee/daily',
     'posts_fee_author': '{url}/posts/fee/author',
     'posts_fee_users': '{url}/posts/fee/users',
     'posts_fee_weekly': '{url}/posts/fee/weekly',
@@ -79,7 +78,6 @@ REQUESTS_URL = {
     'new_users': '{url}/user/count/daily',
     'new_users_monthly': '{url}/user/count/unique',
     'users_percent_daily': '{url}/user/percent/unique',
-    'count_posts_weekly': '{url}/posts/count/weekly',
     'count_votes_weekly': '{url}/posts/count/votes',
     'votes_average_weekly': '{url}/posts/average/votes',
     'count_comments_weekly': '{url}/posts/count/comments',
