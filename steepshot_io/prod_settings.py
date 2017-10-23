@@ -65,23 +65,26 @@ GOLOS_QA_V1 = 'https://qa.golos.steepshot.org/api/v1'
 
 
 REQUESTS_URL = {
-    'posts_average_author': '{url}/posts/average/author',
+    'active_users_monthly': '{url}/user/active/monthly',
+    'user_sessions_daily': '{url}/user/count/sessions',
+    'new_users_daily': '{url}/user/count/daily',
+    'new_users_monthly': '{url}/user/count/unique',
+    'new_users_percent_daily': '{url}/user/percent/unique',
+
+    'posts_average_per_author': '{url}/posts/average/author',
     'posts_count_daily': '{url}/posts/count/daily',
     'posts_count_monthly': '{url}/posts/count/monthly',
-    'post_fee': '{url}/posts/fee/daily',
+    'posts_fee_daily': '{url}/posts/fee/daily',
+    'posts_fee_weekly': '{url}/posts/fee/weekly',
     'posts_fee_author': '{url}/posts/fee/author',
     'posts_fee_users': '{url}/posts/fee/users',
-    'posts_fee_weekly': '{url}/posts/fee/weekly',
-    'active_users': '{url}/user/active/monthly',
-    'ratio_daily': '{url}/posts/ratio/daily',
-    'ratio_monthly': '{url}/posts/ratio/monthly',
-    'new_users': '{url}/user/count/daily',
-    'new_users_monthly': '{url}/user/count/unique',
-    'users_percent_daily': '{url}/user/percent/unique',
+    'posts_ratio_daily': '{url}/posts/ratio/daily',
+    'posts_ratio_monthly': '{url}/posts/ratio/monthly',
+
+    'count_comments_weekly': '{url}/posts/count/comments',
+
     'count_votes_weekly': '{url}/posts/count/votes',
     'votes_average_weekly': '{url}/posts/average/votes',
-    'count_comments_weekly': '{url}/posts/count/comments',
-    'users_count_session': '{url}/user/count/sessions',
 }
 
 

@@ -99,60 +99,6 @@ class BaseView(View):
         return render(request, self.template_name, data)
 
 
-class PostsFeeCurator(BaseView):
-    """
-    GET param:
-        date_to = default date (yestarday)
-        date_from = default 7 day ago
-        currency =  (SBD, steem, usd) defauld SBD
-    """
-
-    title = 'Curator posts payment '
-    subtitle = ''
-
-    def get_data(self):
-        return self.fetch_data(
-            apis=ApiUrls.steem,
-            api_query=self.request.GET,
-            name_url='post_fee',
-            data_x='day',
-            data_y='count_fee'
-        )
-
-
-class PostsCountMonthly(BaseView):
-    title = 'Posts count monthly'
-    subtitle = ''
-
-    def get_data(self):
-        return self.fetch_data(
-            name_url='posts_count_monthly',
-            modifiers=SumModifier,
-            data_x='date_to',
-            data_y='posts_count'
-        )
-
-
-class PostsCountDaily(BaseView):
-    """
-    GET param:
-        date_to = default date (yestarday)
-        date_from = default 7 day ago
-    """
-
-    title = 'Posts count daily'
-    subtitle = ''
-
-    def get_data(self):
-        return self.fetch_data(
-            name_url='posts_count_daily',
-            data_x='day',
-            api_query=self.request.GET,
-            modifiers=SumModifier,
-            data_y='count_posts'
-        )
-
-
 class UsersActive(BaseView):
     """
     MAU for the last month (30 days). MAU - monthly active users.
@@ -164,40 +110,30 @@ class UsersActive(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            name_url='active_users',
+            name_url='active_users_monthly',
             modifiers=SumModifier,
             data_x='date_to',
             data_y='active_users'
         )
 
 
-class PostsRatioDaily(BaseView):
+class UserSessions(BaseView):
     """
-     GET params same as PostsCountDaily
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
     """
-    title = 'Daily ratio'
-    subtitle = 'Ratio of logged users and posts created by them'
+
+    title = 'User sessions count'
+    subtitle = ''
 
     def get_data(self):
         return self.fetch_data(
-            name_url='ratio_daily',
-            modifiers=AverageModifier,
+            name_url='user_sessions_daily',
             api_query=self.request.GET,
-            data_x='date',
-            data_y='ratio'
-        )
-
-
-class PostsRatioMonthly(BaseView):
-    title = 'Monthly ratio'
-    subtitle = 'Ratio of logged users and posts created by them'
-
-    def get_data(self):
-        return self.fetch_data(
-            name_url='ratio_monthly',
-            modifiers=AverageModifier,
-            data_x='date_to',
-            data_y='ratio'
+            modifiers=SumModifier,
+            data_x='day',
+            data_y='count_sessions'
         )
 
 
@@ -207,7 +143,7 @@ class UsersNewCountDaily(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            name_url='new_users',
+            name_url='new_users_daily',
             modifiers=SumModifier,
             data_x='day',
             data_y='count_users'
@@ -233,7 +169,7 @@ class UsersCountPercentDaily(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            name_url='users_percent_daily',
+            name_url='new_users_percent_daily',
             modifiers=AverageModifier,
             data_x='day',
             data_y='percent'
@@ -242,7 +178,9 @@ class UsersCountPercentDaily(BaseView):
 
 class PostsAverageAuthor(BaseView):
     """
-     GET params same as PostsCountDaily
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
     """
 
     title = 'Posts average per author'
@@ -250,7 +188,7 @@ class PostsAverageAuthor(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            name_url='posts_average_author',
+            name_url='posts_average_per_author',
             api_query=self.request.GET,
             modifiers=AverageModifier,
             data_x='day',
@@ -258,9 +196,173 @@ class PostsAverageAuthor(BaseView):
         )
 
 
+class PostsCountMonthly(BaseView):
+    title = 'Posts count monthly'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_count_monthly',
+            modifiers=SumModifier,
+            data_x='date_to',
+            data_y='posts_count'
+        )
+
+
+class PostsCountDaily(BaseView):
+    """
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
+    """
+
+    title = 'Posts count daily'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_count_daily',
+            data_x='day',
+            api_query=self.request.GET,
+            modifiers=SumModifier,
+            data_y='count_posts'
+        )
+
+
+class PostsFeeDaily(BaseView):
+    """
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
+        currency =  (SBD, steem, usd) defauld SBD
+    """
+
+    title = 'Posts fee daily'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            apis=ApiUrls.steem,
+            api_query=self.request.GET,
+            name_url='posts_fee_daily',
+            data_x='day',
+            data_y='count_fee'
+        )
+
+
+class PostsFeeWeekly(BaseView):
+    """
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
+        currency =  (SBD, steem, usd) defauld SBD
+    """
+
+    title = 'Posts fee weekly'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_fee_weekly',
+            api_query=self.request.GET,
+            modifiers=SumModifier,
+            data_x='day',
+            data_y='count_fee'
+        )
+
+
+class AverageFeePerUserSession(BaseView):
+    """
+    GET params same as PostsFeeCurator
+    """
+
+    title = 'Average fee per user session'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_fee_users',
+            modifiers=SumModifier,
+            api_query=self.request.GET,
+            data_x='day',
+            data_y='fee'
+        )
+
+
+class AverageFeePerAuthor(BaseView):
+    """
+    GET params same as PostsFeeCurator
+    """
+    title = 'Average fee per author'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_fee_author',
+            modifiers=SumModifier,
+            api_query=self.request.GET,
+            data_x='day',
+            data_y='fee'
+        )
+
+
+class PostsRatioDaily(BaseView):
+    """
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
+    """
+    title = 'Daily ratio'
+    subtitle = 'Ratio of logged users and posts created by them'
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_ratio_daily',
+            modifiers=AverageModifier,
+            api_query=self.request.GET,
+            data_x='date',
+            data_y='ratio'
+        )
+
+
+class PostsRatioMonthly(BaseView):
+    title = 'Monthly ratio'
+    subtitle = 'Ratio of logged users and posts created by them'
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_ratio_monthly',
+            modifiers=AverageModifier,
+            data_x='date_to',
+            data_y='ratio'
+        )
+
+
+class CommentsCount(BaseView):
+    """
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
+    """
+
+    title = 'Comments count'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='count_comments_weekly',
+            api_query=self.request.GET,
+            modifiers=SumModifier,
+            data_x='day',
+            data_y='count_comments'
+        )
+
+
 class VotesCount(BaseView):
     """
-     GET params same as PostsCountDaily
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
     """
     title = 'Votes count'
     subtitle = ''
@@ -277,7 +379,9 @@ class VotesCount(BaseView):
 
 class AverageVotes(BaseView):
     """
-     GET params same as PostsCountDaily
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
     """
     title = 'Average votes'
     subtitle = ''
@@ -289,93 +393,4 @@ class AverageVotes(BaseView):
             api_query=self.request.GET,
             data_x='day',
             data_y='votes_count'
-        )
-
-
-class CommentsCount(BaseView):
-    """
-     GET params same as PostsCountDaily
-    """
-
-    title = 'Comments count'
-    subtitle = ''
-
-    def get_data(self):
-        return self.fetch_data(
-            name_url='count_comments_weekly',
-            api_query=self.request.GET,
-            modifiers=SumModifier,
-            data_x='day',
-            data_y='count_comments'
-        )
-
-
-class CountUsersSessions(BaseView):
-    """
-     GET params same as PostsCountDaily
-    """
-
-    title = 'User session count'
-    subtitle = ''
-
-    def get_data(self):
-        return self.fetch_data(
-            name_url='users_count_session',
-            api_query=self.request.GET,
-            modifiers=SumModifier,
-            data_x='day',
-            data_y='count_sessions'
-        )
-
-
-class PostsFee(BaseView):
-    """
-    GET params same as PostsFeeCurator
-    """
-
-    title = 'Posts fee'
-    subtitle = ''
-
-    def get_data(self):
-        return self.fetch_data(
-            name_url='posts_fee_weekly',
-            api_query=self.request.GET,
-            modifiers=SumModifier,
-            data_x='day',
-            data_y='count_fee'
-        )
-
-
-class PostsFeeUsers(BaseView):
-    """
-    GET params same as PostsFeeCurator
-    """
-
-    title = 'Fee  post average per user'
-    subtitle = ''
-
-    def get_data(self):
-        return self.fetch_data(
-            name_url='posts_fee_users',
-            modifiers=SumModifier,
-            api_query=self.request.GET,
-            data_x='day',
-            data_y='fee'
-        )
-
-
-class PostsFeeAuthor(BaseView):
-    """
-    GET params same as PostsFeeCurator
-    """
-    title = 'Fee  post average per author'
-    subtitle = ''
-
-    def get_data(self):
-        return self.fetch_data(
-            name_url='posts_fee_author',
-            modifiers=SumModifier,
-            api_query=self.request.GET,
-            data_x='day',
-            data_y='fee'
         )
