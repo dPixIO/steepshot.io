@@ -164,7 +164,7 @@ a  {
 #buttons {
     border:solid #f0f1f5 1px;
     border-radius: 10px;
-    height: 110px;
+    height: 165px;
     text-align: left;
     font-size:0.8em;
     z-index: 13;
@@ -183,6 +183,10 @@ a  {
     font-weight: 600 !important;
     margin: 14px 15px 30px;
     color:#374657;
+}
+
+#buttons a + p {
+    margin: 25px 15px 30px;
 }
 
 #buttons a {
@@ -366,6 +370,14 @@ a  {
     color: white;
     box-shadow: 0 5px 15px rgba(235, 68, 61, 0.5);
     padding: 15px 70px;
+}
+
+.alpha_steepshot{
+    background: #7ed321;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0 5px 15px rgba(235, 68, 61, 0.5);
+    padding: 15px 181px;
 }
 
 .apple {
