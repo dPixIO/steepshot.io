@@ -211,3 +211,6 @@ STATICFILES_DIRS = (
 )
 
 ADMIN_URL = r'^djadmin/'
+
+
+DEFAULT_DATE_FORMAT = "%Y-%m-%d"
