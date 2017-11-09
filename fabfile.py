@@ -5,7 +5,7 @@ import sys
 
 from fabric.api import env, lcd, task, sudo, local, prefix, cd, settings, require
 from fabric.contrib.files import upload_template, contains, append, exists
-from fabric.operations import put
+from fabric.operations import put, prompt
 
 from steepshot_io.deploy_settings import (
     USER, HOST, REMOTE_DEPLOY_DIR, PROJECT_NAME, REPOSITORY,
@@ -16,7 +16,7 @@ from steepshot_io.deploy_settings import (
     DEPLOYMENT_USER, DEPLOYMENT_GROUP, ENVIRONMENTS,
     USER_PROFILE_FILE, VENV_ACTIVATE,
     BACKEND_SERVICE, CELERY_SERVICE,
-    WEBAPP_HOST, WEBAPP_STATIC_DIR,
+    WEBAPP_STATIC_DIR,
 )
 
 # This allows us to have .profile to be read when calling sudo
@@ -59,6 +59,7 @@ def _load_environment(env_name: str):
     env.settings_module = _env['SETTINGS_MODULE']
     env.key_filename = _env['KEY_FILENAME']
     env.is_certbot_cert = _env.get('IS_CERTBOT_CERT')
+    env.web_host = _env.get('WEBAPP_HOST', env.current_host)
 
 
 @task
@@ -80,7 +81,12 @@ def prod():
 
 @task
 def spa():
-    _load_environment('SPA')
+    _load_environment('SPA_PROD')
+
+
+@task
+def spa_qa():
+    _load_environment('SPA_QA')
 
 
 @task
@@ -488,8 +494,21 @@ def build_spa():
                        'please clone it under the required '
                        'dir ("%s")', FRONTEND_LOCAL_DIR)
         sys.exit(1)
-    # with lcd(FRONTEND_LOCAL_DIR):
-        # local(FRONTEND_BUILD_COMMAND)
+    with lcd(FRONTEND_LOCAL_DIR):
+        perform_checkout = prompt('We are going to checkout the local frontend repository '
+                                  'to the revision "{}". This may cause data loss, make '
+                                  'sure you\'ve staged your uncommited changes. Checkout? (y/n)'
+                                  .format(env.branch),
+                                  validate=r'(y|n)',
+                                  default='n')
+        if perform_checkout.lower() == 'n':
+            logger.warning('Exiting.')
+            exit(1)
+        local('git fetch --all')
+        local('git reset --hard')
+        local('git checkout {}'.format(env.branch))
+        local('git pull origin {}'.format(env.branch))
+        local(FRONTEND_BUILD_COMMAND)
 
 
 @task
@@ -506,9 +525,9 @@ def copy_spa():
 
 @task
 def deploy_spa_nginx_config():
-    remote_sa_path = '/etc/nginx/sites-available/%s' % WEBAPP_HOST
+    remote_sa_path = '/etc/nginx/sites-available/%s' % env.web_host
     context = {
-        'WEBAPP_HOST': WEBAPP_HOST,
+        'WEBAPP_HOST': env.web_host,
         'ENV': env.env_name,
         'DEPLOY_DIR': DEPLOY_DIR,
         'STATIC_DIR': WEBAPP_STATIC_DIR,
