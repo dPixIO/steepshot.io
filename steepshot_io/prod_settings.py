@@ -100,6 +100,7 @@ INSTALLED_APPS = [
 
     'steepshot_io.core',
     'steepshot_io.graph',
+    'steepshot_io.table_stats',
 ]
 
 MIDDLEWARE = [

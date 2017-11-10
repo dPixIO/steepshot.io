@@ -2,7 +2,6 @@ import logging
 from enum import Enum
 from json.decoder import JSONDecodeError
 from typing import Dict
-import datetime
 
 import requests
 from django.conf import settings
@@ -11,7 +10,6 @@ from django.views.generic import View
 from requests.exceptions import HTTPError, ConnectionError
 
 from steepshot_io.graph.data_modifiers import SumModifier, AverageModifier, BaseModifier
-from steepshot_io.graph.helpers import str_from_datetime
 
 logger = logging.getLogger(__name__)
 
@@ -37,8 +35,7 @@ class BaseView(View):
             ApiUrls.steem: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1),
             ApiUrls.golos: settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.GOLOS_V1)
         }
-        import pdb
-        pdb.set_trace()
+
         res = {
             'headers': [
                 {'Date': 'string'}
@@ -398,25 +395,4 @@ class AverageVotes(BaseView):
         )
 
 
-class GetStatsTable(View):
-    name_stats_endpoints = [
-        {'url': 'count_votes_weekly', 'is_golos': True, 'name_data': 'count votes'},
-        {'url': 'count_comments_weekly', 'is_golos': True, 'name_data': 'count comments'}
-    ]
 
-    date_to = str_from_datetime(datetime.datetime.today())
-    date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=30))
-
-    def _get_data_from_request(self):
-        res = []
-        for i in self.name_stats_endpoints:
-            url_steem = settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.STEEM_V1)
-            req_steem = requests.get(url_steem, params={'date_to': self.date_to, 'date_from': self.date_from}).json()
-            if i['is_golos']:
-                url_golos = settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.GOLOS_V1)
-                req_golos = requests.get(url_golos, params={'date_to': self.date_to, 'date_from': self.date_from}).json()
-            else:
-                req_golos = []
-            res.append({'data_golos': req_golos, 'data_steem': req_steem, 'name_data': i['name_data']})
-
-        return res

@@ -1266,4 +1266,14 @@ input:focus {
     height: 50px;
 }
 
-
+.table_stats{
+    width: 100%;
+    margin-top: 10px;
+}
+.title_table{
+    font-size: 200%;
+    text-align: center;
+}
+.table_stats_row {
+    text-align: center;
+}
