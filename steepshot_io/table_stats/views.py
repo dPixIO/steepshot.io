@@ -70,7 +70,8 @@ class GetStatsTable(View):
         data_steem = self._sort_data(data_steem)
         data_golos = self._sort_data(data_golos)
         data_golos_steem = self._res_golos_steem(data_steem, data_golos)
-        return render(request, self.template_name, {'data_steem': data_steem,
-                                                    'data_golos': data_golos,
-                                                    'data_golos_steem': data_golos_steem,
+        list_tables = [{'table_data': data_golos_steem, 'title_table': 'General stats'},
+                       {'table_data': data_steem, 'title_table': 'Steem stats'},
+                       {'table_data': data_golos, 'title_table': 'Golos stats'}]
+        return render(request, self.template_name, {'list_tables': list_tables,
                                                     'heder_table': heder_table})
