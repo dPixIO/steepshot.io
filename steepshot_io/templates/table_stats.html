@@ -4,27 +4,10 @@
 {% endblock %}
 
 {% block contentmidle %}
-    <table border="3" class="table_stats">
-        <caption class="title_table">Stats Steem</caption>
-        {% for i in data_steem %}
-            {% if forloop.first	 %}
-                <tr>
-                    {% for j in heder_table %}
-                        <th class="table_stats_row">{{ j }}</th>
-                    {% endfor %}
-                </tr>
-            {% endif %}
-            <tr>
-            {% for j in i.1 %}
-                <td class="table_stats_row">{{ j }}</td>
-            {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
-
+    {% for table in list_tables %}
         <table border="3" class="table_stats">
-        <caption class="title_table">Stats Golos</caption>
-        {% for i in data_golos %}
+        <caption class="title_table">{{ table.title_table }}</caption>
+        {% for i in table.table_data %}
             {% if forloop.first	 %}
                 <tr>
                     {% for j in heder_table %}
@@ -39,25 +22,7 @@
             </tr>
         {% endfor %}
     </table>
-
-
-    <table border="3" class="table_stats">
-        <caption class="title_table">General stats</caption>
-        {% for i in data_golos_steem %}
-            {% if forloop.first	 %}
-                <tr>
-                    {% for j in heder_table %}
-                        <th class="table_stats_row">{{ j }}</th>
-                    {% endfor %}
-                </tr>
-            {% endif %}
-            <tr>
-            {% for j in i.1 %}
-                <td class="table_stats_row">{{ j }}</td>
-            {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
+    {% endfor %}
 {% endblock %}
 
 {% block footer %}
