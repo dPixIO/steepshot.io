@@ -100,6 +100,7 @@ INSTALLED_APPS = [
 
     'steepshot_io.core',
     'steepshot_io.graph',
+    'steepshot_io.table_stats',
 ]
 
 MIDDLEWARE = [
@@ -211,3 +212,6 @@ STATICFILES_DIRS = (
 )
 
 ADMIN_URL = r'^djadmin/'
+
+
+DEFAULT_DATE_FORMAT = "%Y-%m-%d"

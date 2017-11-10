@@ -84,7 +84,6 @@ class BaseView(View):
             for modifier in modifiers:
                 if BaseModifier in modifier.__bases__:
                     modifier.modify(res, len(apis))
-
         return res
 
     def get_data(self) -> Dict:
@@ -394,3 +393,6 @@ class AverageVotes(BaseView):
             data_x='day',
             data_y='votes_count'
         )
+
+
+
