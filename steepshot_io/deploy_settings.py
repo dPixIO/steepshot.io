@@ -89,7 +89,7 @@ ENVIRONMENTS = {
         'KEY_FILENAME': KEY_FILENAME,
         'IS_CERTBOT_CERT': True,
     },
-    'SPA': {
+    'SPA_PROD': {
         'HOST': HOST,
         'SSH_PORT': '22',
         'USER': USER,
@@ -97,8 +97,19 @@ ENVIRONMENTS = {
         'SETTINGS_MODULE': SETTINGS_MODULE,
         'GIT_BRANCH': 'master',
         'KEY_FILENAME': KEY_FILENAME,
+        'WEBAPP_HOST': 'alpha.steepshot.io',
+    },
+    'SPA_QA': {
+        'HOST': '45.55.71.26',
+        'SSH_PORT': '22',
+        'USER': 'root',
+        'CURRENT_HOST': 'qa.alpha.steepshot.io',
+        'SETTINGS_MODULE': SETTINGS_MODULE,
+        'GIT_BRANCH': 'develop',
+        'KEY_FILENAME': KEY_FILENAME,
+        # TODO: update it as we have new domain name
+        'WEBAPP_HOST': 'qa.alpha.steepshot.io',
     }
 }
 
-WEBAPP_HOST = 'alpha.steepshot.io'
 WEBAPP_STATIC_DIR = '/home/steepshot_io/frontend'
