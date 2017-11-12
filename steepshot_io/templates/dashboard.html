@@ -1,10 +1,66 @@
+{% load staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['line']});
+        google.charts.setOnLoadCallback(drawChart);
 
+        function drawChart() {
+
+            var data = new google.visualization.DataTable();
+            {% for itm in headers %}
+                {% for k, v in itm.items %}
+                    data.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data.addRows([
+                {% for i in data %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+
+            var options = {
+                chart: {
+                    title: '{{ title }}',
+                    subtitle: '{{ subtitle }}'
+                },
+                width: window.innerWidth * 0.97,
+                height: window.innerHeight * 0.97,
+                vAxis: {
+                    title: '{{ title }}',
+                    format: 'decimal',
+                    textStyle: {
+                        fontSize: 16
+                    }
+                },
+                hAxis: {
+                    gridlines: { count: 1 },
+                    textStyle: {
+                        fontSize: 16
+                    }
+                }
+            };
+
+            var chart = new google.charts.Line(document.getElementById('chart_div'));
+
+            google.visualization.events.addListener(chart, 'error', function (googleError) {
+                google.visualization.errors.removeError(googleError.id);
+                document.getElementById("error_msg").innerHTML = "No data to display";
+            });
+
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        }
+    </script>
+</head>
+
+<body>
+<span id="error_msg"></span>
+<div id="chart_div"></div>
 </body>
 </html>
