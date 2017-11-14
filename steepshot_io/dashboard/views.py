@@ -9,7 +9,6 @@ class GetDashboard(BaseView):
     template_name = 'dashboard.html'
     date_to = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=1))
     date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=7))
-    api_query = {'date_to': date_to, 'date_from': date_from}
     all_graphs = [
         {'name_graph': 'DAY and DAY new users',
          'urls': [
@@ -30,7 +29,7 @@ class GetDashboard(BaseView):
 
     def get_data(self, api_query=None):
         if not api_query:
-            api_query = self.api_query
+            api_query = self._make_api_query(self.date_to, self.date_from)
         res_all_graphs = []
         for i in self.all_graphs:
             res_graph_one = []
@@ -68,39 +67,36 @@ class GetDashboard(BaseView):
                 res.append(data)
         return res
 
+    def _make_api_query(self, date_to, date_from):
+        return {'date_to': date_to, 'date_from': date_from}
+
     def get(self, request):
-        # data = self.get_data()
-        # data_graphs = self._group_data(data)
-        data_graphs = [{'headers': [{'Date': 'string'}, {'DAY': 'number'}, {'DAY new users': 'number'}], 'title': 'DAY and DAY new users', 'data_sum': [['2017-11-06', 193, 0], ['2017-11-07', 170, 0], ['2017-11-08', 188, 0], ['2017-11-09', 190, 0], ['2017-11-10', 173, 0], ['2017-11-11', 199, 0], ['2017-11-12', 215, 0]], 'data_steem': [['2017-11-06', 173, 0], ['2017-11-07', 156, 0], ['2017-11-08', 167, 0], ['2017-11-09', 170, 0], ['2017-11-10', 156, 0], ['2017-11-11', 174, 0], ['2017-11-12', 196, 0]], 'data_golos': [['2017-11-06', 20, 0], ['2017-11-07', 14, 0], ['2017-11-08', 21, 0], ['2017-11-09', 20, 0], ['2017-11-10', 17, 0], ['2017-11-11', 25, 0], ['2017-11-12', 19, 0]]}, {'headers': [{'Date': 'string'}, {'Count posts': 'number'}, {'Count post new users': 'number'}], 'title': 'Count posts and count post from new users', 'data_sum': [['2017-11-06', 225, 0], ['2017-11-07', 146, 0], ['2017-11-08', 171, 0], ['2017-11-09', 169, 0], ['2017-11-10', 173, 0], ['2017-11-11', 187, 0], ['2017-11-12', 208, 0]], 'data_steem': [['2017-11-06', 208, 0], ['2017-11-07', 144, 0], ['2017-11-08', 159, 0], ['2017-11-09', 161, 0], ['2017-11-10', 162, 0], ['2017-11-11', 179, 0], ['2017-11-12', 203, 0]], 'data_golos': [['2017-11-06', 17, 0], ['2017-11-07', 2, 0], ['2017-11-08', 12, 0], ['2017-11-09', 8, 0], ['2017-11-10', 11, 0], ['2017-11-11', 8, 0], ['2017-11-12', 5, 0]]}, {'headers': [{'Date': 'string'}, {'Count comments': 'number'}, {'Count votes': 'number'}], 'title': 'Count comments and count votes', 'data_sum': [['2017-11-06', 33, 286], ['2017-11-07', 41, 295], ['2017-11-08', 31, 372], ['2017-11-09', 23, 263], ['2017-11-10', 11, 328], ['2017-11-11', 40, 567], ['2017-11-12', 47, 580]], 'data_steem': [['2017-11-06', 33, 280], ['2017-11-07', 41, 288], ['2017-11-08', 29, 323], ['2017-11-09', 22, 245], ['2017-11-10', 11, 312], ['2017-11-11', 38, 552], ['2017-11-12', 47, 574]], 'data_golos': [['2017-11-06', 0, 6], ['2017-11-07', 0, 7], ['2017-11-08', 2, 49], ['2017-11-09', 1, 18], ['2017-11-10', 0, 16], ['2017-11-11', 2, 15], ['2017-11-12', 0, 6]]}]
-        check_platform = {'steem': True, 'golos': False, 'sun': False}
-        return render(request, self.template_name, {'data': data_graphs, 'check_platform': check_platform})
+        data = self.get_data()
+        data_graphs = self._group_data(data)
+        import json
+        asd = json.dumps({'asd':'asdf'})
+        platform = 'steem'
+        return render(request, self.template_name, {'data': data_graphs, 'platform': platform, 'asd':asd})
 
     def post(self, request):
-        import pdb
-        pdb.set_trace()
-        # if request.POST.get('date'):
-        #     date_api = request.POST.get('date')
-        #     if date_api == '6':
-        #         days = 30
-        #         months = 6
-        #         date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=days * months))
-        #         api_query = {'date_to': self.date_to, 'date_from': date_from}
-        #     elif date_api == '30':
-        #         date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=30))
-        #         api_query = {'date_to': self.date_to, 'date_from': date_from}
-        #     else:
-        #         api_query = self.api_query
-        #     data = self.get_data(api_query=api_query)
-        #     data_graphs = self._group_data(data)
-        #     check_platform = {'steem': True, 'golos': False, 'sun': False}
-        #     return render(request, self.template_name, {'data': data_graphs, 'check_platform': check_platform})
-        # platform = request.POST.get('myRadio')
-        # if platform == 'steem':
-        #     check_platform = {'steem': True, 'golos': False, 'sun': False}
-        # elif platform == 'golos':
-        #     check_platform = {'steem': False, 'golos': True, 'sun': False}
-        # else:
-        #     check_platform = {'steem': False, 'golos': False, 'sun': True}
-        # # # graphs = [{'headers': [{'Date': 'string'}, {'DAY': 'number'}, {'DAY new users': 'number'}], 'title': 'DAY and DAY new users', 'data_sum': [['2017-11-06', 193, 0], ['2017-11-07', 170, 0], ['2017-11-08', 188, 0], ['2017-11-09', 190, 0], ['2017-11-10', 173, 0], ['2017-11-11', 199, 0], ['2017-11-12', 215, 0]], 'data_steem': [['2017-11-06', 173, 0], ['2017-11-07', 156, 0], ['2017-11-08', 167, 0], ['2017-11-09', 170, 0], ['2017-11-10', 156, 0], ['2017-11-11', 174, 0], ['2017-11-12', 196, 0]], 'data_golos': [['2017-11-06', 20, 0], ['2017-11-07', 14, 0], ['2017-11-08', 21, 0], ['2017-11-09', 20, 0], ['2017-11-10', 17, 0], ['2017-11-11', 25, 0], ['2017-11-12', 19, 0]]}, {'headers': [{'Date': 'string'}, {'Count posts': 'number'}, {'Count post new users': 'number'}], 'title': 'Count posts and count post from new users', 'data_sum': [['2017-11-06', 225, 0], ['2017-11-07', 146, 0], ['2017-11-08', 171, 0], ['2017-11-09', 169, 0], ['2017-11-10', 173, 0], ['2017-11-11', 187, 0], ['2017-11-12', 208, 0]], 'data_steem': [['2017-11-06', 208, 0], ['2017-11-07', 144, 0], ['2017-11-08', 159, 0], ['2017-11-09', 161, 0], ['2017-11-10', 162, 0], ['2017-11-11', 179, 0], ['2017-11-12', 203, 0]], 'data_golos': [['2017-11-06', 17, 0], ['2017-11-07', 2, 0], ['2017-11-08', 12, 0], ['2017-11-09', 8, 0], ['2017-11-10', 11, 0], ['2017-11-11', 8, 0], ['2017-11-12', 5, 0]]}, {'headers': [{'Date': 'string'}, {'Count comments': 'number'}, {'Count votes': 'number'}], 'title': 'Count comments and count votes', 'data_sum': [['2017-11-06', 33, 286], ['2017-11-07', 41, 295], ['2017-11-08', 31, 372], ['2017-11-09', 23, 263], ['2017-11-10', 11, 328], ['2017-11-11', 40, 567], ['2017-11-12', 47, 580]], 'data_steem': [['2017-11-06', 33, 280], ['2017-11-07', 41, 288], ['2017-11-08', 29, 323], ['2017-11-09', 22, 245], ['2017-11-10', 11, 312], ['2017-11-11', 38, 552], ['2017-11-12', 47, 574]], 'data_golos': [['2017-11-06', 0, 6], ['2017-11-07', 0, 7], ['2017-11-08', 2, 49], ['2017-11-09', 1, 18], ['2017-11-10', 0, 16], ['2017-11-11', 2, 15], ['2017-11-12', 0, 6]]}]
+        if request.POST.get('date-choice'):
+            date_api = request.POST.get('date-choice')
+            if date_api == '6':
+                days = 30
+                months = 6
+                date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=days * months))
+                api_query = self._make_api_query(self.date_to, date_from)
+            elif date_api == '30':
+                date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=30))
+                api_query = self._make_api_query(self.date_to, date_from)
+            else:
+                api_query = self._make_api_query(self.date_to, self.date_from)
+        elif request.POST.get('date_to') or request.POST.get('date_from'):
+            date_to = request.POST.get('date_to') if request.POST.get('date_to') else self.date_to
+            date_from = request.POST.get('date_from') if request.POST.get('date_from') else self.date_from
+            api_query = self._make_api_query(date_to, date_from)
+        platform = request.POST.get('platform')
+        data = self.get_data(api_query=api_query)
+        data_graphs = self._group_data(data)
+        return render(request, self.template_name, {'data': data_graphs, 'platform': platform})
 
-        return render(request, self.template_name, {})

@@ -4,6 +4,8 @@
 <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+
+        var name_data = "{{ platform }}";
         google.charts.load('current', {'packages': ['line']});
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
@@ -215,7 +217,7 @@
                     }
                 }
             };
-            {% if check_platform.steem %}
+            if (name_data === "steem") {
                 var chart = new google.charts.Line(document.getElementById('chart_div'));
                 chart.draw(data1steem, google.charts.Line.convertOptions(options));
                 google.visualization.events.addListener(chart, 'error', function (googleError) {
@@ -226,7 +228,7 @@
                 chart2.draw(data2steem, google.charts.Line.convertOptions(options2));
                 var chart3 = new google.charts.Line(document.getElementById('chart_div3'));
                 chart3.draw(data3steem, google.charts.Line.convertOptions(options3));
-            {% elif check_platform.golos %}
+            }else if (name_data === "golos") {
                 var chart = new google.charts.Line(document.getElementById('chart_div'));
                 chart.draw(data1golos, google.charts.Line.convertOptions(options));
                 google.visualization.events.addListener(chart, 'error', function (googleError) {
@@ -237,7 +239,7 @@
                 chart2.draw(data2golos, google.charts.Line.convertOptions(options2));
                 var chart3 = new google.charts.Line(document.getElementById('chart_div3'));
                 chart3.draw(data3golos, google.charts.Line.convertOptions(options3));
-            {% else %}
+            }else {
                 var chart = new google.charts.Line(document.getElementById('chart_div'));
                 chart.draw(data1sum, google.charts.Line.convertOptions(options));
                 google.visualization.events.addListener(chart, 'error', function (googleError) {
@@ -248,18 +250,23 @@
                 chart2.draw(data2sum, google.charts.Line.convertOptions(options2));
                 var chart3 = new google.charts.Line(document.getElementById('chart_div3'));
                 chart3.draw(data3sum, google.charts.Line.convertOptions(options3));
-            {% endif %}
-        }
-        var value_radio;
+            }}
+
     function check_radio(platform) {
-         value_radio = document.getElementsByName("myRadio").value = platform;
+         name_data = document.getElementsByName("myRadio").value = platform;
+         drawChart();
+        }
+
+    function added_data_in_form() {
+        var form = document.getElementById("date-form-choice");
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'platform';
+        input.value = name_data;
+        form.appendChild(input);
     }
 
-    function data_req() {
-        document.getElementsByName("platform_id").value = value_radio;
-        alert('GO GO GO');
-        alert(value_radio);
-    }
+
     </script>
 <link rel="stylesheet" href="{% static 'css/main.css' %}?v=20170707">
 </head>
@@ -268,18 +275,23 @@
 <span id="error_msg"></span>
 <form method="post">
 {% csrf_token %}
-  <input type="radio" name="myRadio" value="steem" onclick="check_radio(this.value)"> Steem<br>
-  <input type="radio" name="myRadio" value="golos" onclick="check_radio(this.value)"> Golos<br>
-  <input type="radio" name="myRadio" value="sum" onclick="check_radio(this.value)"> Sum
-    <input type="submit" value="OK">
+  <input type="radio" name="myRadio" id="steem" value="steem" onclick="check_radio(this.value)"> Steem
+  <input type="radio" name="myRadio" id="golos" value="golos" onclick="check_radio(this.value)"> Golos
+  <input type="radio" name="myRadio" value="sum" id="sum" onclick="check_radio(this.value)"> Sum
 </form>
 
-<form method="post">
+<form method="post" id="date-form-choice">
 {% csrf_token %}
-  <button type="submit"  value="7" name="date" onclick="data_req()">7 days</button>
-  <button type="submit"  value="30" name="date" onclick="data_req()">30 days</button>
-  <button type="submit"  value="6" name="date" onclick="data_req()">6 months</button>
-  <input type="hidden" name="platform">
+  <button type="submit"  value="7" name="date-choice" onclick="added_data_in_form()">7 days</button>
+  <button type="submit"  value="30" name="date-choice" onclick="added_data_in_form()">30 days</button>
+  <button type="submit"  value="6" name="date-choice" onclick="added_data_in_form()">6 months</button>
+</form>
+
+<form method="post" id="date-form">
+    {% csrf_token %}
+    <span>Date to</span><input type="text" name="date_to" placeholder="2017-01-01">
+    <span>Date from</span><input type="text" name="date_from" placeholder="2017-01-01">
+    <input type="submit" value="show" onclick="added_data_in_form()">
 </form>
 
   <div class="grid-dashboard">
