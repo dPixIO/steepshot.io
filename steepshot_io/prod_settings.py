@@ -84,6 +84,10 @@ REQUESTS_URL = {
     'posts_ratio_daily': '{url}/posts/ratio/daily',
     'posts_ratio_monthly': '{url}/posts/ratio/monthly',
 
+    'count_top': '{url}/request/count/top',
+    'count_hot': '{url}/request/count/hot',
+    'count_new': '{url}/request/count/new',
+
     'count_comments_weekly': '{url}/posts/count/comments',
 
     'count_votes_weekly': '{url}/posts/count/votes',

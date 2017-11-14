@@ -6,6 +6,7 @@ from typing import Dict
 import requests
 from django.conf import settings
 from django.shortcuts import render
+from django.core.urlresolvers import resolve
 from django.views.generic import View
 from requests.exceptions import HTTPError, ConnectionError
 
@@ -396,4 +397,42 @@ class AverageVotes(BaseView):
         )
 
 
+class GetHotTopNewCount(BaseView):
+    """
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
+    """
+    title = 'Count of requests for '
 
+    def get_data(self, url_name):
+        return self.fetch_data(
+            name_url=url_name,
+            modifiers=AverageModifier,
+            api_query=self.request.GET,
+            data_x='day',
+            data_y='count_requests'
+        )
+
+    def get(self, request):
+        url_name = resolve(request.path).url_name
+        url_maps = {
+            'count_hot': 'hot',
+            'count_top': 'new',
+            'count_new': 'top'
+        }
+        title_graph = url_maps.get(url_name)
+
+        if title_graph is None:
+            msg = "Unknown url name to get stats for: '%s'" % url_name
+            logger.error(msg)
+            return render(request, self.template_name, {})
+
+        self.title += title_graph
+        data = self.get_data(url_name)
+        data.update({
+            'title': self.title,
+            'subtitle': self.subtitle
+        })
+
+        return render(request, self.template_name, data)
