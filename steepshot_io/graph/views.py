@@ -230,6 +230,7 @@ class PostsCountDaily(BaseView):
 
 class PostsFeeDaily(BaseView):
     """
+    Curator rewards
     GET param:
         date_to = default date (yesterday)
         date_from = default 7 days ago
