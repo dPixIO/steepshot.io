@@ -1,16 +1,8 @@
 import datetime
-import requests
-from django.conf import settings
 from django.shortcuts import render
-from django.views.generic import View
 from steepshot_io.graph.views import BaseView
 from steepshot_io.table_stats.helpers import str_from_datetime
 from steepshot_io.graph.data_modifiers import SumModifier
-
-graph_1 = ['DAY', 'DAY_new_users']
-graph_2 = ['posts_count_daily', 'posts_count_new_users']
-graph_3 = ['count_comments_weekly', 'count_votes_weekly']
-# graph_4 = []
 
 
 class GetDashboard(BaseView):
@@ -36,7 +28,9 @@ class GetDashboard(BaseView):
                 ]}
                  ]
 
-    def get_data(self):
+    def get_data(self, api_query=None):
+        if not api_query:
+            api_query = self.api_query
         res_all_graphs = []
         for i in self.all_graphs:
             res_graph_one = []
@@ -49,7 +43,7 @@ class GetDashboard(BaseView):
                         data_x=data_x,
                         data_y=data_y,
                         modifiers=SumModifier,
-                        api_query=self.api_query
+                        api_query=api_query
                 )
                 data.update({'name_line': j['name_data']})
                 res_graph_one.append(data)
@@ -75,17 +69,38 @@ class GetDashboard(BaseView):
         return res
 
     def get(self, request):
-        data = self.get_data()
-        graphs = self._group_data(data)
-        # data = self.fetch_data(
-        #     name_url='DAY',
-        #     data_x='day',
-        #     data_y='active_users'
-        # )
-        # data.update({
-        #     'title': self.title,
-        #     'subtitle': self.subtitle
-        # })
-        # print(data)
+        # data = self.get_data()
+        # data_graphs = self._group_data(data)
+        data_graphs = [{'headers': [{'Date': 'string'}, {'DAY': 'number'}, {'DAY new users': 'number'}], 'title': 'DAY and DAY new users', 'data_sum': [['2017-11-06', 193, 0], ['2017-11-07', 170, 0], ['2017-11-08', 188, 0], ['2017-11-09', 190, 0], ['2017-11-10', 173, 0], ['2017-11-11', 199, 0], ['2017-11-12', 215, 0]], 'data_steem': [['2017-11-06', 173, 0], ['2017-11-07', 156, 0], ['2017-11-08', 167, 0], ['2017-11-09', 170, 0], ['2017-11-10', 156, 0], ['2017-11-11', 174, 0], ['2017-11-12', 196, 0]], 'data_golos': [['2017-11-06', 20, 0], ['2017-11-07', 14, 0], ['2017-11-08', 21, 0], ['2017-11-09', 20, 0], ['2017-11-10', 17, 0], ['2017-11-11', 25, 0], ['2017-11-12', 19, 0]]}, {'headers': [{'Date': 'string'}, {'Count posts': 'number'}, {'Count post new users': 'number'}], 'title': 'Count posts and count post from new users', 'data_sum': [['2017-11-06', 225, 0], ['2017-11-07', 146, 0], ['2017-11-08', 171, 0], ['2017-11-09', 169, 0], ['2017-11-10', 173, 0], ['2017-11-11', 187, 0], ['2017-11-12', 208, 0]], 'data_steem': [['2017-11-06', 208, 0], ['2017-11-07', 144, 0], ['2017-11-08', 159, 0], ['2017-11-09', 161, 0], ['2017-11-10', 162, 0], ['2017-11-11', 179, 0], ['2017-11-12', 203, 0]], 'data_golos': [['2017-11-06', 17, 0], ['2017-11-07', 2, 0], ['2017-11-08', 12, 0], ['2017-11-09', 8, 0], ['2017-11-10', 11, 0], ['2017-11-11', 8, 0], ['2017-11-12', 5, 0]]}, {'headers': [{'Date': 'string'}, {'Count comments': 'number'}, {'Count votes': 'number'}], 'title': 'Count comments and count votes', 'data_sum': [['2017-11-06', 33, 286], ['2017-11-07', 41, 295], ['2017-11-08', 31, 372], ['2017-11-09', 23, 263], ['2017-11-10', 11, 328], ['2017-11-11', 40, 567], ['2017-11-12', 47, 580]], 'data_steem': [['2017-11-06', 33, 280], ['2017-11-07', 41, 288], ['2017-11-08', 29, 323], ['2017-11-09', 22, 245], ['2017-11-10', 11, 312], ['2017-11-11', 38, 552], ['2017-11-12', 47, 574]], 'data_golos': [['2017-11-06', 0, 6], ['2017-11-07', 0, 7], ['2017-11-08', 2, 49], ['2017-11-09', 1, 18], ['2017-11-10', 0, 16], ['2017-11-11', 2, 15], ['2017-11-12', 0, 6]]}]
+        check_platform = {'steem': True, 'golos': False, 'sun': False}
+        return render(request, self.template_name, {'data': data_graphs, 'check_platform': check_platform})
 
-        return render(request, self.template_name, {'data': graphs})
+    def post(self, request):
+        import pdb
+        pdb.set_trace()
+        # if request.POST.get('date'):
+        #     date_api = request.POST.get('date')
+        #     if date_api == '6':
+        #         days = 30
+        #         months = 6
+        #         date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=days * months))
+        #         api_query = {'date_to': self.date_to, 'date_from': date_from}
+        #     elif date_api == '30':
+        #         date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=30))
+        #         api_query = {'date_to': self.date_to, 'date_from': date_from}
+        #     else:
+        #         api_query = self.api_query
+        #     data = self.get_data(api_query=api_query)
+        #     data_graphs = self._group_data(data)
+        #     check_platform = {'steem': True, 'golos': False, 'sun': False}
+        #     return render(request, self.template_name, {'data': data_graphs, 'check_platform': check_platform})
+        # platform = request.POST.get('myRadio')
+        # if platform == 'steem':
+        #     check_platform = {'steem': True, 'golos': False, 'sun': False}
+        # elif platform == 'golos':
+        #     check_platform = {'steem': False, 'golos': True, 'sun': False}
+        # else:
+        #     check_platform = {'steem': False, 'golos': False, 'sun': True}
+        # # # graphs = [{'headers': [{'Date': 'string'}, {'DAY': 'number'}, {'DAY new users': 'number'}], 'title': 'DAY and DAY new users', 'data_sum': [['2017-11-06', 193, 0], ['2017-11-07', 170, 0], ['2017-11-08', 188, 0], ['2017-11-09', 190, 0], ['2017-11-10', 173, 0], ['2017-11-11', 199, 0], ['2017-11-12', 215, 0]], 'data_steem': [['2017-11-06', 173, 0], ['2017-11-07', 156, 0], ['2017-11-08', 167, 0], ['2017-11-09', 170, 0], ['2017-11-10', 156, 0], ['2017-11-11', 174, 0], ['2017-11-12', 196, 0]], 'data_golos': [['2017-11-06', 20, 0], ['2017-11-07', 14, 0], ['2017-11-08', 21, 0], ['2017-11-09', 20, 0], ['2017-11-10', 17, 0], ['2017-11-11', 25, 0], ['2017-11-12', 19, 0]]}, {'headers': [{'Date': 'string'}, {'Count posts': 'number'}, {'Count post new users': 'number'}], 'title': 'Count posts and count post from new users', 'data_sum': [['2017-11-06', 225, 0], ['2017-11-07', 146, 0], ['2017-11-08', 171, 0], ['2017-11-09', 169, 0], ['2017-11-10', 173, 0], ['2017-11-11', 187, 0], ['2017-11-12', 208, 0]], 'data_steem': [['2017-11-06', 208, 0], ['2017-11-07', 144, 0], ['2017-11-08', 159, 0], ['2017-11-09', 161, 0], ['2017-11-10', 162, 0], ['2017-11-11', 179, 0], ['2017-11-12', 203, 0]], 'data_golos': [['2017-11-06', 17, 0], ['2017-11-07', 2, 0], ['2017-11-08', 12, 0], ['2017-11-09', 8, 0], ['2017-11-10', 11, 0], ['2017-11-11', 8, 0], ['2017-11-12', 5, 0]]}, {'headers': [{'Date': 'string'}, {'Count comments': 'number'}, {'Count votes': 'number'}], 'title': 'Count comments and count votes', 'data_sum': [['2017-11-06', 33, 286], ['2017-11-07', 41, 295], ['2017-11-08', 31, 372], ['2017-11-09', 23, 263], ['2017-11-10', 11, 328], ['2017-11-11', 40, 567], ['2017-11-12', 47, 580]], 'data_steem': [['2017-11-06', 33, 280], ['2017-11-07', 41, 288], ['2017-11-08', 29, 323], ['2017-11-09', 22, 245], ['2017-11-10', 11, 312], ['2017-11-11', 38, 552], ['2017-11-12', 47, 574]], 'data_golos': [['2017-11-06', 0, 6], ['2017-11-07', 0, 7], ['2017-11-08', 2, 49], ['2017-11-09', 1, 18], ['2017-11-10', 0, 16], ['2017-11-11', 2, 15], ['2017-11-12', 0, 6]]}]
+
+        return render(request, self.template_name, {})
