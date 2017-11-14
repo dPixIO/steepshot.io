@@ -70,9 +70,12 @@ REQUESTS_URL = {
     'new_users_daily': '{url}/user/count/daily',
     'new_users_monthly': '{url}/user/count/unique',
     'new_users_percent_daily': '{url}/user/percent/unique',
+    'DAY': '{url}/user/active/daily',
+    'DAY_new_users': '{url}/user/active/new',
 
     'posts_average_per_author': '{url}/posts/average/author',
     'posts_count_daily': '{url}/posts/count/daily',
+    'posts_count_new_users': '{url}/posts/count/new/users',
     'posts_count_monthly': '{url}/posts/count/monthly',
     'posts_fee_daily': '{url}/posts/fee/daily',
     'posts_fee_weekly': '{url}/posts/fee/weekly',
@@ -101,6 +104,7 @@ INSTALLED_APPS = [
     'steepshot_io.core',
     'steepshot_io.graph',
     'steepshot_io.table_stats',
+    'steepshot_io.dashboard',
 ]
 
 MIDDLEWARE = [

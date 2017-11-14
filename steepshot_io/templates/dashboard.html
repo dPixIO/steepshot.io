@@ -1,0 +1,307 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        var name_data = "{{ platform }}";
+        google.charts.load('current', {'packages': ['line']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data1steem = new google.visualization.DataTable();
+            {% for itm in data.0.headers %}
+                {% for k, v in itm.items %}
+                    data1steem.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data1steem.addRows([
+                {% for i in data.0.data_steem %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+
+            var data1golos = new google.visualization.DataTable();
+            {% for itm in data.0.headers %}
+                {% for k, v in itm.items %}
+                    data1golos.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data1golos.addRows([
+                {% for i in data.0.data_golos %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+
+            var data1sum = new google.visualization.DataTable();
+            {% for itm in data.0.headers %}
+                {% for k, v in itm.items %}
+                    data1sum.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data1sum.addRows([
+                {% for i in data.0.data_sum %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+
+            var data2steem = new google.visualization.DataTable();
+            {% for itm in data.1.headers %}
+                {% for k, v in itm.items %}
+                    data2steem.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data2steem.addRows([
+                {% for i in data.1.data_steem %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+
+            var data2golos = new google.visualization.DataTable();
+            {% for itm in data.1.headers %}
+                {% for k, v in itm.items %}
+                    data2golos.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data2golos.addRows([
+                {% for i in data.1.data_golos %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+
+            var data2sum = new google.visualization.DataTable();
+            {% for itm in data.1.headers %}
+                {% for k, v in itm.items %}
+                    data2sum.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data2sum.addRows([
+                {% for i in data.1.data_sum %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+
+            var data3steem = new google.visualization.DataTable();
+            {% for itm in data.2.headers %}
+                {% for k, v in itm.items %}
+                    data3steem.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data3steem.addRows([
+                    {% for i in data.2.data_steem %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+
+            var data3golos = new google.visualization.DataTable();
+            {% for itm in data.2.headers %}
+                {% for k, v in itm.items %}
+                    data3golos.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data3golos.addRows([
+                {% for i in data.2.data_golos %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+
+            var data3sum = new google.visualization.DataTable();
+            {% for itm in data.2.headers %}
+                {% for k, v in itm.items %}
+                    data3sum.addColumn('{{ v }}', '{{ k }}');
+                {% endfor %}
+            {% endfor %}
+            data3sum.addRows([
+                {% for i in data.2.data_sum %}
+                    [
+                        {% for j in i %}
+                            '{{ j }}',
+                        {% endfor %}
+                    ].map((itm, idx) => { if (idx === 0) return itm; else return parseFloat(itm)}),
+                {% endfor %}
+            ]);
+            var options = {
+                chart: {
+                    title: '{{ data.0.title }}',
+                    subtitle: '{{ subtitle }}'
+                },
+                width: window.innerWidth * 0.45,
+                height: window.innerHeight * 0.45,
+                vAxis: {
+                    title: '{{  data.0.title }}',
+                    format: 'decimal',
+                    textStyle: {
+                        fontSize: 16
+                    }
+                },
+                hAxis: {
+                    gridlines: { count: 1 },
+                    textStyle: {
+                        fontSize: 16
+                    }
+                }
+            };
+
+            var options2 = {
+                chart: {
+                    title: '{{ data.1.title }}',
+                    subtitle: '{{ subtitle }}'
+                },
+                width: window.innerWidth * 0.45,
+                height: window.innerHeight * 0.45,
+                vAxis: {
+                    title: '{{  data.1.title }}',
+                    format: 'decimal',
+                    textStyle: {
+                        fontSize: 16
+                    }
+                },
+                hAxis: {
+                    gridlines: { count: 1 },
+                    textStyle: {
+                        fontSize: 16
+                    }
+                }
+            };
+
+            var options3 = {
+                chart: {
+                    title: '{{ data.2.title }}',
+                    subtitle: '{{ subtitle }}'
+                },
+                width: window.innerWidth * 0.45,
+                height: window.innerHeight * 0.45,
+                vAxis: {
+                    title: '{{  data.2.title }}',
+                    format: 'decimal',
+                    textStyle: {
+                        fontSize: 16
+                    }
+                },
+                hAxis: {
+                    gridlines: { count: 1 },
+                    textStyle: {
+                        fontSize: 16
+                    }
+                }
+            };
+            if (name_data === "steem") {
+                var chart = new google.charts.Line(document.getElementById('chart_div'));
+                chart.draw(data1steem, google.charts.Line.convertOptions(options));
+                google.visualization.events.addListener(chart, 'error', function (googleError) {
+                    google.visualization.errors.removeError(googleError.id);
+                    document.getElementById("error_msg").innerHTML = "No data to display";
+                });
+                var chart2 = new google.charts.Line(document.getElementById('chart_div2'));
+                chart2.draw(data2steem, google.charts.Line.convertOptions(options2));
+                var chart3 = new google.charts.Line(document.getElementById('chart_div3'));
+                chart3.draw(data3steem, google.charts.Line.convertOptions(options3));
+            }else if (name_data === "golos") {
+                var chart = new google.charts.Line(document.getElementById('chart_div'));
+                chart.draw(data1golos, google.charts.Line.convertOptions(options));
+                google.visualization.events.addListener(chart, 'error', function (googleError) {
+                    google.visualization.errors.removeError(googleError.id);
+                    document.getElementById("error_msg").innerHTML = "No data to display";
+                });
+                var chart2 = new google.charts.Line(document.getElementById('chart_div2'));
+                chart2.draw(data2golos, google.charts.Line.convertOptions(options2));
+                var chart3 = new google.charts.Line(document.getElementById('chart_div3'));
+                chart3.draw(data3golos, google.charts.Line.convertOptions(options3));
+            }else {
+                var chart = new google.charts.Line(document.getElementById('chart_div'));
+                chart.draw(data1sum, google.charts.Line.convertOptions(options));
+                google.visualization.events.addListener(chart, 'error', function (googleError) {
+                    google.visualization.errors.removeError(googleError.id);
+                    document.getElementById("error_msg").innerHTML = "No data to display";
+                });
+                var chart2 = new google.charts.Line(document.getElementById('chart_div2'));
+                chart2.draw(data2sum, google.charts.Line.convertOptions(options2));
+                var chart3 = new google.charts.Line(document.getElementById('chart_div3'));
+                chart3.draw(data3sum, google.charts.Line.convertOptions(options3));
+            }}
+
+    function check_radio(platform) {
+         name_data = document.getElementsByName("myRadio").value = platform;
+         drawChart();
+        }
+
+    function added_data_in_form() {
+        var form = document.getElementById("date-form-choice");
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'platform';
+        input.value = name_data;
+        form.appendChild(input);
+    }
+
+
+    </script>
+<link rel="stylesheet" href="{% static 'css/main.css' %}?v=20170707">
+</head>
+<body>
+
+<span id="error_msg"></span>
+<form method="post">
+{% csrf_token %}
+  <input type="radio" name="myRadio" id="steem" value="steem" onclick="check_radio(this.value)"> Steem
+  <input type="radio" name="myRadio" id="golos" value="golos" onclick="check_radio(this.value)"> Golos
+  <input type="radio" name="myRadio" value="sum" id="sum" onclick="check_radio(this.value)"> Sum
+</form>
+
+<form method="post" id="date-form-choice">
+{% csrf_token %}
+  <button type="submit"  value="7" name="date-choice" onclick="added_data_in_form()">7 days</button>
+  <button type="submit"  value="30" name="date-choice" onclick="added_data_in_form()">30 days</button>
+  <button type="submit"  value="6" name="date-choice" onclick="added_data_in_form()">6 months</button>
+</form>
+
+<form method="post" id="date-form">
+    {% csrf_token %}
+    <span>Date to</span><input type="text" name="date_to" placeholder="2017-01-01">
+    <span>Date from</span><input type="text" name="date_from" placeholder="2017-01-01">
+    <input type="submit" value="show" onclick="added_data_in_form()">
+</form>
+
+  <div class="grid-dashboard">
+      <div id="chart_div"></div>
+  </div>
+  <div class="grid-dashboard">
+      <div id="chart_div2"></div>
+  </div>
+  <div class="grid-dashboard">
+      <div id="chart_div3"></div>
+  </div>
+</body>
+</html>
