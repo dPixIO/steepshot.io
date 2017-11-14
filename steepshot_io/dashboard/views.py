@@ -10,10 +10,10 @@ class GetDashboard(BaseView):
     date_to = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=1))
     date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=7))
     all_graphs = [
-        {'name_graph': 'DAY and DAY new users',
+        {'name_graph': 'DAU and DAU new users',
          'urls': [
-                    {'url': 'DAY', 'data_x': 'day', 'data_y': 'active_users', 'name_data': 'DAY'},
-                    {'url': 'DAY_new_users', 'data_x': 'day', 'data_y': 'count_users', 'name_data': 'DAY new users'}
+                    {'url': 'DAU', 'data_x': 'day', 'data_y': 'active_users', 'name_data': 'DAU'},
+                    {'url': 'DAU_new_users', 'data_x': 'day', 'data_y': 'count_users', 'name_data': 'DAU new users'}
                 ]},
         {'name_graph': 'Count posts and count post from new users',
          'urls': [
