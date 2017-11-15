@@ -29,9 +29,12 @@ class Vanancy(models.Model):
 class Currency(models.Model):
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Investors(models.Model):
     email = models.EmailField()
     amount = models.FloatField()
     currency = models.ForeignKey(Currency)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
