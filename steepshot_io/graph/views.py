@@ -403,36 +403,31 @@ class GetHotTopNewCount(BaseView):
         date_to = default date (yesterday)
         date_from = default 7 days ago
     """
-    title = 'Count of requests for '
+    title = 'Count of requests for top, hot, new'
+    name_urls = ['count_hot', 'count_top', 'count_new']
 
-    def get_data(self, url_name):
-        return self.fetch_data(
-            name_url=url_name,
-            modifiers=AverageModifier,
-            api_query=self.request.GET,
-            data_x='day',
-            data_y='count_requests'
-        )
+    headers =[{'Date': 'string'},
+                           {'Steem hot': 'number'}, {'Golos hot': 'number'},
+                           {'Steem top': 'number'}, {'Golos top': 'number'},
+                           {'Steem new': 'number'}, {'Golos new': 'number'}]
+
+    def get_data(self):
+        data = []
+        for i in self.name_urls:
+            res = self.fetch_data(
+                    name_url=i,
+                    api_query=self.request.GET,
+                    data_x='day',
+                    data_y='count_requests'
+            )
+            data.append(res['data'])
+        group_data = lambda x: [x[0][0], x[0][1], x[0][2], x[1][1], x[1][2], x[2][1], x[2][2]]
+        res_group = zip(data[0], data[1], data[2])
+        res = []
+        for i in res_group:
+            res.append(group_data(i))
+        return {'data': res, 'headers': self.headers}
 
     def get(self, request):
-        url_name = resolve(request.path).url_name
-        url_maps = {
-            'count_hot': 'hot',
-            'count_top': 'new',
-            'count_new': 'top'
-        }
-        title_graph = url_maps.get(url_name)
-
-        if title_graph is None:
-            msg = "Unknown url name to get stats for: '%s'" % url_name
-            logger.error(msg)
-            return render(request, self.template_name, {})
-
-        self.title += title_graph
-        data = self.get_data(url_name)
-        data.update({
-            'title': self.title,
-            'subtitle': self.subtitle
-        })
-
+        data = self.get_data()
         return render(request, self.template_name, data)
