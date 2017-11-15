@@ -70,8 +70,8 @@ REQUESTS_URL = {
     'new_users_daily': '{url}/user/count/daily',
     'new_users_monthly': '{url}/user/count/unique',
     'new_users_percent_daily': '{url}/user/percent/unique',
-    'DAY': '{url}/user/active/daily',
-    'DAY_new_users': '{url}/user/active/new',
+    'DAU': '{url}/user/active/daily',
+    'DAU_new_users': '{url}/user/active/new',
 
     'posts_average_per_author': '{url}/posts/average/author',
     'posts_count_daily': '{url}/posts/count/daily',
@@ -83,6 +83,10 @@ REQUESTS_URL = {
     'posts_fee_users': '{url}/posts/fee/users',
     'posts_ratio_daily': '{url}/posts/ratio/daily',
     'posts_ratio_monthly': '{url}/posts/ratio/monthly',
+
+    'count_top': '{url}/request/count/top',
+    'count_hot': '{url}/request/count/hot',
+    'count_new': '{url}/request/count/new',
 
     'count_comments_weekly': '{url}/posts/count/comments',
 

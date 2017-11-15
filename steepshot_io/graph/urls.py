@@ -21,6 +21,10 @@ urlpatterns = [
 
     url(r'^comments/count$', CommentsCount.as_view(), name='count_comments_weekly'),
 
+    url(r'^hot/requests/count$', GetHotTopNewCount.as_view(), name='count_hot'),
+    url(r'^top/requests/count$', GetHotTopNewCount.as_view(), name='count_top'),
+    url(r'^new/requests/count$', GetHotTopNewCount.as_view(), name='count_new'),
+
     url(r'^votes/average$', AverageVotes.as_view(), name='votes_average_weekly'),
     url(r'^votes/count$', VotesCount.as_view(), name='count_votes_weekly'),
 ]

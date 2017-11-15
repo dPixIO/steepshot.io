@@ -6,6 +6,7 @@ from typing import Dict
 import requests
 from django.conf import settings
 from django.shortcuts import render
+from django.core.urlresolvers import resolve
 from django.views.generic import View
 from requests.exceptions import HTTPError, ConnectionError
 
@@ -230,6 +231,7 @@ class PostsCountDaily(BaseView):
 
 class PostsFeeDaily(BaseView):
     """
+    Curator rewards
     GET param:
         date_to = default date (yesterday)
         date_from = default 7 days ago
@@ -395,4 +397,37 @@ class AverageVotes(BaseView):
         )
 
 
+class GetHotTopNewCount(BaseView):
+    """
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 7 days ago
+    """
+    title = 'Count of requests for top, hot, new'
+    name_urls = ['count_hot', 'count_top', 'count_new']
 
+    headers =[{'Date': 'string'},
+                           {'Steem hot': 'number'}, {'Golos hot': 'number'},
+                           {'Steem top': 'number'}, {'Golos top': 'number'},
+                           {'Steem new': 'number'}, {'Golos new': 'number'}]
+
+    def get_data(self):
+        data = []
+        for i in self.name_urls:
+            res = self.fetch_data(
+                    name_url=i,
+                    api_query=self.request.GET,
+                    data_x='day',
+                    data_y='count_requests'
+            )
+            data.append(res['data'])
+        group_data = lambda x: [x[0][0], x[0][1], x[0][2], x[1][1], x[1][2], x[2][1], x[2][2]]
+        res_group = zip(data[0], data[1], data[2])
+        res = []
+        for i in res_group:
+            res.append(group_data(i))
+        return {'data': res, 'headers': self.headers}
+
+    def get(self, request):
+        data = self.get_data()
+        return render(request, self.template_name, data)
