@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="{% static 'js/plotly-latest.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<script>
+    {% for i in urls %}
+        var list_data = [];
+        {% for j in i %}
+            $.getJSON('{{ j.url.0 }}', function(data) {
+                var yData = data.map(function(e) {
+                    return e['{{ j.data_y }}'];
+                });
+                var xData = data.map(function(e) {
+                    return e['{{ j.data_x }}'];
+                });
+                list_data.push(yData);
+
+                var chart_div = document.getElementById('{{ i.2.title }}');
+                var layout = {
+                    title: 'Steem'
+                };
+                Plotly.newPlot(chart_div, [{x: xData, y: list_data[0], name:'Steem'},
+                    {x:xData, y: list_data[1]}], layout);
+            });
+            {% endfor %}
+   {% endfor %}
+
+</script>
+<div id="qwer"></div>
+<div id="qwerty"></div>
+</body>
+</html>
