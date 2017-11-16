@@ -9,30 +9,19 @@
 </head>
 <body>
 <script>
-    {% for i in urls %}
-        var list_data = [];
-        {% for j in i %}
-            $.getJSON('{{ j.url.0 }}', function(data) {
-                var yData = data.map(function(e) {
-                    return e['{{ j.data_y }}'];
-                });
-                var xData = data.map(function(e) {
-                    return e['{{ j.data_x }}'];
-                });
-                list_data.push(yData);
-
-                var chart_div = document.getElementById('{{ i.2.title }}');
-                var layout = {
-                    title: 'Steem'
+    {% for i in res %}
+        var chart_div = document.getElementById('{{ i.name_data_line_1 }}');
+        var layout = {
+                    title: '{{ i.title }}'
                 };
-                Plotly.newPlot(chart_div, [{x: xData, y: list_data[0], name:'Steem'},
-                    {x:xData, y: list_data[1]}], layout);
-            });
-            {% endfor %}
-   {% endfor %}
+        var  date_x = jQuery.parseJSON('{{ i.date }}');
 
+        Plotly.newPlot(chart_div, [{x: {{ i.date }}, y: {{i.data_steem.0 }}, name:'{{ i.name_data_line_1 }}'},
+            {x:{{ i.date }}, y: {{i.data_steem.1 }}, name:'{{ i.name_data_line_2 }}' }], layout);
+    {% endfor %}
 </script>
-<div id="qwer"></div>
-<div id="qwerty"></div>
+<div id="DAU"></div>
+<div id="Count posts"></div>
+<div id="Count comments"></div>
 </body>
 </html>
