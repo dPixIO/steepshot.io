@@ -1,0 +1,46 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=20170707">
+    <script src="{% static 'js/plotly-latest.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<div class="grid-dashboard">
+    <div id="graph1"></div>
+</div>
+<div class="grid-dashboard">
+    <div id="graph2"></div>
+</div>
+<div class="grid-dashboard">
+    <div id="graph3"></div>
+</div>
+<script>
+    var list_url = [
+        [
+            ['https://steepshot.org/api/v1/user/active/daily', 'https://golos.steepshot.org/api/v1/user/active/daily'],
+            ['https://steepshot.org/api/v1/user/active/new', 'https://golos.steepshot.org/api/v1/user/active/new'],
+        ],
+        [
+            ['https://steepshot.org/api/v1/posts/count/daily', 'https://golos.steepshot.org/api/v1/posts/count/daily'],
+            ['https://steepshot.org/api/v1/posts/count/new/users', 'https://golos.steepshot.org/api/v1/posts/count/new/users'],
+        ],
+                [
+            ['https://steepshot.org/api/v1/posts/count/comments', 'https://golos.steepshot.org/api/v1/posts/count/comments'],
+            ['https://steepshot.org/api/v1/posts/count/votes', 'https://golos.steepshot.org/api/v1/posts/count/votes'],
+        ]
+    ];
+    var api_query = {'date_from':'2017-11-01', 'date_to':'2017-11-16'};
+    list_url.forEach(function (iter, i, array) {
+        console.log(iter[0][0], iter[1][0]);
+        $.getJSON(iter[0][0]+'?'+api_query, function (data) {
+            console.log(data);
+            console.log("=======================");
+        })
+    })
+</script>
+</body>
+</html>

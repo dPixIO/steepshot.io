@@ -4,24 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=20170707">
     <script src="{% static 'js/plotly-latest.min.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 </head>
 <body>
+<div class="grid-dashboard">
+    <div id="graph1"></div>
+</div>
+<div class="grid-dashboard">
+    <div id="graph2"></div>
+</div>
+<div class="grid-dashboard">
+    <div id="graph3"></div>
+</div>
 <script>
     {% for i in res %}
-        var chart_div = document.getElementById('{{ i.name_data_line_1 }}');
-        var layout = {
-                    title: '{{ i.title }}'
-                };
-        var  date_x = jQuery.parseJSON('{{ i.date }}');
+        var chart_div = document.getElementById('{{ i.name_div }}');
+        var dataY1 = {
+            'x' : {{ i.date|safe }},
+            'y': {{i.data_steem.0 }},
+             type: 'scatter',
+             name:'{{ i.name_data_line_1 }}'
 
-        Plotly.newPlot(chart_div, [{x: {{ i.date }}, y: {{i.data_steem.0 }}, name:'{{ i.name_data_line_1 }}'},
-            {x:{{ i.date }}, y: {{i.data_steem.1 }}, name:'{{ i.name_data_line_2 }}' }], layout);
+        };
+        var dataY2 = {
+            'x' : {{ i.date|safe }},
+            'y': {{i.data_steem.1 }},
+             type: 'scatter',
+            name:'{{ i.name_data_line_2 }}'
+        };
+        var data = [dataY1, dataY2];
+
+        var layout = {
+                    title: '{{ i.title }}',
+                    width: 850,
+                    height: 500
+                };
+        Plotly.newPlot(chart_div, data, layout);
     {% endfor %}
 </script>
-<div id="DAU"></div>
-<div id="Count posts"></div>
-<div id="Count comments"></div>
 </body>
 </html>
