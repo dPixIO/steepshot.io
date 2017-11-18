@@ -38,3 +38,6 @@ class Investors(models.Model):
     amount = models.FloatField()
     currency = models.ForeignKey(Currency)
     description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.email
