@@ -414,8 +414,6 @@ class GetHotTopNewCount(BaseView):
     def get_data(self):
         data = []
         for i in self.name_urls:
-            import pdb
-            pdb.set_trace()
             res = self.fetch_data(
                     name_url=i,
                     api_query=self.request.GET,
