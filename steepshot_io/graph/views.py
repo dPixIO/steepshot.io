@@ -414,6 +414,8 @@ class GetHotTopNewCount(BaseView):
     def get_data(self):
         data = []
         for i in self.name_urls:
+            import pdb
+            pdb.set_trace()
             res = self.fetch_data(
                     name_url=i,
                     api_query=self.request.GET,
@@ -427,6 +429,15 @@ class GetHotTopNewCount(BaseView):
         for i in res_group:
             res.append(group_data(i))
         return {'data': res, 'headers': self.headers}
+
+    def get(self, request):
+        data = self.get_data()
+        return render(request, self.template_name, data)
+
+
+class GetBrowseUsersCount(GetHotTopNewCount):
+    title = 'Count users of requests for top, hot, new'
+    name_urls = ['browse_users_count_hot', 'browse_users_count_top', 'browse_users_count_new']
 
     def get(self, request):
         data = self.get_data()

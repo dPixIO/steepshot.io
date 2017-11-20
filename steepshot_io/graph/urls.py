@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^top/requests/count$', GetHotTopNewCount.as_view(), name='count_top'),
     url(r'^new/requests/count$', GetHotTopNewCount.as_view(), name='count_new'),
 
+    url(r'^browse/request/users$', GetBrowseUsersCount.as_view(), name='browse_users_request'),
+
     url(r'^votes/average$', AverageVotes.as_view(), name='votes_average_weekly'),
     url(r'^votes/count$', VotesCount.as_view(), name='count_votes_weekly'),
 ]

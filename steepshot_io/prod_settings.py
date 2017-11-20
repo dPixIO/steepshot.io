@@ -88,6 +88,10 @@ REQUESTS_URL = {
     'count_hot': '{url}/request/count/hot',
     'count_new': '{url}/request/count/new',
 
+    'browse_users_count_new': '{url}/browse/users/count/new',
+    'browse_users_count_top': '{url}/browse/users/count/top',
+    'browse_users_count_hot': '{url}/browse/users/count/hot',
+
     'count_comments_weekly': '{url}/posts/count/comments',
 
     'count_votes_weekly': '{url}/posts/count/votes',
