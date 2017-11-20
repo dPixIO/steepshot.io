@@ -235,7 +235,6 @@ class PostsFeeDaily(BaseView):
     GET param:
         date_to = default date (yesterday)
         date_from = default 7 days ago
-        currency =  (SBD, steem, usd) defauld SBD
     """
 
     title = 'Posts fee daily'
@@ -246,8 +245,8 @@ class PostsFeeDaily(BaseView):
             apis=ApiUrls.steem,
             api_query=self.request.GET,
             name_url='posts_fee_daily',
-            data_x='day',
-            data_y='count_fee'
+            data_x='date',
+            data_y='total_payout_per_day'
         )
 
 

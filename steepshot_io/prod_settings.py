@@ -77,7 +77,7 @@ REQUESTS_URL = {
     'posts_count_daily': '{url}/posts/count/daily',
     'posts_count_new_users': '{url}/posts/count/new/users',
     'posts_count_monthly': '{url}/posts/count/monthly',
-    'posts_fee_daily': '{url}/posts/fee/daily',
+    'posts_fee_daily': '{url}/posts/benefeciary-payout/daily',
     'posts_fee_weekly': '{url}/posts/fee/weekly',
     'posts_fee_author': '{url}/posts/fee/author',
     'posts_fee_users': '{url}/posts/fee/users',
