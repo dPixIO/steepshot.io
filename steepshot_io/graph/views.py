@@ -431,3 +431,12 @@ class GetHotTopNewCount(BaseView):
     def get(self, request):
         data = self.get_data()
         return render(request, self.template_name, data)
+
+
+class GetBrowseUsersCount(GetHotTopNewCount):
+    title = 'Count users of requests for top, hot, new'
+    name_urls = ['browse_users_count_hot', 'browse_users_count_top', 'browse_users_count_new']
+
+    def get(self, request):
+        data = self.get_data()
+        return render(request, self.template_name, data)
