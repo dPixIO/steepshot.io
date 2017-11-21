@@ -405,22 +405,26 @@ class GetHotTopNewCount(BaseView):
     title = 'Count of requests for top, hot, new'
     name_urls = ['count_hot', 'count_top', 'count_new']
 
-    headers =[{'Date': 'string'},
-                           {'Steem hot': 'number'}, {'Golos hot': 'number'},
-                           {'Steem top': 'number'}, {'Golos top': 'number'},
-                           {'Steem new': 'number'}, {'Golos new': 'number'}]
+    headers = [
+        {'Date': 'string'},
+        {'Steem hot': 'number'}, {'Golos hot': 'number'},
+        {'Steem top': 'number'}, {'Golos top': 'number'},
+        {'Steem new': 'number'}, {'Golos new': 'number'}
+    ]
 
     def get_data(self):
         data = []
         for i in self.name_urls:
             res = self.fetch_data(
-                    name_url=i,
-                    api_query=self.request.GET,
-                    data_x='day',
-                    data_y='count_requests'
+                name_url=i,
+                api_query=self.request.GET,
+                data_x='day',
+                data_y='count_requests'
             )
             data.append(res['data'])
-        group_data = lambda x: [x[0][0], x[0][1], x[0][2], x[1][1], x[1][2], x[2][1], x[2][2]]
+        group_data = lambda x: [x[0][0], x[0][1], x[0][2],
+                                x[1][1], x[1][2],
+                                x[2][1], x[2][2]]
         res_group = zip(data[0], data[1], data[2])
         res = []
         for i in res_group:
