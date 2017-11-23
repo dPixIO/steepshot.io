@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import *
+from .views import *  # noqa
 
 urlpatterns = [
     url(r'^users/active$', UsersActive.as_view(), name='active_users_monthly'),
@@ -21,12 +21,12 @@ urlpatterns = [
 
     url(r'^comments/count$', CommentsCount.as_view(), name='count_comments_weekly'),
 
-    url(r'^hot/requests/count$', GetHotTopNewCount.as_view(), name='count_hot'),
-    url(r'^top/requests/count$', GetHotTopNewCount.as_view(), name='count_top'),
-    url(r'^new/requests/count$', GetHotTopNewCount.as_view(), name='count_new'),
+    url(r'^browse/request/count$', GetHotTopNewCount.as_view(), name='count_requests'),
 
     url(r'^browse/request/users$', GetBrowseUsersCount.as_view(), name='browse_users_request'),
 
     url(r'^votes/average$', AverageVotes.as_view(), name='votes_average_weekly'),
-    url(r'^votes/count$', VotesCount.as_view(), name='count_votes_weekly'),
+
+    url(r'^votes/count/daily$', VotesCountDaily.as_view(), name='count_votes_daily'),
+    url(r'^votes/count/monthly$', VotesCountMonthly.as_view(), name='count_votes_monthly'),
 ]

@@ -6,11 +6,12 @@ from typing import Dict
 import requests
 from django.conf import settings
 from django.shortcuts import render
-from django.core.urlresolvers import resolve
 from django.views.generic import View
 from requests.exceptions import HTTPError, ConnectionError
 
 from steepshot_io.graph.data_modifiers import SumModifier, AverageModifier, BaseModifier
+from steepshot_io.graph.utils import get_date_range_from_request
+
 
 logger = logging.getLogger(__name__)
 
@@ -358,19 +359,42 @@ class CommentsCount(BaseView):
         )
 
 
-class VotesCount(BaseView):
+class VotesCountDaily(BaseView):
     """
     GET param:
         date_to = default date (yesterday)
-        date_from = default 7 days ago
     """
-    title = 'Votes count'
+    title = 'Votes count (daily)'
     subtitle = ''
 
     def get_data(self):
+
+        api_params = get_date_range_from_request(self.request, day_difference=1)
+
         return self.fetch_data(
             name_url='count_votes_weekly',
-            api_query=self.request.GET,
+            api_query=api_params,
+            modifiers=SumModifier,
+            data_x='day',
+            data_y='count_votes'
+        )
+
+
+class VotesCountMonthly(BaseView):
+    """
+    GET param:
+        date_to = default date (yesterday)
+    """
+    title = 'Votes count (monthly)'
+    subtitle = ''
+
+    def get_data(self):
+
+        api_params = get_date_range_from_request(self.request, day_difference=30)
+
+        return self.fetch_data(
+            name_url='count_votes_weekly',
+            api_query=api_params,
             modifiers=SumModifier,
             data_x='day',
             data_y='count_votes'
@@ -405,22 +429,26 @@ class GetHotTopNewCount(BaseView):
     title = 'Count of requests for top, hot, new'
     name_urls = ['count_hot', 'count_top', 'count_new']
 
-    headers =[{'Date': 'string'},
-                           {'Steem hot': 'number'}, {'Golos hot': 'number'},
-                           {'Steem top': 'number'}, {'Golos top': 'number'},
-                           {'Steem new': 'number'}, {'Golos new': 'number'}]
+    headers = [
+        {'Date': 'string'},
+        {'Steem hot': 'number'}, {'Golos hot': 'number'},
+        {'Steem top': 'number'}, {'Golos top': 'number'},
+        {'Steem new': 'number'}, {'Golos new': 'number'}
+    ]
 
     def get_data(self):
         data = []
         for i in self.name_urls:
             res = self.fetch_data(
-                    name_url=i,
-                    api_query=self.request.GET,
-                    data_x='day',
-                    data_y='count_requests'
+                name_url=i,
+                api_query=self.request.GET,
+                data_x='day',
+                data_y='count_requests'
             )
             data.append(res['data'])
-        group_data = lambda x: [x[0][0], x[0][1], x[0][2], x[1][1], x[1][2], x[2][1], x[2][2]]
+        group_data = lambda x: [x[0][0], x[0][1], x[0][2],
+                                x[1][1], x[1][2],
+                                x[2][1], x[2][2]]
         res_group = zip(data[0], data[1], data[2])
         res = []
         for i in res_group:
