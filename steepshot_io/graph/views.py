@@ -244,6 +244,7 @@ class PostsFeeDaily(BaseView):
     def get_data(self):
         return self.fetch_data(
             api_query=self.request.GET,
+            modifiers=SumModifier,
             name_url='posts_fee_daily',
             data_x='date',
             data_y='total_payout_per_day'
