@@ -74,6 +74,7 @@ REQUESTS_URL = {
     'DAY_new_users': '{url}/user/active/new',
 
     'posts_average_per_author': '{url}/posts/average/author',
+    'posts_payout_users': '{url}/posts/user-payout/daily',
     'posts_count_daily': '{url}/posts/count/daily',
     'posts_count_new_users': '{url}/posts/count/new/users',
     'posts_count_monthly': '{url}/posts/count/monthly',
