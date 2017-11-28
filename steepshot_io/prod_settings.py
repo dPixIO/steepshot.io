@@ -70,20 +70,28 @@ REQUESTS_URL = {
     'new_users_daily': '{url}/user/count/daily',
     'new_users_monthly': '{url}/user/count/unique',
     'new_users_percent_daily': '{url}/user/percent/unique',
-    'DAY': '{url}/user/active/daily',
-    'DAY_new_users': '{url}/user/active/new',
+    'DAU': '{url}/user/active/daily',
+    'DAU_new_users': '{url}/user/active/new',
 
     'posts_average_per_author': '{url}/posts/average/author',
     'posts_payout_users': '{url}/posts/user-payout/daily',
     'posts_count_daily': '{url}/posts/count/daily',
     'posts_count_new_users': '{url}/posts/count/new/users',
     'posts_count_monthly': '{url}/posts/count/monthly',
-    'posts_fee_daily': '{url}/posts/fee/daily',
+    'posts_fee_daily': '{url}/posts/benefeciary-payout/daily',
     'posts_fee_weekly': '{url}/posts/fee/weekly',
     'posts_fee_author': '{url}/posts/fee/author',
     'posts_fee_users': '{url}/posts/fee/users',
     'posts_ratio_daily': '{url}/posts/ratio/daily',
     'posts_ratio_monthly': '{url}/posts/ratio/monthly',
+
+    'count_top': '{url}/request/count/top',
+    'count_hot': '{url}/request/count/hot',
+    'count_new': '{url}/request/count/new',
+
+    'browse_users_count_new': '{url}/browse/users/count/new',
+    'browse_users_count_top': '{url}/browse/users/count/top',
+    'browse_users_count_hot': '{url}/browse/users/count/hot',
 
     'count_comments_weekly': '{url}/posts/count/comments',
 

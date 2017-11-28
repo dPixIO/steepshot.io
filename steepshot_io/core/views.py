@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
-from steepshot_io.core.forms import SubscribeForm
+from steepshot_io.core.forms import SubscribeForm, InvestorsForms
 from steepshot_io.core.models import TeamMembers, Vanancy
 
 
@@ -51,3 +51,20 @@ class GetJob(View):
     def get(self, request, job_id):
         job = Vanancy.objects.get(id=job_id)
         return render(request, self.template_name, {"job": job})
+
+
+class GetInvestor(View):
+    template_name = 'investor.html'
+
+    def get(self, request):
+        form = InvestorsForms()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = InvestorsForms(request.POST)
+        success = False
+        if form.is_valid():
+            form.save()
+            success = True
+            form = InvestorsForms()
+        return render(request, self.template_name, {'form': form, 'success': success})

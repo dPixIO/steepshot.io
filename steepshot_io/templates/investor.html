@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block contentmidle %}
+<form action="" method="post">
+    {% csrf_token %}
+    <p>{{ form.email.label_tag }}{{ form.email }}</p>
+    <p>{{ form.amount.label_tag }}{{ form.amount }}{{ form.currency }}</p>
+    <p>{{ form.description }}</p>
+    <input type="submit" value="Send"/>
+    {% if success %}
+        <p style="color: #7ed321"> Success, thank you </p>
+    {% endif %}
+</form>
+{% endblock %}

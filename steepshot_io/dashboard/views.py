@@ -18,13 +18,13 @@ class GetDashboard(BaseView):
     template_name = 'dashboard.html'
     date_to = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=1))
     date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=8))
-    graph_1 = {'name_graph': 'DAY and DAY new users',
+    graph_1 = {'name_graph': 'DAU and DAU new users',
                  'name_data_line_1': 'DAU',
                  'name_data_line_2': 'DAU new users',
                  'name_div': 'graph1',
                  'urls': [
-                    {'url': 'DAY', 'data_x': 'day', 'data_y': 'active_users'},
-                    {'url': 'DAY_new_users', 'data_x': 'day', 'data_y': 'count_users'}
+                    {'url': 'DAU', 'data_x': 'day', 'data_y': 'active_users'},
+                    {'url': 'DAU_new_users', 'data_x': 'day', 'data_y': 'count_users'}
                 ]}
     graph_2 = {'name_graph': 'Count posts and count post from new users',
                  'name_data_line_1': 'Count posts',
