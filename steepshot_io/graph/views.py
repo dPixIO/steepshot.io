@@ -243,7 +243,6 @@ class PostsFeeDaily(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            apis=ApiUrls.steem,
             api_query=self.request.GET,
             name_url='posts_fee_daily',
             data_x='date',
