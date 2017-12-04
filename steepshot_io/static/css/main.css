@@ -938,6 +938,9 @@ input:focus {
    .android {
        padding: 15px 18px;
    }
+   .alpha_steepshot {
+       padding: 15px 80px;
+   }
     .frontext {
         width: 90%;
         text-align: center;
