@@ -42,11 +42,14 @@ class GetDashboard(BaseView):
                     {'url': 'count_comments_weekly', 'data_x': 'day', 'data_y': 'count_comments'},
                     {'url': 'count_votes_weekly', 'data_x': 'day', 'data_y': 'count_votes'}
                 ]}
-    graph_4 = {'name_graph': 'Count payout users USD',
-                 'name_data_line_1': 'fee',
-                 'name_div': 'graph4',
+    graph_4 = {'name_graph': 'Count payout users and steepshot USD',
+                 'name_data_line_1': 'fee users',
+                 'name_data_line_2': 'fee steepshot',
+
+               'name_div': 'graph4',
                  'urls': [
                     {'url': 'posts_payout_users', 'data_x': 'day', 'data_y': 'fee'},
+                    {'url': 'posts_fee_daily', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
                 ]}
 
     def _sort_data_from_request(self, data, date_x, date_y, last_iter=False):
