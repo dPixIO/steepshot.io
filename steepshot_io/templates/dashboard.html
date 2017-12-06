@@ -24,6 +24,7 @@
 </form>
 
 <form method="get" id="date-form">
+    <p id="error">Date to must be less than Date now</p>
     <span>Date from </span><input type="date" name="date_from"><br>
     <span>Date to </span><input type="date" name="date_to">
     <input type="button" value="show" onclick="data_from_input(this.form)">
@@ -137,7 +138,14 @@
         var elems = form.elements;
         api_query['date_to'] = elems.date_to.value;
         api_query['date_from'] = elems.date_from.value;
-        get_data(api_query);
+        var check_date = new Date();
+        if (format_date(check_date) <= api_query['date_to']) {
+            $('#error').css('display', 'block');
+        }
+    else {
+            $('#error').css('display', 'none');
+            get_data(api_query);
+        }
     }
     function format_date(date){
         var yyyy = date.getFullYear();
