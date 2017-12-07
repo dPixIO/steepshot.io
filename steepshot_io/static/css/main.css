@@ -238,7 +238,10 @@ a  {
     transition-delay: 0.3s;
     transition-duration: 0.05s !important;
 }
-
+#error{
+    display: none;
+    color: red;
+}
 #mimg2 img {
     right:-2000px;
     bottom: -480px;
