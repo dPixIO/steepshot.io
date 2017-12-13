@@ -267,8 +267,8 @@ class PostsFeeWeekly(BaseView):
             name_url='posts_fee_weekly',
             api_query=self.request.GET,
             modifiers=SumModifier,
-            data_x='day',
-            data_y='count_fee'
+            data_x='date_to',
+            data_y='fee'
         )
 
 
