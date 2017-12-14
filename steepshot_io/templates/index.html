@@ -105,7 +105,8 @@
 
             <div id="buttons" >
                 <p> Download application:</p>
-                <a href="https://itunes.apple.com/by/app/steepshot/id1238690991?mt=8" class="apple">APP STORE </a>
+{#                <a href="https://itunes.apple.com/by/app/steepshot/id1238690991?mt=8" class="apple">APP STORE </a>#}
+                <a href="" class="apple">APP STORE </a>
                 <a href="https://play.google.com/store/apps/details?id=com.droid.steepshot&rdid=com.droid.steepshot" class="android">GOOGLE PLAY</a>
                 <p>Go to the website:</p>
                 <a href="https://alpha.steepshot.io" class="alpha_steepshot" target='_blank'>Steepshot for Web</a>
@@ -132,6 +133,14 @@
                 <p class="cntrbtn1"></p>
                 <p class="cntrbtn1"></p>
             </div>
+    <div id="modal_form">
+        <span id="modal_close">x</span>
+        <div id="modal_form_text">
+            <h2>Coming soon..</h2>
+        </div>
+    </div>
+    <div id="overlay"></div>
+
     {% endblock %}
 
     {% block footer %}
@@ -488,7 +497,28 @@
 
                 }
             </script>
+        <script>
+            /*скрипт для модального окна*/
+            $('.apple').click (function(event){
+                event.preventDefault();
+                $('#overlay').fadeIn(400,
+                    function(){
+                        $('#modal_form')
+                            .css('display', 'block')
+                            .animate({opacity: 1, top: '50%'}, 200);
+                });
+            });
 
+            $('#modal_close, #overlay').click( function(){
+                $('#modal_form')
+                    .animate({opacity: 0, top: '45%'}, 200,
+                        function(){
+                            $(this).css('display', 'none');
+                            $('#overlay').fadeOut(400);
+                        }
+                    );
+            });
+        </script>
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
