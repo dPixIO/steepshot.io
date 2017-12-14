@@ -48,7 +48,7 @@ class GetDashboard(BaseView):
 
                'name_div': 'graph4',
                  'urls': [
-                    {'url': 'posts_payout_users', 'data_x': 'day', 'data_y': 'fee'},
+                    {'url': 'posts_payout_users', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
                     {'url': 'posts_fee_daily', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
                 ]}
 
