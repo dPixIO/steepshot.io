@@ -10,6 +10,7 @@
 </head>
 <body>
 <span id="error_msg"></span>
+<div class="form-dashboard">
 <form method="post">
   <input type="radio" name="myRadio" id="steem" value="steem" onclick="check_radio(this.value)" checked> Steem
   <input type="radio" name="myRadio" id="golos" value="golos" onclick="check_radio(this.value)"> Golos
@@ -18,18 +19,19 @@
 
 <form method="post" id="date-form-choice">
 {% csrf_token %}
-  <button type="button"  value="7"  onclick="data_from_button(this.value)">7 days</button>
-  <button type="button"  value="30"  onclick="data_from_button(this.value)">30 days</button>
-  <button type="button"  value="3"  onclick="data_from_button(this.value)">3 months</button>
+  <button type="button"  id="btn_7" value="7"  class="btn" onclick="data_from_button(this)">7 days</button>
+  <button type="button"  id="btn_30" value="30" class="btn" onclick="data_from_button(this)">30 days</button>
+  <button type="button"  id="btn_3" value="3"  class="btn" onclick="data_from_button(this)">3 months</button>
 </form>
 
 <form method="get" id="date-form">
-    <p id="error">Date to must be less than Date now</p>
-    <span>Date from </span><input type="date" name="date_from"><br>
+    <span>Date from </span><input type="date" name="date_from">
     <span>Date to </span><input type="date" name="date_to">
-    <input type="button" value="show" onclick="data_from_input(this.form)">
+    <input type="button" class="btn" value="show" onclick="data_from_input(this.form)">
 </form>
-
+<div><span id="error">Date to must be less than Date now</span></div>
+</div>
+{#<button type="button" class="btn btn-primary btn-create-mob"></button>#}
 <div class="grid-dashboard">
     <div id="graph1"></div>
 </div>
@@ -43,6 +45,14 @@
     <div id="graph4"></div>
 </div>
 <script>
+    var class_btn = $("#btn_7");
+    class_btn.css({
+        background: '#fe6637',
+        color: '#fff'
+    });
+
+    var asd = 33;
+
     var name_data, data_graph;
     function checkNameRatio (name_data) {
         if (name_data==='golos'){
@@ -162,14 +172,36 @@
         return yyyy+'-'+mm+'-'+dd
     }
 
-    function data_from_button(value) {
+
+    function click_btn(btn) {
+    alert(window.class_btn.attr('id'));
+        if (window.class_btn.attr('id') != btn.id) {
+            $(btn).css({
+            background: '#fe6637',
+            color: '#fff'
+        });
+          $(class_btn).css({
+              background: '#f6f6fb',
+              color: '#fe6637'
+          });
+           var sss = 45;
+           asd = sss;
+           alert(asd);
+
+            {#          var new_id = btn.id;#}
+{#            window.class_btn = $("new_id");#}
+{#            alert(class_btn.attr('id'));#}
+        }
+        }
+
+    function data_from_button(btn) {
         var date_to = new Date();
         var date_from = new Date();
         date_to.setDate(date_to.getDate() - 1);
-        if (value === '3'){
+        if (btn.value === '3'){
             date_from.setDate(date_from.getDate() - 90);
         }
-        else if (value==='7'){
+        else if (btn.value==='7'){
             date_from.setDate(date_from.getDate() - 8);
         }
         else
@@ -180,6 +212,7 @@
         date_to = format_date(date_to);
         api_query['date_to'] = date_to;
         api_query['date_from'] = date_from;
+        click_btn(btn);
         get_data(api_query);
     }
 
