@@ -9,6 +9,7 @@ from json.decoder import JSONDecodeError
 
 from django.shortcuts import render
 from steepshot_io.graph.views import BaseView
+from steepshot_io.dashboard.forms import UserLoginDasboardForm
 from steepshot_io.table_stats.helpers import str_from_datetime
 
 logger = logging.getLogger(__name__)
@@ -16,6 +17,7 @@ logger = logging.getLogger(__name__)
 
 class GetDashboard(BaseView):
     template_name = 'dashboard.html'
+    template_login = 'dashboard_login.html'
     date_to = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=1))
     date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=8))
     graph_1 = {'name_graph': 'DAU and DAU new users',
@@ -125,6 +127,14 @@ class GetDashboard(BaseView):
                 return JsonResponse(data)
             data = self._get_data_graph(graph_num)
             return JsonResponse(data)
-        return render(request, self.template_name)
+        else:
+            form = UserLoginDasboardForm()
+            return render(request, self.template_login, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = UserLoginDasboardForm(request.POST)
+        if form.is_valid():
+            return render(request, self.template_name)
+        return render(request, self.template_login, {'form': form})
 
 
