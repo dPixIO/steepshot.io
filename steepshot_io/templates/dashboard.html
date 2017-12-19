@@ -12,9 +12,9 @@
 <span id="error_msg"></span>
 <div class="form-dashboard">
 <form method="post">
-  <input type="radio" name="myRadio" id="steem" value="steem" onclick="check_radio(this.value)" checked> Steem
-  <input type="radio" name="myRadio" id="golos" value="golos" onclick="check_radio(this.value)"> Golos
-  <input type="radio" name="myRadio" value="sum" id="sum" onclick="check_radio(this.value)"> Sum
+  <input type="radio" name="myRadio" id="steem" value="steem" class="dashboard_radio" onclick="check_radio(this.value)" checked> Steem
+  <input type="radio" name="myRadio" id="golos" value="golos" class="dashboard_radio" onclick="check_radio(this.value)"> Golos
+  <input type="radio" name="myRadio" value="sum" id="sum" class="dashboard_radio" onclick="check_radio(this.value)"> Sum
 </form>
 
 <form method="post" id="date-form-choice">
@@ -31,7 +31,7 @@
 </form>
 <div><span id="error">Date to must be less than Date now</span></div>
 </div>
-{#<button type="button" class="btn btn-primary btn-create-mob"></button>#}
+
 <div class="grid-dashboard">
     <div id="graph1"></div>
 </div>
@@ -51,7 +51,6 @@
         color: '#fff'
     });
 
-    var asd = 33;
 
     var name_data, data_graph;
     function checkNameRatio (name_data) {
@@ -174,8 +173,7 @@
 
 
     function click_btn(btn) {
-    alert(window.class_btn.attr('id'));
-        if (window.class_btn.attr('id') != btn.id) {
+        if (window.class_btn.attr('id') !== btn.id) {
             $(btn).css({
             background: '#fe6637',
             color: '#fff'
@@ -184,15 +182,8 @@
               background: '#f6f6fb',
               color: '#fe6637'
           });
-           var sss = 45;
-           asd = sss;
-           alert(asd);
-
-            {#          var new_id = btn.id;#}
-{#            window.class_btn = $("new_id");#}
-{#            alert(class_btn.attr('id'));#}
-        }
-        }
+          window.class_btn = $('#' + btn.id);
+        }}
 
     function data_from_button(btn) {
         var date_to = new Date();

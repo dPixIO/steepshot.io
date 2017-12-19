@@ -1312,6 +1312,8 @@ input:focus {
 
 .form-dashboard form {
     margin-right: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
 }
 
 
@@ -1328,21 +1330,17 @@ input:focus {
   background: #f6f6fb;
   transition: .2s ease-in-out;
 }
-.btn:before {
-  content: "";
-  background: linear-gradient(90deg, rgba(255,255,255,.1), rgba(255,255,255,.5));
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  top: -8px;
-  left: -75px;
-  transform: skewX(-45deg);
+
+.dashboard_radio {
+    width: 20px;
+	height: 20px;
+	border: 2px solid  #fe6637;
+	border-radius: 3px;
+	position: relative;
 }
-.btn:hover {
-  background: #fe6637;
-  color: #fff;
-}
-.btn:hover:before {
-  left: 150px;
-  transition: .5s ease-in-out;
+
+#date-form input {
+    padding: 5px 10px;
+    border: 2px solid #fe6637;
+    border-radius: 8px;
 }
