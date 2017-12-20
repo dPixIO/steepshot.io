@@ -1323,4 +1323,8 @@ input:focus {
 
 .error_dashboard_login {
     color: red;
+    list-style-type: none;
+    margin: 5px;
+    padding: 0;
+    border-radius: 8px;
 }

@@ -3,6 +3,8 @@ import requests
 import logging
 from django.conf import settings
 from django.http import JsonResponse
+from django.contrib import messages
+from django.contrib.auth import authenticate
 
 from requests.exceptions import HTTPError, ConnectionError
 from json.decoder import JSONDecodeError
@@ -134,7 +136,13 @@ class GetDashboard(BaseView):
     def post(self, request, *args, **kwargs):
         form = UserLoginDasboardForm(request.POST)
         if form.is_valid():
-            return render(request, self.template_name)
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username,  password=password)
+            if user is not None:
+                return render(request, self.template_name)
+            else:
+                messages.error(request, 'Incorrect username or password')
         return render(request, self.template_login, {'form': form})
 
 
