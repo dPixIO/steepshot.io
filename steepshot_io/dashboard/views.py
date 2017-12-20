@@ -4,7 +4,7 @@ import logging
 from django.conf import settings
 from django.http import JsonResponse
 from django.contrib import messages
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 
 from requests.exceptions import HTTPError, ConnectionError
 from json.decoder import JSONDecodeError
@@ -140,7 +140,11 @@ class GetDashboard(BaseView):
             password = form.cleaned_data['password']
             user = authenticate(username=username,  password=password)
             if user is not None:
-                return render(request, self.template_name)
+                if user.is_active:
+                    login(request, user)
+                    return render(request, self.template_name)
+                else:
+                    messages.error(request, 'You are banned')
             else:
                 messages.error(request, 'Incorrect username or password')
         return render(request, self.template_login, {'form': form})
