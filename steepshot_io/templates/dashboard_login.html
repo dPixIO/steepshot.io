@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+{% load widget_tweaks %}
+{% load staticfiles %}
+    {% block messages %}
+    {% endblock %}
+{% block contentmidle %}
+<div class="front_dasboard">
+    <h1>
+        Log In Dashboard
+    </h1>
+</div>
+<form method="post" class="form_login_dashboard">
+    {% csrf_token %}
+    {% for field in form.visible_fields %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+    {% for error in field.errors %}
+        <span class="error_dashboard_login">{{ error }}</span>
+    {% endfor %}
+    {% endfor %}
+        {% if messages %}
+        <ul class="error_dashboard_login">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    <button>Log In</button>
+</form>
+{% endblock %}
