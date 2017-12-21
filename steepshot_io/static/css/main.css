@@ -155,6 +155,50 @@ a  {
     text-decoration: none;
 }
 
+#modal_form {
+	width: 200px;
+	height: 70px;
+	border-radius: 5px;
+	background: #f6f6fb;
+	position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+	display: none;
+	z-index: 19;
+	padding: 15px 10px;
+
+}
+#modal_form_text {
+    text-align: center;
+    text-decoration: none;
+    margin: 15px;
+}
+#modal_form #modal_close {
+	width: 21px;
+	height: 21px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+	display: block;
+}
+
+#overlay {
+	z-index:16;
+	position:fixed;
+	background-color:#000;
+	opacity:0.8; /
+	-moz-opacity:0.8;
+	filter:alpha(opacity=80);
+	width:100%;
+	height:100%;
+	top:0;
+	left:0;
+	cursor:pointer;
+	display:none;
+}
+
 .textbox1 {
     opacity: 1;
     transition: 0.45s;
