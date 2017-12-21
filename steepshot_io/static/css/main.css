@@ -1347,6 +1347,48 @@ input:focus {
 
 }
 
+.form-dashboard{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 20px;
+}
+
+.form-dashboard form {
+    margin-right: 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+}
+
+
+.btn {
+  text-decoration: none;
+  outline: none;
+  padding: 5px 15px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #fe6637;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  color: #fe6637;
+  background: #f6f6fb;
+  transition: .2s ease-in-out;
+}
+
+.dashboard_radio {
+    width: 20px;
+	height: 20px;
+	border: 2px solid  #fe6637;
+	border-radius: 3px;
+	position: relative;
+}
+
+#date-form input {
+    padding: 5px 10px;
+    border: 2px solid #fe6637;
+    border-radius: 8px;
+}
+
 .form_login_dashboard {
     width: 250px;
     height: 250px;
