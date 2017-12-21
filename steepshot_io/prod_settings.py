@@ -109,6 +109,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'googlecharts',
+    'widget_tweaks',
 
     'steepshot_io.core',
     'steepshot_io.graph',

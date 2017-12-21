@@ -1346,3 +1346,29 @@ input:focus {
     margin-bottom: 10px;
 
 }
+
+.form_login_dashboard {
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -125px 0 0 -125px;
+
+}
+.front_dasboard {
+    width: 500px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -225px 0 0 -125px;
+}
+
+.error_dashboard_login {
+    color: red;
+    list-style-type: none;
+    margin: 5px;
+    padding: 0;
+    border-radius: 8px;
+}
