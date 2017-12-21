@@ -11,21 +11,21 @@
 
 
 
-    var nameDdata, dataGaph;
-    function checkNameRatio (nameDdata) {
-        if (nameDdata==='golos'){
-            dataGaph = 'data_glos'
+    var nameData, dataGraph;
+    function checkNameRatio (nameData) {
+        if (nameData==='golos'){
+            dataGraph = 'data_golos'
         }
-        else if (nameDdata==='sum'){
-            dataGaph='data_sum'
+        else if (nameData==='sum'){
+            dataGraph='data_sum'
             }
         else
-            dataGaph='data_steem';
+            dataGraph='data_steem';
     }
-    checkNameRatio(nameDdata);
+    checkNameRatio(nameData);
     function check_radio(platform) {
-        nameDdata = document.getElementsByName("myRadio").value = platform;
-        checkNameRatio(nameDdata);
+        nameData = document.getElementsByName("myRadio").value = platform;
+        checkNameRatio(nameData);
         drawGraphs(dataGraph_1);
         drawGraphs(dataGraph_2);
         drawGraphs(dataGraph_3);
@@ -74,15 +74,15 @@
         var chartDiv = document.getElementById(data['name_div']);
         var dataY1 = {
             'x' : data['date'],
-            'y': data[dataGaph][0],
+            'y': data[dataGraph][0],
              type: 'scatter',
              name: data['name_data_line_1']
 
         };
-        if (data[dataGaph].length == 2) {
+        if (data[dataGraph].length == 2) {
             var dataY2 = {
                 'x': data['date'],
-                'y': data[dataGaph][1],
+                'y': data[dataGraph][1],
                 type: 'scatter',
                 name: data['name_data_line_2']
             };

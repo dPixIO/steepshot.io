@@ -85,7 +85,7 @@ class GetDashboard(BaseView):
                 'name_data_line_1': graph['name_data_line_1'],
                 'name_data_line_2': name_data_line_2,
                 'data_steem': [],
-                'data_glos': [],
+                'data_golos': [],
                 'data_sum': [],
             }
         count_iter = len(graph['urls'])
@@ -110,7 +110,7 @@ class GetDashboard(BaseView):
             data_golos = self._sort_data_from_request(data_golos, i['data_x'], i['data_y'])
             data_sum = list(map(lambda x: x[0] + x[1], zip(data_steem, data_golos)))
             res_graph['data_steem'].append(data_steem)
-            res_graph['data_glos'].append(data_golos)
+            res_graph['data_golos'].append(data_golos)
             res_graph['data_sum'].append(data_sum)
         return res_graph
 
