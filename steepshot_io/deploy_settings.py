@@ -1,7 +1,7 @@
 import os
 
 USER = 'root'
-HOST = '104.236.41.188'
+HOST = '159.203.87.66'
 
 CURRENT_HOST = 'steepshot.io'
 

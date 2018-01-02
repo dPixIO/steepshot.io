@@ -96,7 +96,8 @@ def shell():
 
 @task
 def install_system_packages():
-    sudo('add-apt-repository ppa:fkrull/deadsnakes -y')
+    # sudo('add-apt-repository ppa:fkrull/deadsnakes -y')
+    sudo('add-apt-repository ppa:deadsnakes/ppa -y')
 
     if env.is_certbot_cert:
         sudo('add-apt-repository ppa:certbot/certbot -y')
@@ -494,21 +495,21 @@ def build_spa():
                        'please clone it under the required '
                        'dir ("%s")', FRONTEND_LOCAL_DIR)
         sys.exit(1)
-    with lcd(FRONTEND_LOCAL_DIR):
-        perform_checkout = prompt('We are going to checkout the local frontend repository '
-                                  'to the revision "{}". This may cause data loss, make '
-                                  'sure you\'ve staged your uncommited changes. Checkout? (y/n)'
-                                  .format(env.branch),
-                                  validate=r'(y|n)',
-                                  default='n')
-        if perform_checkout.lower() == 'n':
-            logger.warning('Exiting.')
-            exit(1)
-        local('git fetch --all')
-        local('git reset --hard')
-        local('git checkout {}'.format(env.branch))
-        local('git pull origin {}'.format(env.branch))
-        local(FRONTEND_BUILD_COMMAND)
+    # with lcd(FRONTEND_LOCAL_DIR):
+        # perform_checkout = prompt('We are going to checkout the local frontend repository '
+                                  # 'to the revision "{}". This may cause data loss, make '
+                                  # 'sure you\'ve staged your uncommited changes. Checkout? (y/n)'
+                                  # .format(env.branch),
+                                  # validate=r'(y|n)',
+                                  # default='n')
+        # if perform_checkout.lower() == 'n':
+            # logger.warning('Exiting.')
+            # exit(1)
+        # local('git fetch --all')
+        # local('git reset --hard')
+        # local('git checkout {}'.format(env.branch))
+        # local('git pull origin {}'.format(env.branch))
+        # local(FRONTEND_BUILD_COMMAND)
 
 
 @task

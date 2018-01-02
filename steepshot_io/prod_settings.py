@@ -40,7 +40,7 @@ if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
     ALLOWED_HOSTS = [
-        'www.steepshot.io', 'steepshot.io', '104.236.41.188']
+        'www.steepshot.io', 'steepshot.io', '159.203.87.66']
 
 PROJECT_NAME = 'steepshot_io'
 
