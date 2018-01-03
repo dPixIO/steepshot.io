@@ -1,7 +1,8 @@
 import os
 
 USER = 'root'
-HOST = '159.203.87.66'
+WEB_HOST = '104.236.41.188'
+LANDING_HOST = '159.203.87.66'
 
 CURRENT_HOST = 'steepshot.io'
 
@@ -80,7 +81,7 @@ GOLOS_SETTINGS_MODULE = 'steepshot_io.golos_prod_settings'
 
 ENVIRONMENTS = {
     'PROD': {
-        'HOST': HOST,
+        'HOST': LANDING_HOST,
         'SSH_PORT': '22',
         'USER': USER,
         'GIT_BRANCH': 'master',
@@ -90,7 +91,7 @@ ENVIRONMENTS = {
         'IS_CERTBOT_CERT': True,
     },
     'SPA_PROD': {
-        'HOST': HOST,
+        'HOST': WEB_HOST,
         'SSH_PORT': '22',
         'USER': USER,
         'CURRENT_HOST': 'alpha.steepshot.io',
