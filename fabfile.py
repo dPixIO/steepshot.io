@@ -8,7 +8,7 @@ from fabric.contrib.files import upload_template, contains, append, exists
 from fabric.operations import put, prompt
 
 from steepshot_io.deploy_settings import (
-    USER, HOST, REMOTE_DEPLOY_DIR, PROJECT_NAME, REPOSITORY,
+    USER, WEB_HOST, LANDING_HOST, REMOTE_DEPLOY_DIR, PROJECT_NAME, REPOSITORY,
     DEPLOY_DIR, UBUNTU_PACKAGES, WORKON_HOME, ENV_NAME, LOCAL_CONF_DIR,
     ENV_PATH, DATABASE_URL, DB_USER, DB_PASSWORD, DB_NAME,
     GUNI_PORT, GUNI_WORKERS, GUNI_TIMEOUT, GUNI_GRACEFUL_TIMEOUT,
@@ -91,7 +91,7 @@ def spa_qa():
 
 @task
 def shell():
-    os.execlp('ssh', '-C', '-i', env.key_filename, '%(user)s@%(host)s' % {'user': USER, 'host': HOST})
+    os.execlp('ssh', '-C', '-i', env.key_filename, '%(user)s@%(host)s' % {'user': USER, 'host': env.HOST})
 
 
 @task
