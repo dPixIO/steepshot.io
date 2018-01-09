@@ -467,3 +467,42 @@ class GetBrowseUsersCount(GetHotTopNewCount):
     def get(self, request):
         data = self.get_data()
         return render(request, self.template_name, data)
+
+
+class GetAllStats(BaseView):
+
+    template_name = 'all_stats.html'
+
+    names_stats_endpoints = [
+        {'active_users_monthly': 'MAU'},
+        {'user_sessions_daily': 'Count sessions'},
+        {'new_users_daily': 'Count new users daily'},
+        {'new_users_monthly': 'Count new users monthly'},
+        {'new_users_percent_daily': 'Percent new users'},
+        {'DAU': 'DAU'},
+        {'DAU_new_users': 'DAU new users'},
+        {'posts_average_per_author': 'Average posts per author'},
+        {'posts_payout_users': 'Users payout'},
+        {'posts_count_daily': 'Count posts'},
+        {'posts_count_new_users': 'Count post from new users'},
+        {'posts_count_monthly': 'Count posts monthly'},
+        {'posts_fee_daily': 'Benefeciary payout'},
+        {'posts_fee_weekly': 'Posts fee weekly'},
+        {'posts_fee_author': 'Average fee author per day'},
+        {'posts_fee_users': 'Average fee user per day'},
+        {'posts_ratio_daily': 'Daily ratio (Ratio of logged users and posts created by them)'},
+        {'posts_ratio_monthly': 'Monthly ratio'},
+        {'count_top': 'Count of requests for top'},
+        {'count_hot': 'Count of requests for hot'},
+        {'count_new': 'Count of requests for new'},
+        {'browse_users_count_new': 'Count users of requests for new'},
+        {'browse_users_count_top': 'Count users of requests for top'},
+        {'browse_users_count_hot': 'Count users of requests for hot'},
+        {'count_comments_weekly': 'Count comments'},
+        {'count_votes_weekly': 'Count votes'},
+        {'votes_average_weekly': 'Average votes user per day'}
+    ]
+
+    def get(self, request):
+        all_url = self.names_stats_endpoints
+        return render(request, self.template_name, {'data': all_url})

@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=20170707">
+    <script src="{% static 'js/plotly-latest.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <h1>ALL STATS</h1>
+    {% for dict in data %}
+        {% for key, value in dict.items %}
+            <div>
+            <ul>
+                <li>{{ value }}
+                    <input type="button" class="btn" value="show graph">
+                </li>
+            </ul>
+            </div>
+        {% endfor %}
+    {% endfor %}
+<script>
+    
+</script>
+</body>
+</html>
+
