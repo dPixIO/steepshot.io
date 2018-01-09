@@ -5,7 +5,7 @@ from typing import Dict
 
 import requests
 from django.conf import settings
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse
 from django.views.generic import View
 from requests.exceptions import HTTPError, ConnectionError
 
@@ -238,7 +238,7 @@ class PostsFeeDaily(BaseView):
         date_from = default 7 days ago
     """
 
-    title = 'Posts fee daily'
+    title = 'Benefeciary payout'
     subtitle = ''
 
     def get_data(self):
@@ -370,7 +370,6 @@ class VotesCountDaily(BaseView):
     def get_data(self):
 
         api_params = get_date_range_from_request(self.request, day_difference=1)
-
         return self.fetch_data(
             name_url='count_votes_weekly',
             api_query=api_params,
@@ -469,6 +468,62 @@ class GetBrowseUsersCount(GetHotTopNewCount):
         return render(request, self.template_name, data)
 
 
+class GetPostsCountNewUsers(BaseView):
+    title = 'Posts count new users'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_count_new_users',
+            modifiers=SumModifier,
+            api_query=self.request.GET,
+            data_x='day',
+            data_y='count_post'
+        )
+
+
+class GetDAU(BaseView):
+    title = 'DAU'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='DAU',
+            modifiers=SumModifier,
+            api_query=self.request.GET,
+            data_x='day',
+            data_y='active_users'
+        )
+
+
+class GetDAUNewUsers(BaseView):
+    title = 'DAU new users'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='DAU_new_users',
+            modifiers=SumModifier,
+            api_query=self.request.GET,
+            data_x='day',
+            data_y='count_users'
+        )
+
+
+class GetUserPayout(BaseView):
+    title = 'Users payout'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='posts_payout_users',
+            modifiers=SumModifier,
+            api_query=self.request.GET,
+            data_x='date',
+            data_y='total_payout_per_day'
+        )
+
+
 class GetAllStats(BaseView):
 
     template_name = 'all_stats.html'
@@ -483,26 +538,27 @@ class GetAllStats(BaseView):
         {'DAU_new_users': 'DAU new users'},
         {'posts_average_per_author': 'Average posts per author'},
         {'posts_payout_users': 'Users payout'},
-        {'posts_count_daily': 'Count posts'},
+        {'count_posts_daily': 'Count posts'},
         {'posts_count_new_users': 'Count post from new users'},
-        {'posts_count_monthly': 'Count posts monthly'},
+        {'count_posts': 'Count posts monthly'},
         {'posts_fee_daily': 'Benefeciary payout'},
         {'posts_fee_weekly': 'Posts fee weekly'},
         {'posts_fee_author': 'Average fee author per day'},
         {'posts_fee_users': 'Average fee user per day'},
-        {'posts_ratio_daily': 'Daily ratio (Ratio of logged users and posts created by them)'},
-        {'posts_ratio_monthly': 'Monthly ratio'},
-        {'count_top': 'Count of requests for top'},
-        {'count_hot': 'Count of requests for hot'},
-        {'count_new': 'Count of requests for new'},
-        {'browse_users_count_new': 'Count users of requests for new'},
-        {'browse_users_count_top': 'Count users of requests for top'},
-        {'browse_users_count_hot': 'Count users of requests for hot'},
+        {'ratio_daily': 'Daily ratio (Ratio of logged users and posts created by them)'},
+        {'ratio_monthly': 'Monthly ratio'},
+        {'count_requests': 'Count of requests for top, new, hot'},
+        {'browse_users_request': 'Count users of requests for new, top, hot'},
         {'count_comments_weekly': 'Count comments'},
-        {'count_votes_weekly': 'Count votes'},
+        {'count_votes_daily': 'Count votes daily'},
+        {'count_votes_monthly': 'Count votes monthly'},
         {'votes_average_weekly': 'Average votes user per day'}
     ]
 
     def get(self, request):
         all_url = self.names_stats_endpoints
         return render(request, self.template_name, {'data': all_url})
+
+    def post(self, request):
+        name_url = request.POST['name_url']
+        return redirect('graph:{}'.format(name_url))

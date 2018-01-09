@@ -10,10 +10,15 @@ urlpatterns = [
     url(r'^users/new/monthly$', UsersNewCountMonthly.as_view(), name='new_users_monthly'),
     url(r'^users/percent/daily$', UsersCountPercentDaily.as_view(), name='new_users_percent_daily'),
 
+    url(r'^users/active/daily$', GetDAU.as_view(), name='DAU'),
+    url(r'^users/active/new$', GetDAUNewUsers.as_view(), name='DAU_new_users'),
+
     url(r'^posts/average/author$', PostsAverageAuthor.as_view(), name='posts_average_per_author'),
     url(r'^posts/count/monthly$', PostsCountMonthly.as_view(), name='count_posts'),
     url(r'^posts/count/daily$', PostsCountDaily.as_view(), name='count_posts_daily'),
+    url(r'^posts/count/new/users$', GetPostsCountNewUsers.as_view(), name='posts_count_new_users'),
     url(r'^posts/fee/daily$', PostsFeeDaily.as_view(), name='posts_fee_daily'),
+    url(r'^posts/payout/users$', GetUserPayout.as_view(), name='posts_payout_users'),
     url(r'^posts/fee/weekly$', PostsFeeWeekly.as_view(), name='posts_fee_weekly'),
     url(r'^posts/fee/users$', AverageFeePerUserSession.as_view(), name='posts_fee_users'),
     url(r'^posts/fee/author$', AverageFeePerAuthor.as_view(), name='posts_fee_author'),
