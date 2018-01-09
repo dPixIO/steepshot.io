@@ -5,7 +5,7 @@ from typing import Dict
 
 import requests
 from django.conf import settings
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from requests.exceptions import HTTPError, ConnectionError
 
