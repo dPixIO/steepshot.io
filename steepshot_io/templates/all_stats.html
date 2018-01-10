@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=20170707">
+    <script src="{% static 'js/plotly-latest.min.js' %}"></script>
+</head>
+<body>
+    <h1>ALL STATS</h1>
+    {% for dict in data %}
+        {% for key, value in dict.items %}
+            <div>
+            <ul>
+                <form method="post" target="_blank">
+                    <li>{{ value }}
+                            {% csrf_token %}
+                            <input type="hidden" value="{{ key }}" name="name_url">
+                            <input type="submit" class="btn" value="Show graph">
+                    </li>
+               </form>
+            </ul>
+            </div>
+        {% endfor %}
+    {% endfor %}
+</body>
+</html>
+
