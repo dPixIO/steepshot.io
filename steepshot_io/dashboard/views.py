@@ -46,7 +46,7 @@ class GetDashboard(BaseView):
                     {'url': 'count_comments_weekly', 'data_x': 'day', 'data_y': 'count_comments'},
                     {'url': 'count_votes_weekly', 'data_x': 'day', 'data_y': 'count_votes'}
                 ]}
-    graph_4 = {'name_graph': 'Count payout users and steepshot USD',
+    graph_4 = {'name_graph': 'Count payouts (STEEM * today\'s USD rate)',
                  'name_data_line_1': 'fee users',
                  'name_data_line_2': 'fee steepshot',
 
