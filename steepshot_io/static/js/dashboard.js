@@ -30,10 +30,11 @@
         drawGraphs(dataGraph_2);
         drawGraphs(dataGraph_3);
         drawGraphs(dataGraph_4);
+        drawGraphs(dataGraph_5);
         }
     var apiQuery = {'date_to': null,
                     'date_from': null};
-    var dataGraph_1, dataGraph_2, dataGraph_3, dataGraph_4;
+    var dataGraph_1, dataGraph_2, dataGraph_3, dataGraph_4, dataGraph_5;
     function get_data(apiQuery) {
 
         if (apiQuery['date_to'] != null) {
@@ -44,7 +45,7 @@
             var date_from = '';
             var date_to = '';
         }
-        var api = ['?graph=1', '?graph=2', '?graph=3', '?graph=4'];
+        var api = ['?graph=1', '?graph=2', '?graph=3', '?graph=4', '?graph=5'];
         api.forEach(function(item, i, arr) {
         $.getJSON('.'+ item+date_to+date_from, function (data) {
         if (i==0) {
@@ -66,6 +67,11 @@
         else if (i==3){
             dataGraph_4 = data;
             drawGraphs(dataGraph_4);
+
+        }
+         else if (i==4){
+            dataGraph_5 = data;
+            drawGraphs(dataGraph_5);
 
         }
     })})}
