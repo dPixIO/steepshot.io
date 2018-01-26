@@ -56,6 +56,16 @@ class GetDashboard(BaseView):
                     {'url': 'posts_fee_daily', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
                 ]}
 
+    graph_5 = {'name_graph': 'Count payouts (in STEEM)',
+                 'name_data_line_1': 'fee users',
+                 'name_data_line_2': 'fee steepshot',
+
+               'name_div': 'graph5',
+                 'urls': [
+                    {'url': 'posts_payout_users', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
+                    {'url': 'posts_fee_daily', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
+                ]}
+
     def _sort_data_from_request(self, data, date_x, date_y, last_iter=False):
         sort_date = lambda x: x[date_x]
         if last_iter:
@@ -69,16 +79,18 @@ class GetDashboard(BaseView):
     def _get_data_graph(self, graph_num, api_query=None):
         if not api_query:
             api_query = self._make_api_query(self.date_to, self.date_from)
-        print(api_query, 'API!')
         if graph_num == '1':
             graph = self.graph_1
         elif graph_num == '2':
             graph = self.graph_2
         elif graph_num == '3':
             graph = self.graph_3
-        else:
+        elif graph_num == '4':
             graph = self.graph_4
-
+        else:
+            api_query['currency'] = 'steem'
+            graph = self.graph_5
+        print(api_query, 'API!')
         try:
             name_data_line_2 = graph['name_data_line_2']
         except KeyError:
