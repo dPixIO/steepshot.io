@@ -31,10 +31,11 @@
         drawGraphs(dataGraph_3);
         drawGraphs(dataGraph_4);
         drawGraphs(dataGraph_5);
+        drawGraphs(dataGraph_6);
         }
     var apiQuery = {'date_to': null,
                     'date_from': null};
-    var dataGraph_1, dataGraph_2, dataGraph_3, dataGraph_4, dataGraph_5;
+    var dataGraph_1, dataGraph_2, dataGraph_3, dataGraph_4, dataGraph_5, dataGraph_6;
     function get_data(apiQuery) {
 
         if (apiQuery['date_to'] != null) {
@@ -45,34 +46,36 @@
             var date_from = '';
             var date_to = '';
         }
-        var api = ['?graph=1', '?graph=2', '?graph=3', '?graph=4', '?graph=5'];
+        var api = ['?graph=1', '?graph=2', '?graph=3', '?graph=4', '?graph=5', '?graph=6'];
         api.forEach(function(item, i, arr) {
         $.getJSON('.'+ item+date_to+date_from, function (data) {
-        if (i==0) {
-             dataGraph_1 = data;
-             drawGraphs(dataGraph_1);
-
-        }
-        else if (i==1){
-            dataGraph_2 = data;
-            drawGraphs(dataGraph_2);
-
-
-        }
-        else if (i==2){
-            dataGraph_3 = data;
-            drawGraphs(dataGraph_3);
-
-        }
-        else if (i==3){
-            dataGraph_4 = data;
-            drawGraphs(dataGraph_4);
-
-        }
-         else if (i==4){
-            dataGraph_5 = data;
-            drawGraphs(dataGraph_5);
-
+        switch (i) {
+            case 0:
+                dataGraph_1 = data;
+                drawGraphs(dataGraph_1);
+                break;
+            case 1:
+                dataGraph_2 = data;
+                drawGraphs(dataGraph_2);
+                break;
+            case 2:
+                dataGraph_3 = data;
+                drawGraphs(dataGraph_3);
+                break;
+            case 3:
+                dataGraph_4 = data;
+                drawGraphs(dataGraph_4);
+                break;
+            case 4:
+                dataGraph_5 = data;
+                drawGraphs(dataGraph_5);
+                break;
+            case 5:
+                dataGraph_6 = data;
+                drawGraphs(dataGraph_6);
+                break;
+            default:
+                break;
         }
     })})}
     function drawGraphs(data) {

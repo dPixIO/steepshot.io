@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^posts/ratio/daily$', PostsRatioDaily.as_view(), name='ratio_daily'),
     url(r'^posts/ratio/monthly$', PostsRatioMonthly.as_view(), name='ratio_monthly'),
 
+    url(r'^timeouts/daily$', GetDailyTimeouts.as_view(), name='timeouts_daily'),
+
     url(r'^comments/count$', CommentsCount.as_view(), name='count_comments_weekly'),
 
     url(r'^browse/request/count$', GetHotTopNewCount.as_view(), name='count_requests'),
