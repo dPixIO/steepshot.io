@@ -524,6 +524,20 @@ class GetUserPayout(BaseView):
         )
 
 
+class GetDailyTimeouts(BaseView):
+    title = 'Timeouts daily'
+    subtitle = ''
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='timeouts_daily',
+            modifiers=SumModifier,
+            api_query=self.request.GET,
+            data_x='date',
+            data_y='count'
+        )
+
+
 class GetAllStats(BaseView):
 
     template_name = 'all_stats.html'
@@ -552,7 +566,8 @@ class GetAllStats(BaseView):
         {'count_comments_weekly': 'Count comments'},
         {'count_votes_daily': 'Count votes daily'},
         {'count_votes_monthly': 'Count votes monthly'},
-        {'votes_average_weekly': 'Average votes user per day'}
+        {'votes_average_weekly': 'Average votes user per day'},
+        {'timeouts_daily': 'Timeouts daily'},
     ]
 
     def get(self, request):

@@ -66,6 +66,14 @@ class GetDashboard(BaseView):
                     {'url': 'posts_fee_daily', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
                 ]}
 
+    graph_6 = {'name_graph': 'Timeouts daily',
+                 'name_data_line_1': 'timeouts daily',
+
+               'name_div': 'graph6',
+                 'urls': [
+                    {'url': 'timeouts_daily', 'data_x': 'date', 'data_y': 'count'},
+                ]}
+
     def _sort_data_from_request(self, data, date_x, date_y, last_iter=False):
         sort_date = lambda x: x[date_x]
         if last_iter:
@@ -87,9 +95,12 @@ class GetDashboard(BaseView):
             graph = self.graph_3
         elif graph_num == '4':
             graph = self.graph_4
-        else:
+        elif graph_num == '5':
             api_query['currency'] = 'steem'
             graph = self.graph_5
+        else:
+            graph = self.graph_6
+
         print(api_query, 'API!')
         try:
             name_data_line_2 = graph['name_data_line_2']
@@ -109,6 +120,10 @@ class GetDashboard(BaseView):
             try:
                 data_steem = requests.get(settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.STEEM_V1), params=api_query).json()
                 data_golos = requests.get(settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.GOLOS_V1), params=api_query).json()
+                if 'result' in data_steem:
+                    data_steem = data_steem['result']
+                if 'result' in data_golos:
+                    data_golos = data_golos['result']
             except JSONDecodeError as e:
                 logger.error('Failed to parse json: {err}.'.format(err=e))
                 continue

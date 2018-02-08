@@ -85,6 +85,8 @@ REQUESTS_URL = {
     'posts_ratio_daily': '{url}/posts/ratio/daily',
     'posts_ratio_monthly': '{url}/posts/ratio/monthly',
 
+    'timeouts_daily': '{url}/stats/timeouts/daily',
+
     'count_top': '{url}/request/count/top',
     'count_hot': '{url}/request/count/hot',
     'count_new': '{url}/request/count/new',
