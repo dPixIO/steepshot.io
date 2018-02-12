@@ -74,8 +74,18 @@ class GetDashboard(BaseView):
                     {'url': 'timeouts_daily', 'data_x': 'date', 'data_y': 'count'},
                 ]}
 
+    graph_7 = {'name_graph': 'LTV daily',
+               'name_data_line_1': 'LTV beginning',
+               'name_data_line_2': 'LTV 3 months',
+               'name_div': 'graph7',
+               'list_keys_ltv': ['beginning', 'three_month'],
+               'urls': [
+                    {'url': 'ltv_daily', 'data_x': 'day', 'data_y': 'ltv'}
+                ]}
+
     def _sort_data_from_request(self, data, date_x, date_y, last_iter=False):
         sort_date = lambda x: x[date_x]
+
         if last_iter:
             return [i[date_x] for i in sorted(data, key=sort_date)]
         else:
@@ -98,8 +108,10 @@ class GetDashboard(BaseView):
         elif graph_num == '5':
             api_query['currency'] = 'steem'
             graph = self.graph_5
-        else:
+        elif graph_num == '6':
             graph = self.graph_6
+        else:
+            graph = self.graph_7
 
         print(api_query, 'API!')
         try:
@@ -119,7 +131,10 @@ class GetDashboard(BaseView):
         for count, i in enumerate(graph['urls'], start=1):
             try:
                 data_steem = requests.get(settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.STEEM_V1), params=api_query).json()
-                data_golos = requests.get(settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.GOLOS_V1), params=api_query).json()
+                if graph_num != '7':
+                    data_golos = requests.get(settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.GOLOS_V1), params=api_query).json()
+                else:
+                    data_golos = {}
                 if 'result' in data_steem:
                     data_steem = data_steem['result']
                 if 'result' in data_golos:
@@ -137,12 +152,18 @@ class GetDashboard(BaseView):
             if count == count_iter:
                 list_date = self._sort_data_from_request(data_steem, i['data_x'], i['data_y'], last_iter=True)
                 res_graph['date'] = list_date
-            data_steem = self._sort_data_from_request(data_steem, i['data_x'], i['data_y'])
-            data_golos = self._sort_data_from_request(data_golos, i['data_x'], i['data_y'])
-            data_sum = list(map(lambda x: x[0] + x[1], zip(data_steem, data_golos)))
-            res_graph['data_steem'].append(data_steem)
-            res_graph['data_golos'].append(data_golos)
-            res_graph['data_sum'].append(data_sum)
+
+            if graph_num == '7':
+                data_steem = self._sort_data_from_request(data_steem, i['data_x'], 'ltv')
+                for key in graph['list_keys_ltv']:
+                    res_graph['data_steem'].append([d[key] for d in data_steem])
+            else:
+                data_steem = self._sort_data_from_request(data_steem, i['data_x'], i['data_y'])
+                res_graph['data_steem'].append(data_steem)
+                data_golos = self._sort_data_from_request(data_golos, i['data_x'], i['data_y'])
+                data_sum = list(map(lambda x: x[0] + x[1], zip(data_steem, data_golos)))
+                res_graph['data_golos'].append(data_golos)
+                res_graph['data_sum'].append(data_sum)
         return res_graph
 
     def get(self, request):
