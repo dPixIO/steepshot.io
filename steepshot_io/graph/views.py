@@ -76,7 +76,10 @@ class BaseView(View):
                     res_data_idx = len(res['data'])
                     res_data_idx_map[key] = res_data_idx
                     res['data'].append([key] + [0 for i in apis])
-                res['data'][res_data_idx][i] = d.get(data_y)
+                if 'ltv' in d:
+                    res['data'][res_data_idx][i] = d['ltv'].get(data_y)
+                else:
+                    res['data'][res_data_idx][i] = d.get(data_y)
 
         res['data'] = sorted(res['data'], key=lambda x: x[0])
 
@@ -538,6 +541,36 @@ class GetDailyTimeouts(BaseView):
         )
 
 
+class GetLtvDaily(BaseView):
+    title = 'LTV daily'
+    subtitle = ''
+
+    ltv_keys = ['beginning', 'three_month']
+
+    headers = [
+        {'Date': 'string'},
+        {'LTV beginning': 'number'}, {'LTV three month': 'number'}
+    ]
+
+    def get_data(self):
+        data = []
+        for i in self.ltv_keys:
+            res = self.fetch_data(
+                    apis=ApiUrls('steem'),
+                    name_url='ltv_daily',
+                    api_query=self.request.GET,
+                    data_x='day',
+                    data_y=i
+            )
+            data.append(res['data'])
+        group_data = lambda x: [x[0][0], x[0][1], x[1][1]]
+        res_group = zip(data[0], data[1])
+        res = []
+        for i in res_group:
+            res.append(group_data(i))
+        return {'data': res, 'headers': self.headers}
+
+
 class GetAllStats(BaseView):
 
     template_name = 'all_stats.html'
@@ -568,6 +601,7 @@ class GetAllStats(BaseView):
         {'count_votes_monthly': 'Count votes monthly'},
         {'votes_average_weekly': 'Average votes user per day'},
         {'timeouts_daily': 'Timeouts daily'},
+        {'ltv_daily': 'LTV daily'}
     ]
 
     def get(self, request):

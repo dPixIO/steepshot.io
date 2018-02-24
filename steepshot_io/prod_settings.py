@@ -88,6 +88,7 @@ REQUESTS_URL = {
     'posts_new': '{url}/posts/new',
 
     'timeouts_daily': '{url}/stats/timeouts/daily',
+    'ltv_daily': '{url}/stats/ltv',
 
     'count_top': '{url}/request/count/top',
     'count_hot': '{url}/request/count/hot',
