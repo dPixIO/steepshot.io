@@ -1,6 +1,9 @@
+import requests
 from django.contrib import messages
+from django.conf import settings
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
+from django.core.paginator import Paginator
 from steepshot_io.core.forms import SubscribeForm, InvestorsForms
 from steepshot_io.core.models import TeamMembers, Vanancy
 
@@ -68,3 +71,20 @@ class GetInvestor(View):
             success = True
             form = InvestorsForms()
         return render(request, self.template_name, {'form': form, 'success': success})
+
+
+class PostAnalitycs(View):
+    template_name = 'post_analitycs.html'
+    endpoint = {'url': 'posts_new', 'limit': 20,}
+
+    def _get_data_from_request(self, *args, **kwargs):
+        url_steem = settings.REQUESTS_URL.get(self.endpoint['url'], '{url}').format(url=settings.STEEM_V1_1)
+        req_steem = requests.get(url_steem, params={'limit': self.endpoint['limit'], 'offset': kwargs['offset']}).json()
+        for post in req_steem['results']:
+            post['post_url'] = post['url'][post['url'][1:].find('/') + 1:]
+        return req_steem
+
+    def get(self, request):
+        data_steem = self._get_data_from_request(offset=request.GET.get('offset'))
+        context = {'data_steem': data_steem}
+        return render(request, self.template_name, context)
