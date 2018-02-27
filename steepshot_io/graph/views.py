@@ -149,6 +149,7 @@ class UsersNewCountDaily(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='new_users_daily',
+            api_query=self.request.GET,
             modifiers=SumModifier,
             data_x='day',
             data_y='count_users'
@@ -162,6 +163,7 @@ class UsersNewCountMonthly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='new_users_monthly',
+            api_query=self.request.GET,
             modifiers=SumModifier,
             data_x='date_to',
             data_y='count_new_users'
@@ -175,6 +177,7 @@ class UsersCountPercentDaily(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='new_users_percent_daily',
+            api_query=self.request.GET,
             modifiers=AverageModifier,
             data_x='day',
             data_y='percent'
