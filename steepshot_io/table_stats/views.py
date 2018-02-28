@@ -82,7 +82,7 @@ class GetDelegatorsSteepshot(View):
 
     def get(self, request):
         name_url = 'delegators_steepshot'
-        url_steem = settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_QA_V1)
+        url_steem = settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1)
         req_steem = requests.get(url_steem, params=request.GET).json()
         res_data = [
             {
