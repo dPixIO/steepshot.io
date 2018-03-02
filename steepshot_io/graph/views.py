@@ -365,6 +365,25 @@ class CommentsCount(BaseView):
         )
 
 
+class CommentsPercentage(BaseView):
+    """
+    This endpoint shows percentage of comments
+    created through Steepshot relatively to all comments
+    """
+
+    title = 'Comments percentage'
+    subtitle = 'Comments through SteepShot / all comments'
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='comments_percentage',
+            api_query=self.request.GET,
+            modifiers=SumModifier,
+            data_x='day',
+            data_y='percent'
+        )
+
+
 class VotesCountDaily(BaseView):
     """
     GET param:
