@@ -8,7 +8,8 @@
   {% for post in data_steem.results %}
   <div class="post-wrapper">
     <div class="img" style="background-image: url({{ post.media.0.url }});"></div>
-    Link: <a href="//alpha.steepshot.io/post{{ post.post_url }}" target="_blank">{{ post.post_url }}</a>
+    Link: <a href="//alpha.steepshot.io/post{{ post.post_url }}" target="_blank">{{ post.post_url }}</a><br>
+    Is Unique: {% if post.is_plagiarism %}No{% else %}Yes{% endif %}
   </div>
   {% endfor %}
   <br>
