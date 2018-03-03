@@ -99,7 +99,7 @@ REQUESTS_URL = {
     'browse_users_count_hot': '{url}/browse/users/count/hot',
 
     'count_comments_weekly': '{url}/posts/count/comments',
-    'comments_percentage': '{url}/posts/percentage/comments',
+    'comments_percentage': '{url}/stats/comments/percentage',
 
     'count_votes_weekly': '{url}/posts/count/votes',
     'votes_average_weekly': '{url}/posts/average/votes',
