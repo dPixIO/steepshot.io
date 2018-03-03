@@ -208,7 +208,7 @@ a  {
 #buttons {
     border:solid #f0f1f5 1px;
     border-radius: 10px;
-    height: 200px;
+    height: 180px;
     text-align: left;
     font-size:0.8em;
     z-index: 13;
@@ -217,7 +217,7 @@ a  {
     opacity: 1;
     display: inline-block;
     position: fixed;
-    top: 420px;
+    top: 440px;
 }
 
 #buttons p {
@@ -225,12 +225,12 @@ a  {
     font-family: 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: 600 !important;
-    margin: 14px 15px 30px;
+    margin: 10px 15px 25px;
     color:#374657;
 }
 
 #buttons a + p {
-    margin: 25px 15px 30px;
+    margin: 25px 15px 20px;
 }
 
 #buttons a {
