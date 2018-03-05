@@ -367,11 +367,11 @@ class CommentsCount(BaseView):
 
 class CommentsPercentage(BaseView):
     """
-    This endpoint shows percentage of comments
+    This endpoint shows percent of comments
     created through Steepshot relatively to all comments
     """
 
-    title = 'Comments percentage'
+    title = 'Comments percent'
     subtitle = 'Comments through Steepshot / all comments'
 
     def get_data(self):
