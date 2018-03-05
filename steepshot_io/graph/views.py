@@ -372,7 +372,7 @@ class CommentsPercentage(BaseView):
     """
 
     title = 'Comments percentage'
-    subtitle = 'Comments through SteepShot / all comments'
+    subtitle = 'Comments through Steepshot / all comments'
 
     def get_data(self):
         return self.fetch_data(
