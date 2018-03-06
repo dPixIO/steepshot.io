@@ -141,7 +141,7 @@
 	                </h2>
 
 	                <div id="textfield">
-	                    <form method="post">
+	                    <form id="request-form" method="post">
 	                        {% csrf_token %}
 	                        {{ form }}
 	                        <input id="submit" class="submit-input" type="submit" value="SEND REQUEST"/>

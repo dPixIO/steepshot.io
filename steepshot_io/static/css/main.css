@@ -965,11 +965,12 @@ input:focus {
     }
 
     h1 {
-        font-size: 37px;
+        font-size: 25px;
         margin: 3% auto;
     }
 
     h2 {
+        font-size: 18px;
         margin:25px 0 !important;
     }
 
@@ -1111,85 +1112,22 @@ input:focus {
         background-size:100%;
     }
 
-    #mimga {
-        display:none;
+    /******************************************
+    *******************************************/
+    #request-form {
+        margin-top: 15vh;
     }
 
-    #simg img {
+    #mimg img, #mimga img, #mimg2 img, #mimg3 img{
         display: none;
     }
 
-    #mimg img, #mimg2 img, #mimg3 img, #simg img {
-        height: 300px;
-        transition: 0.4s !important;
-        transition-delay: 0s !important;
+    #panel3 input.submit-input {
+        margin: 35px auto;
     }
 
-    #mimg img {
-        -webkit-animation-name: amimgp;
-        animation-name: amimgp;
-        bottom:70px;
-    }
-
-    #mimg2 img {
-        -webkit-animation-name: amimg2p;
-        animation-name: amimg2p;
-        left: -140px;
-    }
-
-    #mimg3 img {
-        -webkit-animation-name: amimg3p;
-        animation-name: amimg3p;
-        left: 310px;
-    }
-
-    @-webkit-keyframes amimgp {
-        0%   { left: -30px;}
-
-        50%  { left: 0;}
-
-        100% { left: -30px;}
-    }
-
-    @keyframes amimgp {
-        0%   { left: -30px;}
-
-        50%  { left: 0;}
-
-        100% { left: -30px;}
-    }
-
-    @-webkit-keyframes amimg2p {
-        0%   {  bottom:-120px;}
-
-        50%  {  bottom:-100px;}
-
-        100% {  bottom:-120px;}
-    }
-
-    @keyframes amimg2p {
-        0%   {  bottom:-120px;}
-
-        50%  {  bottom:-100px;}
-
-        100% {  bottom:-120px;}
-    }
-
-    @-webkit-keyframes amimg3p {
-        0%   {  bottom: 120px;}
-
-        50%  {  bottom:140px;}
-
-        100% {  bottom: 120px;}
-    }
-
-    @keyframes amimg3p {
-        0%   {  bottom: 120px;}
-
-        50%  {  bottom:140px;}
-
-        100% {  bottom: 120px;}
-    }
+    /******************************************
+    *******************************************/
 
     #panel2 {
         width: 90%;
@@ -1230,7 +1168,7 @@ input:focus {
     }
 
     #panel3 h2 {
-        font-size: 22px;
+        font-size: 18px;
     }
 
     #panel3 input{
@@ -1240,13 +1178,13 @@ input:focus {
     }
 
     #panel3 label {
-        left:5%;
-        margin-top: -28px;
+        width: 100%;
     }
 
     #panel3 .active label{
-        margin-top: -40px;
+        margin-top: -10px;
         font-size: 12px;
+        color: #7ed321;
     }
 
     #submit{

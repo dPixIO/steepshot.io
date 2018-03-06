@@ -296,8 +296,6 @@ if(isMobile.matches||isTablet.matches){
                         pdelay();
                         sfd=0;
                     }
-
-                    fPageDw();
                 }
             }
         }
