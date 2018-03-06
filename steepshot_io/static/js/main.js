@@ -227,7 +227,6 @@ if(isMobile.matches||isTablet.matches){
             }
         }, false);
 
-
         $('#header').bind('touchstart touchend touchup', function(event) {
             event.stopPropagation();
         });
@@ -312,7 +311,7 @@ if(isMobile.matches||isTablet.matches){
         a = a || window.event;
 
         if (a.keyCode == '38' || a.keyCode == '37') {
-                // up and to the left
+            // up and to the left
 
             if (document.getElementById("panel1").className !== "hd") {
                 fpgr();
@@ -323,8 +322,9 @@ if(isMobile.matches||isTablet.matches){
                     } else {
                         function sPageUp() {
                             if (document.getElementById("panel3").className !== "hd") {
-                                tpgr(); }
+                                tpgr(); 
                             }
+                        }
 
                         function sdelay() {sPageUp()}/* не удалять! без него пропускает страницы*/
                         setTimeout(sdelay,10);
@@ -335,9 +335,9 @@ if(isMobile.matches||isTablet.matches){
             }
         } else if (a.keyCode == '40'||a.keyCode == '39') {
             // down and to the right
-            if (document.getElementById("panel3").className !== "hd")
-                {   tpg();}
-            else {
+            if (document.getElementById("panel3").className !== "hd") {   
+                tpg();
+            } else {
                 if (document.getElementById("panel2").className !== "hd"){
                     spg();
                 } else {
