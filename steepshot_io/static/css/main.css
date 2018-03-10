@@ -235,7 +235,7 @@ a {
     opacity: 1;
     display: inline-block;
     position: fixed;
-    top: 440px;
+    top: 400px;
 }
 
 #buttons p {
@@ -262,8 +262,8 @@ a {
 }
 
 .btpg2 {
-    margin-left: 45% !important;
-    top: 520px !important;
+    margin-left: 48% !important;
+    top: 460px !important;
 }
 
 #mimg img, #mimg2 img, #mimg3 img {
@@ -465,17 +465,17 @@ a {
 
 .backtext {
     background-image: url("Text BG@3x.png");
-    margin: 1% 0 -1.5em 0;
+    margin: 1% 0 -3em 0;
     transition: 0.45s;
     background-repeat: no-repeat;
     padding: 110px;
-    background-size: 1000px;
+    background-size: 930px;
     position: relative;
     z-index: 1;
 }
 
 .frontext {
-    width: 70%;
+    width: 75%;
     transition: 0.45s;
 }
 
@@ -556,10 +556,14 @@ h2 {
     opacity: 1;
     transition: 0.45s;
     position: fixed;
-    top:160px;
+    top: 100px;
     left: 51vw;
     width: 44vw;
     max-width: 630px;
+}
+
+.textp2 h1 {
+    margin-bottom: 10px !important;
 }
 
 #panel3 {
@@ -1069,7 +1073,7 @@ input:focus {
         left: 0;
         text-align: center;
         background-color: #ffffff;
-        padding: 40px 0 0 0;
+        padding: 75px 0 0 0;
     }
 
     #menu li {
@@ -1207,6 +1211,16 @@ input:focus {
 
     #submit{
         width: auto;
+    }
+}
+
+/*
+ * Bug with buttons div on screens from 1025 to 1100 px
+ */
+
+@media (min-width: 1025px) and (max-width: 1100px) {
+    .btpg2 {
+        margin-left: 45% !important;
     }
 }
 
