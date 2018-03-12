@@ -15,6 +15,7 @@ html {
     font-size: 1em;
     line-height: 1.4;
     height:100%;
+    overflow: hidden;
 }
 
 /*
@@ -100,11 +101,13 @@ textarea {
     margin:auto;
     max-width: 1260px;
 }
+
 body {
     background: #f6f6fb;
     background-image: url("BG@3x.png");
     background-size: cover;
 }
+
 #header {
     clear: both;
     text-decoration: none;
@@ -112,6 +115,7 @@ body {
     position: relative;
     z-index:15;
 }
+
 #header a {
     color:#374657;
     font-size: 0.8em;
@@ -133,25 +137,37 @@ body {
     background-size: 120px;
     background-repeat: no-repeat;
 }
-.tgmenu {display: none;}
+
+.tgmenu {
+    display: none;
+}
+
 #header ul {
     list-style-type: none;
     display: inline;
     margin:0;
     font-weight: bold;
     float: right;
+    padding: 0;
 }
+
+li#st-blog {
+    margin: 0 !important;
+}
+
 #menu li {
     display: inline-block;
     margin:0 0 0 60px;
 }
+
 #menu li > a {
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
     font-style: normal;
     font-weight: 600 !important;
 }
-a  {
+
+a {
     text-decoration: none;
 }
 
@@ -167,13 +183,14 @@ a  {
 	display: none;
 	z-index: 19;
 	padding: 15px 10px;
-
 }
+
 #modal_form_text {
     text-align: center;
     text-decoration: none;
     margin: 15px;
 }
+
 #modal_form #modal_close {
 	width: 21px;
 	height: 21px;
@@ -203,12 +220,13 @@ a  {
     opacity: 1;
     transition: 0.45s;
     position: fixed;
+    z-index: 2;
 }
 
 #buttons {
     border:solid #f0f1f5 1px;
     border-radius: 10px;
-    height: 180px;
+    height: 200px;
     text-align: left;
     font-size:0.8em;
     z-index: 13;
@@ -217,7 +235,7 @@ a  {
     opacity: 1;
     display: inline-block;
     position: fixed;
-    top: 440px;
+    top: 400px;
 }
 
 #buttons p {
@@ -230,7 +248,7 @@ a  {
 }
 
 #buttons a + p {
-    margin: 25px 15px 20px;
+    margin: 25px 15px 30px;
 }
 
 #buttons a {
@@ -244,8 +262,8 @@ a  {
 }
 
 .btpg2 {
-    margin-left:45% !important;
-    top:520px !important;
+    margin-left: 48% !important;
+    top: 460px !important;
 }
 
 #mimg img, #mimg2 img, #mimg3 img {
@@ -259,10 +277,12 @@ a  {
     opacity: 0;
     z-index: 1;
 }
-.hd #mimg img
-{  transition-property: right, opacity;
+
+.hd #mimg img {   
+    transition-property: right, opacity;
     transition-duration: 0.4s, 0.1s;
-    transition-delay: 0s, 0.35s; }
+    transition-delay: 0s, 0.35s; 
+}
 
 #mimga img {
     right:-2250px ;
@@ -282,10 +302,12 @@ a  {
     transition-delay: 0.3s;
     transition-duration: 0.05s !important;
 }
+
 #error{
     display: none;
     color: red;
 }
+
 #mimg2 img {
     right:-2000px;
     bottom: -480px;
@@ -315,6 +337,7 @@ a  {
 
     100% { right:-350px;}
 }
+
 @keyframes amimg {
     0%   { right:-350px;}
 
@@ -323,13 +346,14 @@ a  {
     100% { right:-350px;}
 }
 
-.mimg2 img{
+.mimg2 img {
     bottom: -480px;
     right: -30px !important;
     -webkit-animation-name: amimg2; /* Safari 4.0 - 8.0 */
     animation-name: amimg2;
     opacity: 1 !important;
 }
+
 @-webkit-keyframes amimg2 {
     0%   {  bottom:-500px;}
 
@@ -337,6 +361,7 @@ a  {
 
     100% {  bottom:-500px;}
 }
+
 @keyframes amimg2 {
     0%   {  bottom:-500px;}
 
@@ -352,6 +377,7 @@ a  {
     animation-name: amimg3;
     opacity: 1 !important;
 }
+
 @-webkit-keyframes amimg3 {
     0%   {  bottom: -20px;}
 
@@ -359,6 +385,7 @@ a  {
 
     100% {  bottom: -20px;}
 }
+
 @keyframes amimg3 {
     0%   {  bottom: -20px;}
 
@@ -369,7 +396,6 @@ a  {
 
 #simga img {
     display: none;
-
     opacity: 0;
     left: 7%;
     height:600px;
@@ -396,6 +422,7 @@ a  {
     opacity: 1;
     transition: 0.45s;
 }
+
 @-webkit-keyframes asimg {
     0%   { left: 5%;}
 
@@ -403,6 +430,7 @@ a  {
 
     100% { left: 5%;}
 }
+
 @keyframes asimg {
     0%   { left: 5%;}
 
@@ -437,21 +465,24 @@ a  {
 
 .backtext {
     background-image: url("Text BG@3x.png");
-    margin: 6% 0 -6.5em 0;
+    margin: 1% 0 -3em 0;
     transition: 0.45s;
     background-repeat: no-repeat;
     padding: 110px;
-    background-size: 1000px;
+    background-size: 930px;
     position: relative;
     z-index: 1;
 }
 
 .frontext {
-    width: 60%;
+    width: 75%;
     transition: 0.45s;
 }
 
-.hd .textbox1 {opacity: 0 !important;}
+.hd .textbox1 {
+    display: none !important;
+    opacity: 0 !important;
+}
 
 .hd {
     margin-bottom: 0 !important;
@@ -476,15 +507,22 @@ a  {
     opacity: 1 !important;
 }
 
-#panel3.hd h2{    margin: -30px 0 -70px;  }
+#panel3.hd h2 {    
+    margin: -30px 0 -70px;  
+    text-align: center;
+}
 
 .hd #simg img {
     opacity: 0;
 }
 
-#panel3.hd {opacity: 0 !important;  }
+#panel3.hd {
+    opacity: 0 !important;  
+}
 
-#buttons.hd{opacity: 0;}
+#buttons.hd{
+    opacity: 0;
+}
 
 
 h1 {
@@ -498,7 +536,7 @@ h1 {
     z-index: 13;
 }
 
-h2{
+h2 {
     margin:0;
     font-size: 24px;
     font-family: 'Open Sans', sans-serif;
@@ -514,13 +552,18 @@ h2{
     height: 100%;
 }
 
-.textp2 {opacity: 1;
-transition: 0.45s;
+.textp2 {
+    opacity: 1;
+    transition: 0.45s;
     position: fixed;
-    top:160px;
+    top: 100px;
     left: 51vw;
     width: 44vw;
     max-width: 630px;
+}
+
+.textp2 h1 {
+    margin-bottom: 10px !important;
 }
 
 #panel3 {
@@ -530,10 +573,11 @@ transition: 0.45s;
     opacity: 1;
     transition: 0.45s;
     top: 170px;
-
 }
 
-#panel3 h2{transition: 0.45s;}
+#panel3 h2{
+    transition: 0.45s;
+}
 
 #panel3 input {
     padding: 15px 0;
@@ -568,6 +612,7 @@ transition: 0.45s;
 input:focus {
     outline-width: 0;
 }
+
 #panel3 label {
     font-size: 14px;
     font-family: 'Open Sans', sans-serif;
@@ -579,16 +624,20 @@ input:focus {
     overflow: hidden;
     transition: 0.2s;
 }
-.active label{
+
+.active label {
     margin-top: -14px;
     font-size: 12px;
 }
-.active input{
+
+.active input {
     border-bottom: #7ED321 solid 1px;
 }
+
 #panel3 h2 {
     margin: 30px 0;
 }
+
 #submit {
     display: block;
     border-radius: 8px;
@@ -612,6 +661,7 @@ input:focus {
     left: 50%;
     z-index: 14;
 }
+
 .cntrbtn {
     background-image: url("Mouse@2x.png");
     padding: 19px 13px;
@@ -620,6 +670,7 @@ input:focus {
     margin: 0 auto;
     width: 0;
 }
+
 .cntrbtn1 {
     background-image: url("Arrrow 2@2x.png");
     padding: 6px 9px;
@@ -634,6 +685,7 @@ input:focus {
     animation-duration: 6s;
     animation-iteration-count: infinite;
 }
+
 @-webkit-keyframes cba {
     0%   {margin: -1px auto -5px;}
 
@@ -641,6 +693,7 @@ input:focus {
 
     100% {   margin: -1px auto -5px;}
 }
+
 @keyframes cba {
     0%   {margin: -1px auto -5px;}
 
@@ -655,15 +708,16 @@ input:focus {
     font-style: normal;
     font-weight: 600 !important;
     position: fixed;
-    bottom: 50px;
+    bottom: 25px;
     z-index: 12;
 }
+
 #soc_links a, #stile_faq a{
     color: #374657;
     margin:0 5em 0 0;
 }
 
-#stile_faq{
+#stile_faq {
     font-size: 14px;
     font-family:"Open Sans", sans-serif;
     font-style: normal;
@@ -673,12 +727,13 @@ input:focus {
     font-weight: 600
 }
 
-.post-wrapper{
+.post-wrapper {
     width: 100%;
     height: 256px;
     margin: 20px;
 }
-.post-wrapper .img{
+
+.post-wrapper .img {
     overflow: hidden;
     height: 256px;
     width: 256px;
@@ -695,7 +750,6 @@ input:focus {
  */
 
 @media (min-width: 768px) and (max-width: 1024px) {
-
     .hd {
         height: 0!important;
     }
@@ -704,81 +758,125 @@ input:focus {
         margin-top: 0 !important;
     }
 
-    #main_content{ text-align: center;}
-
-    .wrapper {width:80%;}
-    #contr{display: none;}
-
-.textbox1 {position:relative;}
-
-.backtext {
-    background-size:100%;
-    margin: 8% 0 -6.5em 0;}
-.frontext {
-    width: 100%;
-}
-
-#panel3 {
-    width:100%;
-    text-align: center;
-    margin:-160px auto auto;
-    position: relative;
-}
-#panel3 input{
-    width: 85%;
-    text-align: center;
-}
-
-#submit { margin: 35px auto;}
-
-#soc_links {
-    width:80%;
-    text-align: center;
-    background: rgba(251, 251, 251, 0.8);
-    padding: 20px 0;
-}
-
-    #mimga #simg{display:none!important;}
-
-#panel2 {
-    width: 100%;
-    margin-left: 0;
-    margin-top: 100px !important;
-}
-
-.textp2 {
-    position: relative;
-    left: auto;
-    width:auto;
-    max-width:100%;
-    margin-left: auto !important;
-    display: inline-block;
-    top:auto;
-}
-.btpg2 {
-    margin-left: auto!important;
-    top:auto !important;
-}
-#buttons{
-    text-align: center;
-    width:100%;
-    height:100px;
-    position: relative;
-    top:auto;
-}
-#buttons p {
-    margin: 10px 15px 30px;
-}
-#panel1 {
-    margin-bottom: 2em;
-}
-    #mimga ,#simg {display: none;}
-
-#mimg img, #mimg2 img, #mimg3 img,#mimga img{
-    height: 600px;
+    #main_content{
+        text-align: center;
     }
 
-    #mimg img{
+    .wrapper {
+        width:80%;
+    }
+
+    #contr{
+        display: none;
+    }
+
+    .textbox1 {
+        position:relative;
+    }
+
+    .backtext {
+        background-size:100%;
+        margin: 5% 0 -2.5em 0;
+    }
+
+    .frontext {
+        width: 100%;
+    }
+
+    #panel3 {
+        width: 100%;
+        text-align: center;
+        margin: -120px auto auto;
+        position: relative;
+    }
+
+    #panel3 input {
+        width: 85%;
+        text-align: center;
+    }
+
+    #panel3 label {
+        width: 100%;
+    }
+
+    #panel3 input.submit-input {
+        margin: 35px auto;
+    }
+
+    #panel3 .active label {
+        margin-top: -10px;
+    }
+
+    #request-form {
+        margin-top: 15vh;
+    }
+
+    #submit { 
+        margin: 35px auto;
+    }
+
+    #soc_links {
+        width:80%;
+        text-align: center;
+        background: rgba(251, 251, 251, 0.8);
+        padding: 20px 0;
+    }
+
+    #mimga #simg{
+        display:none!important;
+    }
+
+
+    #panel2 {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 40px !important;
+    }
+
+    .textp2 {
+        position: relative;
+        left: auto;
+        width:auto;
+        max-width:100%;
+        margin-left: auto !important;
+        display: inline-block;
+        top:auto;
+    }
+
+    #buttons.hd {
+        display: none;
+    }
+
+    .btpg2 {
+        margin-left: auto !important;
+        top: 100px !important;
+    }
+
+    #buttons{
+        text-align: center;
+        width:100%;
+        height:100px;
+        position: relative;
+        top: 25px;
+    }
+
+    #buttons p {
+        margin: 10px 15px 30px;
+    }
+
+    #panel1 {
+        margin-bottom: 2em;
+    }
+
+    #mimga ,#simg {
+        display: none;
+    }
+
+    #mimg img, #mimg2 img, #mimg3 img,#mimga img {
+        height: 600px;
+    }
+
+    #mimg img {
         left:0;
         bottom: -200px!important;
         -webkit-animation-name: amimgt;
@@ -787,18 +885,17 @@ input:focus {
         transition-delay: 0s !important;
     }
 
-#mimg2 img{
-    left: -250px !important;
-    -webkit-animation-name: amimg2t;
-    animation-name: amimg2t;
-    }
-#mimg3 img{
-
-    bottom: -60px !important;
-    -webkit-animation-name: amimg3t;
-    animation-name: amimg3t;
+    #mimg2 img {
+        left: -250px !important;
+        -webkit-animation-name: amimg2t;
+        animation-name: amimg2t;
     }
 
+    #mimg3 img {
+        bottom: -60px !important;
+        -webkit-animation-name: amimg3t;
+        animation-name: amimg3t;
+    }
 
     @-webkit-keyframes amimgt {
         0%   { left: 30px;}
@@ -807,6 +904,7 @@ input:focus {
 
         100% { left: 30px;}
     }
+
     @keyframes amimgt {
         0%   { left: 30px;}
 
@@ -822,6 +920,7 @@ input:focus {
 
         100% {  bottom:-500px;}
     }
+
     @keyframes amimg2t {
         0%   {  bottom:-500px;}
 
@@ -837,6 +936,7 @@ input:focus {
 
         100% {  bottom: -40px;}
     }
+
     @keyframes amimg3t {
         0%   {  bottom: -40px;}
 
@@ -844,8 +944,10 @@ input:focus {
 
         100% {  bottom: -40px;}
     }
-    #soc_links a { margin: 0 3.5em 0; }
 
+    #soc_links a { 
+        margin: 0 3.5em 0; 
+    }
 }
 
 /*
@@ -853,25 +955,27 @@ input:focus {
  */
 
 @media  (max-width: 767px) {
-
     .hd {
         height: 0;
         overflow: hidden;
     }
+
     .hd h1 {
         height: 0;
     }
+
     .hd h2 {
         height: 0;
     }
+
     .hd .textp2 {
         height:0;
     }
-    .hd p {height: 0;}
 
-    .hd .textbox1 {
-
+    .hd p {
+        height: 0;
     }
+
     .wrapper{
         width: 100%;
         margin-left: 0;
@@ -884,16 +988,19 @@ input:focus {
     #panel3.hd {
         overflow: hidden;
     }
+
     .hd .textp2{
         margin-left: auto;
     }
 
-    h1{
-        font-size: 37px;
-        margin: 3% auto;
+    h1 {
+        font-size: 25px;
+        margin: 2% auto;
     }
-    h2{
-        margin:25px 0 !important;
+
+    h2 {
+        font-size: 16px;
+        margin: 25px 0 !important;
     }
 
     #soc_links {
@@ -903,22 +1010,27 @@ input:focus {
         bottom:0;
         padding: 20px 0;
     }
+
     #soc_links a {
         margin: 1em;
     }
-    #contr{
+
+    #contr {
         display: none;
     }
+
     #header {
         margin-top: 30px;
         margin-left: 20px;
     }
+
     .home-icon {
         z-index: 16;
         position: fixed;
         margin: 0;
         top: 26px;
     }
+
     #tgmenu {
         display: inline-block;
         cursor: pointer;
@@ -926,7 +1038,8 @@ input:focus {
         right: 30px;
         top: 20px;
         z-index: 15;
-        }
+    }
+
     .bar1, .bar2, .bar3 {
         width: 23px;
         height: 3px;
@@ -934,19 +1047,24 @@ input:focus {
         margin: 6px 0;
         transition: 0.3s;
     }
+
     .change .bar1 {
         -webkit-transform: rotate(-45deg) translate(-7px, 4px) ;
         transform: rotate(-45deg) translate(-7px, 4px) ;
     }
 
-    .change .bar2 {opacity: 0;}
+    .change .bar2 {
+        opacity: 0;
+    }
 
     .change .bar3 {
         -webkit-transform: rotate(45deg) translate(-8px, -6px) ;
         transform: rotate(45deg) translate(-8px, -6px) ;
     }
-    #header ul{ top: -330px;
-    transition: 0.3s;
+
+    #header ul { 
+        top: -330px;
+        transition: 0.3s;
         display: block !important;
         float:none;
         position: fixed;
@@ -955,7 +1073,7 @@ input:focus {
         left: 0;
         text-align: center;
         background-color: #ffffff;
-        padding: 40px 0 0 0;
+        padding: 75px 0 0 0;
     }
 
     #menu li {
@@ -963,7 +1081,8 @@ input:focus {
         margin:40px;
         transition: 0.35s;
     }
-    .changem{
+
+    .changem {
         display: block !important;
         float:none;
         position: fixed;
@@ -975,39 +1094,43 @@ input:focus {
         background-color: #ffffff;
         padding: 40px 0 0 0;
     }
+
     #buttons {
-        border:none;
+        border: none;
         text-align: center;
         width: 100%;
-        height:auto;
+        height: 100px;
         position: relative;
-        top:auto !important;
-
-        display: none;
+        top: auto;
     }
 
     #buttons p {
         margin: 0 15px 30px;
     }
+
     .btpg2 {
         position: relative !important;
         margin-left: auto !important;
         top:0!important;
     }
-   .apple {
+
+    .apple {
        padding: 15px 27px;
-   }
-   .android {
+    }
+
+    .android {
        padding: 15px 18px;
-   }
-   .alpha_steepshot {
+    }
+
+    .alpha_steepshot {
        padding: 15px 80px;
-   }
+    }
+
     .frontext {
         width: 90%;
         text-align: center;
         margin: 0 auto;
-        opacity: 0;
+        opacity: 1;
         transition: 0.3s;
     }
 
@@ -1016,76 +1139,17 @@ input:focus {
         margin: 15% 5% 0;
         background-size:100%;
     }
-    #mimga {
-        display:none;
-    }
-    #simg img{
-        display: none;}
-    #mimg img, #mimg2 img, #mimg3 img,#simg img {
-        height: 300px;
-        transition: 0.4s !important;
-        transition-delay: 0s !important;
-    }
-    #mimg img {
-        -webkit-animation-name: amimgp;
-        animation-name: amimgp;
-        bottom:70px;
-    }
-    #mimg2 img {
-        -webkit-animation-name: amimg2p;
-        animation-name: amimg2p;
-        left: -140px;
 
-    }
-    #mimg3 img {
-        -webkit-animation-name: amimg3p;
-        animation-name: amimg3p;
-        left: 310px;
+    #request-form {
+        margin-top: 15vh;
     }
 
-    @-webkit-keyframes amimgp {
-        0%   { left: -30px;}
-
-        50%  { left: 0;}
-
-        100% { left: -30px;}
-    }
-    @keyframes amimgp {
-        0%   { left: -30px;}
-
-        50%  { left: 0;}
-
-        100% { left: -30px;}
+    #mimg img, #mimga img, #mimg2 img, #mimg3 img{
+        display: none;
     }
 
-    @-webkit-keyframes amimg2p {
-        0%   {  bottom:-120px;}
-
-        50%  {  bottom:-100px;}
-
-        100% {  bottom:-120px;}
-    }
-    @keyframes amimg2p {
-        0%   {  bottom:-120px;}
-
-        50%  {  bottom:-100px;}
-
-        100% {  bottom:-120px;}
-    }
-
-    @-webkit-keyframes amimg3p {
-        0%   {  bottom: 120px;}
-
-        50%  {  bottom:140px;}
-
-        100% {  bottom: 120px;}
-    }
-    @keyframes amimg3p {
-        0%   {  bottom: 120px;}
-
-        50%  {  bottom:140px;}
-
-        100% {  bottom: 120px;}
+    #panel3 input.submit-input {
+        margin: 35px auto;
     }
 
     #panel2 {
@@ -1093,14 +1157,16 @@ input:focus {
         margin: 13% auto 0;
         text-align: center;
     }
+
     .textbox1 {
         position: relative!important;
-        margin-top: 28%;
+        margin-top: 20%;
     }
 
     .backtext {
         padding: 9%;
     }
+
     .textp2 {
         top:auto;
         left: auto;
@@ -1108,10 +1174,10 @@ input:focus {
         position: relative!important;
     }
 
-    h2 { font-size:16px;}
     #simg {
         display: none;
     }
+
     #panel3 {
         position: relative;
         text-align: center;
@@ -1121,26 +1187,89 @@ input:focus {
     }
 
     #panel3 h2 {
-        font-size: 22px;
+        font-size: 18px;
     }
+
     #panel3 input{
         width:100%;
         text-align: center;
         padding: 10px 0;
     }
+
     #panel3 label {
-        left:5%;
-        margin-top: -28px;
+        width: 100%;
     }
+
     #panel3 .active label{
-        margin-top: -40px;
+        margin-top: -10px;
         font-size: 12px;
     }
+
     #submit{
         width: auto;
     }
-
 }
+
+
+/*
+ *    Large screens
+ */
+
+@media (min-width: 1650px) and (max-width: 2099px) {
+    .btpg2 {
+        margin-left: 39% !important;
+        top: 520px !important;
+    }
+}
+
+
+/*
+ *    Extra large screens
+ */
+
+@media (min-width: 2100px) {
+    .btpg2 {
+        margin-left: 30% !important;
+        top: 520px !important;
+    }
+}
+
+
+/*
+ * Extra small phones
+ */
+@media (max-height: 550px) {
+    #buttons {
+        margin-top: -35px !important;
+    }
+
+    h1 {
+        font-size: 20px !important;
+    }
+
+    h2 {
+        font-size: 16px !important:;
+    }
+}
+
+@media (max-height: 620px) {
+    .btpg2 {
+        display: none !important;
+    }
+}
+
+
+/*
+ * Bug with buttons div on screens from 1025 to 1100 px
+ */
+
+@media (min-width: 1025px) and (max-width: 1100px) {
+    .btpg2 {
+        margin-left: 45% !important;
+    }
+}
+
+
 
 /* ==========================================================================
    Helper classes
@@ -1313,44 +1442,45 @@ input:focus {
 }
 /*made by ds_drummer (Alex Osipenko)*/
 
-.col-md-4{
+.col-md-4 {
     float: left;
     width: 33.33%;
 }
 
 .team_image {
-     width: 250px;
-     height: 300px;
-     }
+    width: 250px;
+    height: 300px;
+}
 
 .col-md-4:after {
-  content: "";
-  display: table;
-  clear: both;
+    content: "";
+    display: table;
+    clear: both;
 }
 
 .container_team{
     position: absolute;
 }
 
-
 .clear{
     float: none;
     clear: both;
 }
 
-.jobs{
+.jobs {
     height: 50px;
 }
 
-.table_stats{
+.table_stats {
     width: 100%;
     margin-top: 10px;
 }
-.title_table{
+
+.title_table {
     font-size: 200%;
     text-align: center;
 }
+
 .table_stats_row {
     text-align: center;
 }
@@ -1359,10 +1489,9 @@ input:focus {
     width: 50%;
     float: left;
     margin-bottom: 10px;
-
 }
 
-.form-dashboard{
+.form-dashboard {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -1411,8 +1540,8 @@ input:focus {
     top: 50%;
     left: 50%;
     margin: -125px 0 0 -125px;
-
 }
+
 .front_dasboard {
     width: 500px;
     height: 300px;
@@ -1434,6 +1563,7 @@ input:focus {
   background: #fe6637;
   color: #fff;
 }
+
 .btn:hover:before {
   left: 150px;
   transition: .5s ease-in-out;
