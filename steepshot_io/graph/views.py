@@ -622,6 +622,7 @@ class GetAllStats(BaseView):
         {'count_requests': 'Count of requests for top, new, hot'},
         {'browse_users_request': 'Count users of requests for new, top, hot'},
         {'count_comments_weekly': 'Count comments'},
+        {'comments_percentage': 'Comments percentage'},
         {'count_votes_daily': 'Count votes daily'},
         {'count_votes_monthly': 'Count votes monthly'},
         {'votes_average_weekly': 'Average votes user per day'},
