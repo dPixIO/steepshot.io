@@ -999,8 +999,8 @@ input:focus {
     }
 
     h2 {
-        font-size: 18px;
-        margin:25px 0 !important;
+        font-size: 16px;
+        margin: 25px 0 !important;
     }
 
     #soc_links {
@@ -1174,10 +1174,6 @@ input:focus {
         position: relative!important;
     }
 
-    h2 {
-        font-size:16px;
-    }
-
     #simg {
         display: none;
     }
@@ -1214,16 +1210,6 @@ input:focus {
     }
 }
 
-/*
- * Bug with buttons div on screens from 1025 to 1100 px
- */
-
-@media (min-width: 1025px) and (max-width: 1100px) {
-    .btpg2 {
-        margin-left: 45% !important;
-    }
-}
-
 
 /*
  *    Large screens
@@ -1245,6 +1231,41 @@ input:focus {
     .btpg2 {
         margin-left: 30% !important;
         top: 520px !important;
+    }
+}
+
+
+/*
+ * Extra small phones
+ */
+@media (max-height: 550px) {
+    #buttons {
+        margin-top: -35px !important;
+    }
+
+    h1 {
+        font-size: 20px !important;
+    }
+
+    h2 {
+        font-size: 16px !important:;
+    }
+}
+
+@media (max-height: 620px) {
+    .btpg2 {
+        display: none !important;
+    }
+}
+
+
+/*
+ * Bug with buttons div on screens from 1025 to 1100 px
+ */
+
+@media (min-width: 1025px) and (max-width: 1100px) {
+    .btpg2 {
+        margin-left: 45% !important;
     }
 }
 
