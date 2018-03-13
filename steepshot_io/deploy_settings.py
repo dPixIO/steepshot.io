@@ -96,7 +96,7 @@ ENVIRONMENTS = {
         'USER': USER,
         'CURRENT_HOST': 'alpha.steepshot.io',
         'SETTINGS_MODULE': SETTINGS_MODULE,
-        'GIT_BRANCH': 'master',
+        'GIT_BRANCH': 'production',
         'KEY_FILENAME': KEY_FILENAME,
         'WEBAPP_HOST': 'alpha.steepshot.io',
     },
