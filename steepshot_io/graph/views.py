@@ -148,6 +148,7 @@ class UsersNewCountDaily(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='new_users_daily',
+            api_query=self.request.GET,
             modifiers=SumModifier,
             data_x='day',
             data_y='count_users'
@@ -161,6 +162,7 @@ class UsersNewCountMonthly(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='new_users_monthly',
+            api_query=self.request.GET,
             modifiers=SumModifier,
             data_x='date_to',
             data_y='count_new_users'
@@ -174,6 +176,7 @@ class UsersCountPercentDaily(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='new_users_percent_daily',
+            api_query=self.request.GET,
             modifiers=AverageModifier,
             data_x='day',
             data_y='percent'
@@ -362,6 +365,25 @@ class CommentsCount(BaseView):
         )
 
 
+class CommentsPercentage(BaseView):
+    """
+    This endpoint shows percent of comments
+    created through Steepshot relatively to all comments
+    """
+
+    title = 'Comments percent'
+    subtitle = 'Comments through Steepshot / all comments'
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='comments_percentage',
+            api_query=self.request.GET,
+            modifiers=SumModifier,
+            data_x='day',
+            data_y='percent'
+        )
+
+
 class VotesCountDaily(BaseView):
     """
     GET param:
@@ -373,6 +395,8 @@ class VotesCountDaily(BaseView):
     def get_data(self):
 
         api_params = get_date_range_from_request(self.request, day_difference=1)
+        api_params['user_agent'] = self.request.GET.get('user_agent', None)
+
         return self.fetch_data(
             name_url='count_votes_weekly',
             api_query=api_params,
@@ -393,6 +417,7 @@ class VotesCountMonthly(BaseView):
     def get_data(self):
 
         api_params = get_date_range_from_request(self.request, day_difference=30)
+        api_params['user_agent'] = self.request.GET.get('user_agent', None)
 
         return self.fetch_data(
             name_url='count_votes_weekly',

@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^stats/ltv$', GetLtvDaily.as_view(), name='ltv_daily'),
 
     url(r'^comments/count$', CommentsCount.as_view(), name='count_comments_weekly'),
+    url(r'^comments/percentage$', CommentsPercentage.as_view(), name='comments_percentage'),
 
     url(r'^browse/request/count$', GetHotTopNewCount.as_view(), name='count_requests'),
 

@@ -59,6 +59,7 @@ else:
 
 
 STEEM_V1 = 'https://steepshot.org/api/v1'
+STEEM_V1_1 = 'https://steepshot.org/api/v1_1'
 STEEM_QA_V1 = 'https://qa.steepshot.org/api/v1'
 GOLOS_V1 = 'https://golos.steepshot.org/api/v1'
 GOLOS_QA_V1 = 'https://qa.golos.steepshot.org/api/v1'
@@ -84,6 +85,7 @@ REQUESTS_URL = {
     'posts_fee_users': '{url}/posts/fee/users',
     'posts_ratio_daily': '{url}/posts/ratio/daily',
     'posts_ratio_monthly': '{url}/posts/ratio/monthly',
+    'posts_new': '{url}/posts/new',
 
     'timeouts_daily': '{url}/stats/timeouts/daily',
     'ltv_daily': '{url}/stats/ltv',
@@ -97,9 +99,12 @@ REQUESTS_URL = {
     'browse_users_count_hot': '{url}/browse/users/count/hot',
 
     'count_comments_weekly': '{url}/posts/count/comments',
+    'comments_percentage': '{url}/stats/comments/percentage',
 
     'count_votes_weekly': '{url}/posts/count/votes',
     'votes_average_weekly': '{url}/posts/average/votes',
+
+    'delegators_steepshot': '{url}/stats/delegators/full'
 }
 
 

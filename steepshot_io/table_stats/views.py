@@ -75,3 +75,22 @@ class GetStatsTable(View):
                        {'table_data': data_golos, 'title_table': 'Golos stats'}]
         return render(request, self.template_name, {'list_tables': list_tables,
                                                     'heder_table': heder_table})
+
+
+class GetDelegatorsSteepshot(View):
+    template_name = 'delegators_table.html'
+
+    def get(self, request):
+        name_url = 'delegators_steepshot'
+        url_steem = settings.REQUESTS_URL.get(name_url, '{url}').format(url=settings.STEEM_V1)
+        req_steem = requests.get(url_steem, params=request.GET).json()
+        res_data = [
+            {
+                'vests_per_hour': req_steem[i]['vests_per_hour'],
+                'steem_per_hour': req_steem[i]['steem_per_hour'],
+                'username': i
+            }for i in sorted(req_steem, key=lambda x: req_steem[x]['vests_per_hour'], reverse=True)]
+        header_table = ['№', 'username', 'vests_per_hour', 'steem_per_hour']
+
+        return render(request, self.template_name, {'data': res_data,
+                                                    'header_table': header_table})
