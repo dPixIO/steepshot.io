@@ -86,11 +86,11 @@ class GetDelegatorsSteepshot(View):
         req_steem = requests.get(url_steem, params=request.GET).json()
         res_data = [
             {
-                'vests_per_hour': req_steem[i]['vests_per_hour'],
-                'steem_per_hour': req_steem[i]['steem_per_hour'],
+                'participation_vests': req_steem[i]['participation_vests'],
+                'participation_steem': req_steem[i]['participation_steem'],
                 'username': i
-            }for i in sorted(req_steem, key=lambda x: req_steem[x]['vests_per_hour'], reverse=True)]
-        header_table = ['№', 'username', 'vests_per_hour', 'steem_per_hour']
+            }for i in sorted(req_steem, key=lambda x: req_steem[x]['participation_vests'], reverse=True)]
+        header_table = ['№', 'username', 'participation_vests', 'participation_steem']
 
         return render(request, self.template_name, {'data': res_data,
                                                     'header_table': header_table})
