@@ -58,7 +58,8 @@ else:
     CURRENT_NODE = u''
 
 
-STEEM_V1 = 'https://steepshot.org/api/v1'
+#STEEM_V1 = 'https://steepshot.org/api/v1'
+STEEM_V1 = 'http://localhost:8000/api/v1'
 STEEM_V1_1 = 'https://steepshot.org/api/v1_1'
 STEEM_QA_V1 = 'https://qa.steepshot.org/api/v1'
 GOLOS_V1 = 'https://golos.steepshot.org/api/v1'
@@ -86,6 +87,7 @@ REQUESTS_URL = {
     'posts_ratio_daily': '{url}/posts/ratio/daily',
     'posts_ratio_monthly': '{url}/posts/ratio/monthly',
     'posts_new': '{url}/posts/new',
+    'posts_sharing': '{url}/stats/posts/sharing',
 
     'timeouts_daily': '{url}/stats/timeouts/daily',
     'ltv_daily': '{url}/stats/ltv',

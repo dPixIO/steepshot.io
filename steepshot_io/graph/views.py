@@ -345,6 +345,22 @@ class PostsRatioMonthly(BaseView):
         )
 
 
+class PostsSharing(BaseView):
+    name_url = 'posts_sharing'
+
+    title = 'Posts sharings'
+    subtitle = 'Amount of posts sharings per day'
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url=self.name_url,
+            api_query=self.request.GET,
+            modifiers=SumModifier,
+            data_x='day',
+            data_y='count'
+        )
+
+
 class CommentsCount(BaseView):
     """
     GET param:
