@@ -346,6 +346,13 @@ class PostsRatioMonthly(BaseView):
 
 
 class PostsSharing(BaseView):
+    """
+    GET param:
+        date_to (default - yesterday)
+        date_from (default - month ago)
+        social_network (default - all)
+    """
+
     name_url = 'posts_sharing'
 
     title = 'Posts sharings'
