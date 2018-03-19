@@ -1,6 +1,7 @@
 {% extends "index.html" %}
 {% load staticfiles %}
 
+
 {% block contentmidle %}
     <p><a href="{% url 'core:index' %}"> Back to the main page </a></p>
     <h3>Q: What is Steepshot?</h3>
@@ -83,11 +84,21 @@
     <p><a href="{% url 'core:index' %}"> Back to the main page </a></p>
 
 {% endblock %}
-    {% block footer %}
-        <div id="stile_faq">
-            <a href="https://www.facebook.com/steepshot/" target="_blank">Facebook</a>
-            <a href="https://twitter.com/steepshot" target="_blank">Twitter</a>
-            <a href="https://t.me/steepshot_en" target="_blank">Telegram</a>
-        </div>
-        </div>
+
+
+{% block footer %}
+    <div id="stile_faq">
+        <a href="https://www.facebook.com/steepshot/" target="_blank">Facebook</a>
+        <a href="https://twitter.com/steepshot" target="_blank">Twitter</a>
+        <a href="https://t.me/steepshot_en" target="_blank">Telegram</a>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script>
+        $(document).ready(function() {
+            $('html').prop('id', '');
+        });
+    </script>
 {% endblock %}
