@@ -6,7 +6,7 @@
 {% block contentmidle %}
 <div class="front_dasboard">
     <h1>
-        Log In Dashboard
+        Log In Stats
     </h1>
 </div>
 <form method="post" class="form_login_dashboard">
@@ -25,6 +25,7 @@
             {% endfor %}
         </ul>
         {% endif %}
+    <input type="hidden" name="next_path" value="{{ next_path }}">
     <button>Log In</button>
 </form>
 {% endblock %}
