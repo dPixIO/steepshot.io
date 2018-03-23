@@ -86,6 +86,7 @@ REQUESTS_URL = {
     'posts_ratio_daily': '{url}/posts/ratio/daily',
     'posts_ratio_monthly': '{url}/posts/ratio/monthly',
     'posts_new': '{url}/posts/new',
+    'posts_sharing': '{url}/stats/posts/sharing',
 
     'timeouts_daily': '{url}/stats/timeouts/daily',
     'ltv_daily': '{url}/stats/ltv',
