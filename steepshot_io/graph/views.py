@@ -2,15 +2,18 @@ import logging
 from enum import Enum
 from json.decoder import JSONDecodeError
 from typing import Dict
-
 import requests
+from requests.exceptions import HTTPError, ConnectionError
+
 from django.conf import settings
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from requests.exceptions import HTTPError, ConnectionError
 
 from steepshot_io.graph.data_modifiers import SumModifier, AverageModifier, BaseModifier
 from steepshot_io.graph.utils import get_date_range_from_request
+from steepshot_io.dashboard.forms import UserLoginDasboardForm
 
 
 logger = logging.getLogger(__name__)
@@ -25,6 +28,7 @@ class BaseView(View):
     template_name = 'graph.html'
     title = ''
     subtitle = ''
+    template_login = 'stats_login.html'
 
     def fetch_data(self,
                    apis=None,
@@ -93,6 +97,29 @@ class BaseView(View):
 
     def get_data(self) -> Dict:
         pass
+
+    def post(self, request, *args, **kwargs):
+        form = UserLoginDasboardForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username,  password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect(request.POST['next_path'])
+                else:
+                    messages.error(request, 'You are banned')
+            else:
+                messages.error(request, 'Incorrect username or password')
+        return render(request, self.template_login, {'form': form})
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated() and request.method == 'GET':
+            next_path = request.path
+            form = UserLoginDasboardForm()
+            return render(request, self.template_login, {'form': form, 'next_path': next_path})
+        return super(BaseView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request):
         data = self.get_data()
@@ -620,7 +647,7 @@ class GetLtvDaily(BaseView):
         return {'data': res, 'headers': self.headers}
 
 
-class GetAllStats(BaseView):
+class GetAllStats(View):
 
     template_name = 'all_stats.html'
 
@@ -658,6 +685,6 @@ class GetAllStats(BaseView):
         all_url = self.names_stats_endpoints
         return render(request, self.template_name, {'data': all_url})
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         name_url = request.POST['name_url']
         return redirect('graph:{}'.format(name_url))

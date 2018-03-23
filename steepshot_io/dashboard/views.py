@@ -3,15 +3,12 @@ import requests
 import logging
 from django.conf import settings
 from django.http import JsonResponse
-from django.contrib import messages
-from django.contrib.auth import authenticate, login
 
 from requests.exceptions import HTTPError, ConnectionError
 from json.decoder import JSONDecodeError
 
 from django.shortcuts import render
 from steepshot_io.graph.views import BaseView
-from steepshot_io.dashboard.forms import UserLoginDasboardForm
 from steepshot_io.table_stats.helpers import str_from_datetime
 
 logger = logging.getLogger(__name__)
@@ -19,7 +16,6 @@ logger = logging.getLogger(__name__)
 
 class GetDashboard(BaseView):
     template_name = 'dashboard.html'
-    template_login = 'dashboard_login.html'
     date_to = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=1))
     date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=8))
     graph_1 = {'name_graph': 'DAU and DAU new users',
@@ -178,23 +174,4 @@ class GetDashboard(BaseView):
             data = self._get_data_graph(graph_num)
             return JsonResponse(data)
         else:
-            form = UserLoginDasboardForm()
-            return render(request, self.template_login, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = UserLoginDasboardForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username,  password=password)
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return render(request, self.template_name)
-                else:
-                    messages.error(request, 'You are banned')
-            else:
-                messages.error(request, 'Incorrect username or password')
-        return render(request, self.template_login, {'form': form})
-
-
+            return render(request, self.template_name)
