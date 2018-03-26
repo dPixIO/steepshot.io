@@ -40,4 +40,6 @@ urlpatterns = [
 
     url(r'^votes/count/daily$', VotesCountDaily.as_view(), name='count_votes_daily'),
     url(r'^votes/count/monthly$', VotesCountMonthly.as_view(), name='count_votes_monthly'),
+
+    url(r'^coolness/requests$', CoolnessRequests.as_view(), name='coolness_requests'),
 ]
