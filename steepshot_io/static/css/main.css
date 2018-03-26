@@ -1251,7 +1251,7 @@ input:focus {
     }
 
     h2 {
-        font-size: 16px !important:;
+        font-size: 16px !important;
     }
 }
 
@@ -1570,4 +1570,58 @@ input:focus {
 .btn:hover:before {
   left: 150px;
   transition: .5s ease-in-out;
+}
+
+#panel-faq {
+    padding: 20px;
+    display: none;
+}
+
+.faq-h2{
+    text-align: center;
+    font-size: 36px;
+
+}
+
+.faq-h3 {
+    margin:0;
+    font-size: 24px;
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    font-weight: 300 !important;
+    color: #374657;
+}
+
+#section-faq{
+    text-indent: 2em;
+}
+
+.link-faq {
+    color: #374657;
+}
+
+.ul-faq{
+    font-size: 24px;
+    font-family: 'Open Sans', sans-serif;
+    color: #374657;
+}
+
+.ul-faq li{
+    font-size: 20px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 200;
+}
+
+.img-faq{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 20%;
+}
+
+.img-big-faq{
+    margin-left: 5%;
+}
+
+.ol-faq li {
+    margin-left: 40px;
 }
