@@ -280,7 +280,7 @@ class PostsFeeDaily(BaseView):
             api_query=self.request.GET,
             modifiers=SumModifier,
             name_url='posts_fee_daily',
-            data_x='date',
+            data_x='day',
             data_y='total_payout_per_day'
         )
 
