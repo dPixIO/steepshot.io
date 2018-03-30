@@ -1572,6 +1572,17 @@ input:focus {
   transition: .5s ease-in-out;
 }
 
+#logout_graph {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 5px;
+}
+
+#logout_dashboard {
+    margin-left: auto;
+}
+
 #panel-faq {
     padding: 20px;
     display: none;

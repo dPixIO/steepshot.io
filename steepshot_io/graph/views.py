@@ -6,9 +6,9 @@ import requests
 from requests.exceptions import HTTPError, ConnectionError
 
 from django.conf import settings
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.views.generic import View
 
 from steepshot_io.graph.data_modifiers import SumModifier, AverageModifier, BaseModifier
@@ -22,6 +22,13 @@ logger = logging.getLogger(__name__)
 class ApiUrls(Enum):
     steem = 'steem'
     golos = 'golos'
+
+
+class Logout(View):
+
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect(reverse('core:index'))
 
 
 class BaseView(View):
@@ -280,7 +287,7 @@ class PostsFeeDaily(BaseView):
             api_query=self.request.GET,
             modifiers=SumModifier,
             name_url='posts_fee_daily',
-            data_x='date',
+            data_x='day',
             data_y='total_payout_per_day'
         )
 

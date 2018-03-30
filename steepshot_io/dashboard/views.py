@@ -49,7 +49,7 @@ class GetDashboard(BaseView):
                'name_div': 'graph4',
                  'urls': [
                     {'url': 'posts_payout_users', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
-                    {'url': 'posts_fee_daily', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
+                    {'url': 'posts_fee_daily', 'data_x': 'day', 'data_y': 'total_payout_per_day'},
                 ]}
 
     graph_5 = {'name_graph': 'Count payouts (in STEEM)',
@@ -59,7 +59,7 @@ class GetDashboard(BaseView):
                'name_div': 'graph5',
                  'urls': [
                     {'url': 'posts_payout_users', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
-                    {'url': 'posts_fee_daily', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
+                    {'url': 'posts_fee_daily', 'data_x': 'day', 'data_y': 'total_payout_per_day'},
                 ]}
 
     graph_6 = {'name_graph': 'Timeouts daily',
