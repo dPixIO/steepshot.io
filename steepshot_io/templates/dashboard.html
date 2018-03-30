@@ -30,8 +30,12 @@
     <input type="button" class="btn" value="show" onclick="data_from_input(this.form)">
 </form>
 <div><span id="error">Date to must be less than Date now</span></div>
+<div id="logout_dashboard">
+    <form method="get" action="{% url 'graph:logout' %}">
+        <input type="submit" class="btn" value="Logout">
+    </form>
 </div>
-
+</div>
 <div class="grid-dashboard">
     <div id="graph1"></div>
 </div>

@@ -3,6 +3,7 @@ from django.conf.urls import url
 from .views import *  # noqa
 
 urlpatterns = [
+    url(r'^logout$', Logout.as_view(), name='logout'),
     url(r'^all/stats$', GetAllStats.as_view(), name='all_stats'),
     url(r'^users/active$', UsersActive.as_view(), name='active_users_monthly'),
     url(r'^users/sessions$', UserSessions.as_view(), name='user_sessions_daily'),
