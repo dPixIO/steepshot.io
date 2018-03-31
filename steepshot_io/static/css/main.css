@@ -1586,6 +1586,8 @@ input:focus {
 #panel-faq {
     padding: 20px;
     display: none;
+    font-size: 17px;
+
 }
 
 .faq-h2{
@@ -1615,6 +1617,7 @@ input:focus {
     font-size: 24px;
     font-family: 'Open Sans', sans-serif;
     color: #374657;
+    cursor: pointer;
 }
 
 .ul-faq li{
@@ -1636,3 +1639,4 @@ input:focus {
 .ol-faq li {
     margin-left: 40px;
 }
+
