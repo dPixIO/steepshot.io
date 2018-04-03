@@ -17,10 +17,15 @@
         <link rel="stylesheet" href="{% static 'css/main.css' %}?v=20170707">
         <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-        <script>
-            window.steepshot = window.steepshot || {};
-        </script>
         {% block extra_head %}{% endblock %}
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116830613-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-116830613-1');
+        </script>
     </head>
     <body >
         <!--[if lt IE 8]>
