@@ -9,94 +9,48 @@
         color: '#fff'
     });
 
-
-
-    var nameData, dataGraph;
-    function checkNameRatio (nameData) {
-        if (nameData==='golos'){
-            dataGraph = 'data_golos'
-        }
-        else if (nameData==='sum'){
-            dataGraph='data_sum'
-            }
-        else
-            dataGraph='data_steem';
-    }
-    checkNameRatio(nameData);
+    var namePlatform = document.getElementsByName("myRadio")[0].value;
     function check_radio(platform) {
-        nameData = document.getElementsByName("myRadio").value = platform;
-        checkNameRatio(nameData);
-        drawGraphs(dataGraph_1);
-        drawGraphs(dataGraph_2);
-        drawGraphs(dataGraph_3);
-        drawGraphs(dataGraph_4);
-        drawGraphs(dataGraph_5);
-        drawGraphs(dataGraph_6);
-        drawGraphs(dataGraph_7);
+        // nameData = platform;
+        namePlatform = platform;
+        apiQuery['platform'] = namePlatform;
+        get_data(apiQuery)
         }
     var apiQuery = {'date_to': null,
-                    'date_from': null};
-    var dataGraph_1, dataGraph_2, dataGraph_3, dataGraph_4, dataGraph_5, dataGraph_6, dataGraph_7;
+                    'date_from': null,
+                    'platform': namePlatform};
     function get_data(apiQuery) {
 
         if (apiQuery['date_to'] != null) {
             var date_from = '&date_from=' + apiQuery['date_from'];
             var date_to = '&date_to=' + apiQuery['date_to'];
+            var platform = '&platform=' + apiQuery['platform']
         }
         else {
             var date_from = '';
             var date_to = '';
+            var platform = '&platform=' +namePlatform;
         }
-        var api = ['?graph=1', '?graph=2', '?graph=3', '?graph=4', '?graph=5', '?graph=6', '?graph=7'];
+        var api = ['?graph=DAU', '?graph=post_count', '?graph=votes_comments', '?graph=usd',
+                    '?graph=steem', '?graph=timeouts', '?graph=LTV'];
         api.forEach(function(item, i, arr) {
-        $.getJSON('.'+ item+date_to+date_from, function (data) {
-        switch (i) {
-            case 0:
-                dataGraph_1 = data;
-                drawGraphs(dataGraph_1);
-                break;
-            case 1:
-                dataGraph_2 = data;
-                drawGraphs(dataGraph_2);
-                break;
-            case 2:
-                dataGraph_3 = data;
-                drawGraphs(dataGraph_3);
-                break;
-            case 3:
-                dataGraph_4 = data;
-                drawGraphs(dataGraph_4);
-                break;
-            case 4:
-                dataGraph_5 = data;
-                drawGraphs(dataGraph_5);
-                break;
-            case 5:
-                dataGraph_6 = data;
-                drawGraphs(dataGraph_6);
-                break;
-            case 6:
-                dataGraph_7 = data;
-                drawGraphs(dataGraph_7);
-                break;
-            default:
-                break;
-        }
+        $.getJSON('.'+ item+date_to+date_from+platform, function (data) {
+            drawGraphs(data)
     })})}
     function drawGraphs(data) {
         console.log(data);
         var chartDiv = document.getElementById(data['name_div']);
         var dataY1 = {
-            'x' : data['date'],
-            'y': data[dataGraph][0],
+            'x' : data['data_x'][0],
+            'y': data['data_y'][0],
              type: 'scatter',
              name: data['name_data_line_1']
 
         };
-        if (data[dataGraph].length == 2) {
+        if (data['data_y'].length == 2) {
             var dataY2 = {
-                'x': data['date'],
-                'y': data[dataGraph][1],
+                'x': data['data_x'][0],
+                'y': data['data_y'][1],
                 type: 'scatter',
                 name: data['name_data_line_2']
             };
