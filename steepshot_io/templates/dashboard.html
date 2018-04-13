@@ -29,6 +29,8 @@
     <span>Date to </span><input type="date" name="date_to">
     <input type="button" class="btn" value="show" onclick="data_from_input(this.form)">
 </form>
+
+<a href="{% url 'graph:all_stats' %}"><input type="button" class="btn" value="ALL STATS"></a>
 <div><span id="error">Date to must be less than Date now</span></div>
 <div id="logout_dashboard">
     <form method="get" action="{% url 'graph:logout' %}">
