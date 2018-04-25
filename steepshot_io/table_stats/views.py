@@ -17,22 +17,21 @@ class GetStatsTable(View):
         {'url': 'posts_count_daily', 'name_data': 'posts counts', 'data_x': 'count_posts', 'data_y': 'day'},
     ]
 
-    date_to = str_from_datetime(datetime.datetime.today())
-    date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=30))
-
     def _get_header_table(self):
         res = [i['name_data'].capitalize() for i in self.name_stats_endpoints]
         res.insert(0, 'Date')
         return res
 
     def _get_data_from_request(self):
+        date_to = str_from_datetime(datetime.datetime.today())
+        date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=30))
         res_golos = []
         res_steem = []
         for i in self.name_stats_endpoints:
             url_steem = settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.STEEM_V1)
-            req_steem = requests.get(url_steem, params={'date_to': self.date_to, 'date_from': self.date_from}).json()
+            req_steem = requests.get(url_steem, params={'date_to': date_to, 'date_from': date_from}).json()
             url_golos = settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.GOLOS_V1)
-            req_golos = requests.get(url_golos, params={'date_to': self.date_to, 'date_from': self.date_from}).json()
+            req_golos = requests.get(url_golos, params={'date_to': date_to, 'date_from': date_from}).json()
             res_steem.append(dict(data_x=i['data_x'], data_y=i['data_y'], data=req_steem))
             res_golos.append(dict(data_x=i['data_x'], data_y=i['data_y'], data=req_golos))
         return res_steem, res_golos
