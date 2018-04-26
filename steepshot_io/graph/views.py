@@ -654,6 +654,25 @@ class GetLtvDaily(BaseView):
         return {'data': res, 'headers': self.headers}
 
 
+class CoolnessRequests(BaseView):
+    '''
+    This endpoint shows amount of requests
+    to picture coolness endpoint
+    '''
+
+    title = 'Request to coolness endpoint'
+    subtitle = 'Amount of requests per day'
+
+    def get_data(self):
+        return self.fetch_data(
+            name_url='coolness_requests',
+            api_query=self.request.GET,
+            modifiers=SumModifier,
+            data_x='day',
+            data_y='count'
+        )
+
+
 class GetAllStats(View):
 
     template_name = 'all_stats.html'

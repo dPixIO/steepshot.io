@@ -105,7 +105,9 @@ REQUESTS_URL = {
     'count_votes_weekly': '{url}/posts/count/votes',
     'votes_average_weekly': '{url}/posts/average/votes',
 
-    'delegators_steepshot': '{url}/stats/delegators/full'
+    'delegators_steepshot': '{url}/stats/delegators/full',
+
+    'coolness_requests': '{url}/stats/coolness/requests',
 }
 
 
