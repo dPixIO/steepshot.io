@@ -16,8 +16,7 @@ logger = logging.getLogger(__name__)
 
 class GetDashboard(BaseView):
     template_name = 'dashboard.html'
-    date_to = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=1))
-    date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=8))
+
     graph_1 = {'name_graph': 'DAU and DAU new users',
                  'name_data_line_1': 'DAU',
                  'name_data_line_2': 'DAU new users',
@@ -91,8 +90,6 @@ class GetDashboard(BaseView):
         return {'date_to': date_to, 'date_from': date_from}
 
     def _get_data_graph(self, graph_num, api_query=None):
-        if not api_query:
-            api_query = self._make_api_query(self.date_to, self.date_from)
         if graph_num == '1':
             graph = self.graph_1
         elif graph_num == '2':
@@ -163,15 +160,15 @@ class GetDashboard(BaseView):
         return res_graph
 
     def get(self, request):
+        date_to = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=1))
+        date_from = str_from_datetime(datetime.datetime.today() - datetime.timedelta(days=8))
         if request.GET.get('graph'):
             graph_num = request.GET.get('graph')
             if request.GET.get('date_from') or request.GET.get('date_to'):
-                date_to = request.GET.get('date_to', self.date_to)
-                date_from = request.GET.get('date_from', self.date_from)
-                api_query = self._make_api_query(date_to, date_from)
-                data = self._get_data_graph(graph_num, api_query=api_query)
-                return JsonResponse(data)
-            data = self._get_data_graph(graph_num)
+                date_to = request.GET.get('date_to', date_to)
+                date_from = request.GET.get('date_from', date_from)
+            api_query = self._make_api_query(date_to, date_from)
+            data = self._get_data_graph(graph_num, api_query=api_query)
             return JsonResponse(data)
         else:
             return render(request, self.template_name)
