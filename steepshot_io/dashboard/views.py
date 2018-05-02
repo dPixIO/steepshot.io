@@ -22,24 +22,24 @@ class GetDashboard(BaseView):
                  'name_data_line_2': 'DAU new users',
                  'name_div': 'graph1',
                  'urls': [
-                    {'url': 'DAU', 'data_x': 'day', 'data_y': 'active_users'},
-                    {'url': 'DAU_new_users', 'data_x': 'day', 'data_y': 'count_users'}
+                    {'url': 'DAU'},
+                    {'url': 'DAU_new_users'}
                 ]}
     graph_2 = {'name_graph': 'Count posts and count post from new users',
                  'name_data_line_1': 'Count posts',
                  'name_data_line_2': 'Count post new users',
                  'name_div': 'graph2',
                  'urls': [
-                    {'url': 'posts_count_daily', 'data_x': 'day', 'data_y': 'count_posts'},
-                    {'url': 'posts_count_new_users', 'data_x': 'day', 'data_y': 'count_post'}
+                    {'url': 'posts_count_daily'},
+                    {'url': 'posts_count_new_users'}
                 ]}
     graph_3 = {'name_graph': 'Count comments and count votes',
                  'name_data_line_1': 'Count comments',
                  'name_data_line_2': 'Count votes',
                  'name_div': 'graph3',
                  'urls': [
-                    {'url': 'count_comments_weekly', 'data_x': 'day', 'data_y': 'count_comments'},
-                    {'url': 'count_votes_weekly', 'data_x': 'day', 'data_y': 'count_votes'}
+                    {'url': 'count_comments_weekly'},
+                    {'url': 'count_votes_weekly'}
                 ]}
     graph_4 = {'name_graph': 'Count payouts (STEEM * today\'s USD rate)',
                  'name_data_line_1': 'fee users',
@@ -47,8 +47,8 @@ class GetDashboard(BaseView):
 
                'name_div': 'graph4',
                  'urls': [
-                    {'url': 'posts_payout_users', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
-                    {'url': 'posts_fee_daily', 'data_x': 'day', 'data_y': 'total_payout_per_day'},
+                    {'url': 'posts_payout_users'},
+                    {'url': 'posts_fee_daily'},
                 ]}
 
     graph_5 = {'name_graph': 'Count payouts (in STEEM)',
@@ -57,8 +57,8 @@ class GetDashboard(BaseView):
 
                'name_div': 'graph5',
                  'urls': [
-                    {'url': 'posts_payout_users', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
-                    {'url': 'posts_fee_daily', 'data_x': 'day', 'data_y': 'total_payout_per_day'},
+                    {'url': 'posts_payout_users'},
+                    {'url': 'posts_fee_daily'},
                 ]}
 
     graph_6 = {'name_graph': 'Timeouts daily',
@@ -66,7 +66,7 @@ class GetDashboard(BaseView):
 
                'name_div': 'graph6',
                  'urls': [
-                    {'url': 'timeouts_daily', 'data_x': 'date', 'data_y': 'count'},
+                    {'url': 'timeouts_daily'},
                 ]}
 
     graph_7 = {'name_graph': 'LTV daily',
@@ -75,16 +75,34 @@ class GetDashboard(BaseView):
                'name_div': 'graph7',
                'list_keys_ltv': ['beginning', 'three_month'],
                'urls': [
-                    {'url': 'ltv_daily', 'data_x': 'day', 'data_y': 'ltv'}
+                    {'url': 'ltv_daily'}
                 ]}
 
-    def _sort_data_from_request(self, data, date_x, date_y, last_iter=False):
-        sort_date = lambda x: x[date_x]
+    def get_data_x_and_data_y(self, request_dict):
+        if 'ltv' in request_dict:
+            data_y = 'ltv'
+            data_x = 'day'
+        else:
+            for k, v in request_dict.items():
+                if isinstance(v, str):
+                    data_x = k
+                    continue
+                data_y = k
+
+        return data_x, data_y
+
+    def _sort_data_from_request(self, data, last_iter=False):
+        try:
+            data_x, data_y = self.get_data_x_and_data_y(data[0])
+        except IndexError:
+            return []
+
+        sort_date = lambda x: x[data_x]
 
         if last_iter:
-            return [i[date_x] for i in sorted(data, key=sort_date)]
+            return [i[data_x] for i in sorted(data, key=sort_date)]
         else:
-            return [i[date_y] for i in sorted(data, key=sort_date)]
+            return [i[data_y] for i in sorted(data, key=sort_date)]
 
     def _make_api_query(self, date_to, date_from):
         return {'date_to': date_to, 'date_from': date_from}
@@ -105,7 +123,6 @@ class GetDashboard(BaseView):
             graph = self.graph_6
         else:
             graph = self.graph_7
-
         print(api_query, 'API!')
         try:
             name_data_line_2 = graph['name_data_line_2']
@@ -143,17 +160,17 @@ class GetDashboard(BaseView):
                 continue
 
             if count == count_iter:
-                list_date = self._sort_data_from_request(data_steem, i['data_x'], i['data_y'], last_iter=True)
+                list_date = self._sort_data_from_request(data_steem, last_iter=True)
                 res_graph['date'] = list_date
 
             if graph_num == '7':
-                data_steem = self._sort_data_from_request(data_steem, i['data_x'], 'ltv')
+                data_steem = self._sort_data_from_request(data_steem)
                 for key in graph['list_keys_ltv']:
                     res_graph['data_steem'].append([d[key] for d in data_steem])
             else:
-                data_steem = self._sort_data_from_request(data_steem, i['data_x'], i['data_y'])
+                data_steem = self._sort_data_from_request(data_steem)
                 res_graph['data_steem'].append(data_steem)
-                data_golos = self._sort_data_from_request(data_golos, i['data_x'], i['data_y'])
+                data_golos = self._sort_data_from_request(data_golos)
                 data_sum = list(map(lambda x: x[0] + x[1], zip(data_steem, data_golos)))
                 res_graph['data_golos'].append(data_golos)
                 res_graph['data_sum'].append(data_sum)
