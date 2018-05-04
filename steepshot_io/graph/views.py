@@ -673,6 +673,20 @@ class CoolnessRequests(BaseView):
         )
 
 
+class SteepshotVotes(BaseView):
+    title = 'Steepshot votes'
+    subtitle = 'Sum weight of votes per day divided on 100 (in percents)'
+
+    def get_data(self):
+        return self.fetch_data(
+            apis=ApiUrls.steem,
+            name_url='steepshot_votes',
+            api_query=self.request.GET,
+            data_x='date',
+            data_y='total'
+        )
+
+
 class GetAllStats(View):
 
     template_name = 'all_stats.html'

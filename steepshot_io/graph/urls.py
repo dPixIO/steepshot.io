@@ -43,4 +43,5 @@ urlpatterns = [
     url(r'^votes/count/monthly$', VotesCountMonthly.as_view(), name='count_votes_monthly'),
 
     url(r'^coolness/requests$', CoolnessRequests.as_view(), name='coolness_requests'),
+    url(r'^steepshot-votes$', SteepshotVotes.as_view(), name='steepshot_votes'),
 ]
