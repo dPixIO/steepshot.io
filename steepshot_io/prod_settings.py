@@ -108,6 +108,7 @@ REQUESTS_URL = {
     'delegators_steepshot': '{url}/stats/delegators/full',
 
     'coolness_requests': '{url}/stats/coolness/requests',
+    'steepshot_votes': '{url}/stats/steepshot-votes'
 }
 
 
