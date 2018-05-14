@@ -750,10 +750,10 @@ input:focus {
 
 #ytbe-video {
     position: fixed;
-    height: 290px;
-    width: 580px;
-    bottom: 40px;
-    right: 30px;
+    height: 21vw;
+    width: 43vw;
+    top: 380px;
+    right: 4vw;
 }
 
 
@@ -1266,13 +1266,6 @@ input:focus {
         margin-left: 39% !important;
         top: 520px !important;
     }
-
-    #ytbe-video {
-        height: 400px;
-        width: 800px;
-        bottom: 100px;
-        right: 20px;
-    }
 }
 
 
@@ -1287,10 +1280,10 @@ input:focus {
     }
 
     #ytbe-video {
-        height: 500px;
-        width: 1000px;
-        bottom: 100px;
-        right: 100px;
+        width: 860px;
+        height: 420px;
+        right: 0;
+        left: 53vw;
     }
 }
 
