@@ -748,6 +748,15 @@ input:focus {
     margin-right: 20px;
 }
 
+#ytbe-video {
+    position: fixed;
+    height: 290px;
+    width: 580px;
+    bottom: 40px;
+    right: 30px;
+}
+
+
 /*
  *    Tablets
  */
@@ -950,6 +959,19 @@ input:focus {
 
     #soc_links a { 
         margin: 0 3.5em 0; 
+    }
+
+    #ytbe-video {
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        bottom: 0;
+        right: 0;
+        top: 25px;
+    }
+
+    html#main-page {
+        overflow: scroll !important;
     }
 }
 
@@ -1211,6 +1233,27 @@ input:focus {
     #submit{
         width: auto;
     }
+
+    #ytbe-video {
+        position: relative;
+        display: block;
+        height: 170px;
+        width: 340px;
+        margin: 0 auto;
+        bottom: 0;
+        right: 0;
+        top: 25px;
+    }
+
+    html#main-page {
+        overflow: scroll !important;
+    }
+
+    div#soc_links {
+        position: relative;
+        top: 25px;
+        bottom: 0;
+    }
 }
 
 
@@ -1223,6 +1266,13 @@ input:focus {
         margin-left: 39% !important;
         top: 520px !important;
     }
+
+    #ytbe-video {
+        height: 400px;
+        width: 800px;
+        bottom: 100px;
+        right: 20px;
+    }
 }
 
 
@@ -1234,6 +1284,13 @@ input:focus {
     .btpg2 {
         margin-left: 30% !important;
         top: 520px !important;
+    }
+
+    #ytbe-video {
+        height: 500px;
+        width: 1000px;
+        bottom: 100px;
+        right: 100px;
     }
 }
 

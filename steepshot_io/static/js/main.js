@@ -4,6 +4,7 @@ function tgmenu() {
 }
 
 function fpg() {
+    $('#ytbe-video').hide();
     document.getElementById("mimg").classList.remove('mimg');
     document.getElementById("mimg2").classList.remove('mimg2');
     document.getElementById("mimg3").classList.remove('mimg3');
@@ -26,6 +27,7 @@ function spg() {
 }
 
 function tpg(){
+    $('#ytbe-video').show();
     document.getElementById("mimg").classList.add('mimg');
     document.getElementById("mimg2").classList.add('mimg2');
     document.getElementById("mimg3").classList.add('mimg3');
@@ -40,6 +42,7 @@ function tpg(){
 }
 
 function fpgr() {
+    $('#ytbe-video').hide();
     document.getElementById("panel2").classList.add('hd');
     document.getElementById("panel1").classList.add('hd');
     document.getElementById("panel3").classList.remove('hd');
@@ -53,6 +56,7 @@ function fpgr() {
 }
 
 function spgr() {
+    $('#ytbe-video').show();
     document.getElementById("mimg").classList.add('mimg');
     document.getElementById("mimg2").classList.add('mimg2');
     document.getElementById("mimg3").classList.add('mimg3');
