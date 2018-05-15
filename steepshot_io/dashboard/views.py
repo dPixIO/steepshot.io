@@ -69,10 +69,19 @@ class GetDashboard(BaseView):
                     {'url': 'timeouts_daily'},
                 ]}
 
-    graph_7 = {'name_graph': 'LTV daily',
+    graph_7 = {'name_graph': 'LTV daily (USD)',
                'name_data_line_1': 'LTV beginning',
                'name_data_line_2': 'LTV 3 months',
                'name_div': 'graph7',
+               'list_keys_ltv': ['beginning', 'three_month'],
+               'urls': [
+                    {'url': 'ltv_daily'}
+                ]}
+
+    graph_8 = {'name_graph': 'LTV daily (STEEM)',
+               'name_data_line_1': 'LTV beginning',
+               'name_data_line_2': 'LTV 3 months',
+               'name_div': 'graph8',
                'list_keys_ltv': ['beginning', 'three_month'],
                'urls': [
                     {'url': 'ltv_daily'}
@@ -121,8 +130,11 @@ class GetDashboard(BaseView):
             graph = self.graph_5
         elif graph_num == '6':
             graph = self.graph_6
-        else:
+        elif graph_num == '7':
             graph = self.graph_7
+        else:
+            graph = self.graph_8
+            api_query['currency'] = 'steem'
         print(api_query, 'API!')
         try:
             name_data_line_2 = graph['name_data_line_2']
@@ -141,7 +153,7 @@ class GetDashboard(BaseView):
         for count, i in enumerate(graph['urls'], start=1):
             try:
                 data_steem = requests.get(settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.STEEM_V1), params=api_query).json()
-                if graph_num != '7':
+                if graph_num != '7' and graph_num != '8':
                     data_golos = requests.get(settings.REQUESTS_URL.get(i['url'], '{url}').format(url=settings.GOLOS_V1), params=api_query).json()
                 else:
                     data_golos = {}
@@ -163,7 +175,7 @@ class GetDashboard(BaseView):
                 list_date = self._sort_data_from_request(data_steem, last_iter=True)
                 res_graph['date'] = list_date
 
-            if graph_num == '7':
+            if graph_num == '7' or graph_num == '8':
                 data_steem = self._sort_data_from_request(data_steem)
                 for key in graph['list_keys_ltv']:
                     res_graph['data_steem'].append([d[key] for d in data_steem])
