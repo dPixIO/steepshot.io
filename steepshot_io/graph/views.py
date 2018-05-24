@@ -149,6 +149,7 @@ class UsersActive(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='active_users_monthly',
+            api_query=self.request.GET,
             modifiers=SumModifier,
             data_x='date_to',
             data_y='active_users'
