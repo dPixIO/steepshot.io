@@ -283,7 +283,7 @@ class PostsFeeDaily(BaseView):
 
     def get_data(self):
         return self.fetch_data(
-            apis=ApiUrls('steem'),
+            apis=ApiUrls.steem,
             api_query=self.request.GET,
             modifiers=SumModifier,
             name_url='posts_fee_daily',
@@ -639,7 +639,7 @@ class GetLtvDaily(BaseView):
         data = []
         for i in self.ltv_keys:
             res = self.fetch_data(
-                    apis=ApiUrls('steem'),
+                    apis=ApiUrls.steem,
                     name_url='ltv_daily',
                     api_query=self.request.GET,
                     data_x='day',
@@ -651,6 +651,7 @@ class GetLtvDaily(BaseView):
         res = []
         for i in res_group:
             res.append(group_data(i))
+
         return {'data': res, 'headers': self.headers}
 
 
@@ -685,6 +686,36 @@ class SteepshotVotes(BaseView):
             data_x='date',
             data_y='total'
         )
+
+
+class DeviceUsage(BaseView):
+    title = 'Device usage'
+    subtitle = 'Amount of post creations via device'
+
+    name_url = 'device_usage'
+    device_types = ['iOS', 'web', 'android']
+
+    headers = [
+        {'Date': 'string'},
+        {'iOS': 'number'},
+        {'Web': 'number'},
+        {'Android': 'number'},
+    ]
+
+    def get_data(self):
+        api_url = settings.REQUESTS_URL.get(self.name_url, '{url}').format(url=settings.STEEM_V1)
+        fetched_data = requests.get(api_url).json()
+
+        data = {'headers': self.headers, 'data': []}
+        for i in fetched_data:
+            items_list = [i['date']]
+            for device in self.device_types:
+                items_list.append(i['counts'].get(device, 0))
+
+            data['data'].append(items_list)
+
+        data['data'] = sorted(data['data'], key=lambda x: x[0])
+        return data
 
 
 class GetAllStats(View):
