@@ -141,7 +141,12 @@ class UsersActive(BaseView):
     """
     MAU for the last month (30 days). MAU - monthly active users.
     MAU for today is calculated the following way (from -30 to 0 day)
+    GET param:
+        date_to = default date (yesterday)
+        date_from = default 30 days ago
+        user_agent = default (all)
     """
+
 
     title = 'Monthly active users'
     subtitle = ''
@@ -149,6 +154,7 @@ class UsersActive(BaseView):
     def get_data(self):
         return self.fetch_data(
             name_url='active_users_monthly',
+            api_query=self.request.GET,
             modifiers=SumModifier,
             data_x='date_to',
             data_y='active_users'
