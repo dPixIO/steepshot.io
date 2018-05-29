@@ -4,6 +4,7 @@ from json.decoder import JSONDecodeError
 from typing import Dict
 import requests
 from requests.exceptions import HTTPError, ConnectionError
+from datetime import date, timedelta
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -59,6 +60,16 @@ class BaseView(View):
             apis = ApiUrls
         elif isinstance(apis, ApiUrls):
             apis = [apis]
+
+        if not api_query:
+            months = 3
+            days = 30
+            date_to = date.today()
+            date_from = date_to - timedelta(days=days * months)
+            api_query = {
+                'date_from': date_from,
+                'date_to': date_to
+            }
 
         for i in apis:
             res['headers'].extend([{i.value.capitalize(): 'number'}])
