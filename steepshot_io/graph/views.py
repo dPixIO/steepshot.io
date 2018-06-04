@@ -703,6 +703,19 @@ class SteepshotVotes(BaseView):
             data_y='total'
         )
 
+class GetTotalActivePowerDaily(BaseView):
+    title = 'Total Active Power'
+    subtitle = 'Daily snapshot in %'
+
+    def get_data(self):
+        return self.fetch_data(
+            apis=ApiUrls.steem,
+            name_url='total_active_power_daily',
+            api_query=self.request.GET,
+            data_x='date',
+            data_y='total'
+        )
+
 
 class GetAllStats(View):
 
@@ -735,7 +748,8 @@ class GetAllStats(View):
         {'count_votes_monthly': 'Count votes monthly'},
         {'votes_average_weekly': 'Average votes user per day'},
         {'timeouts_daily': 'Timeouts daily'},
-        {'ltv_daily': 'LTV daily'}
+        {'ltv_daily': 'LTV daily'},
+        {'total_active_power_daily': 'Total Active Power daily'}
     ]
 
     def get(self, request):

@@ -87,6 +87,13 @@ class GetDashboard(BaseView):
                     {'url': 'ltv_daily'}
                 ]}
 
+    graph_9 = {'name_graph': 'Total Active Power daily (%)',
+               'name_data_line_1': 'TAP daily',
+               'name_div': 'graph9',
+               'urls': [
+                    {'url': 'total_active_power_daily'}
+                ]}
+
     def get_data_x_and_data_y(self, request_dict):
         if 'ltv' in request_dict:
             data_y = 'ltv'
@@ -132,9 +139,11 @@ class GetDashboard(BaseView):
             graph = self.graph_6
         elif graph_num == '7':
             graph = self.graph_7
-        else:
+        elif graph_num == '8':
             graph = self.graph_8
             api_query['currency'] = 'steem'
+        else:
+            graph = self.graph_9
         print(api_query, 'API!')
         try:
             name_data_line_2 = graph['name_data_line_2']

@@ -90,6 +90,7 @@ REQUESTS_URL = {
 
     'timeouts_daily': '{url}/stats/timeouts/daily',
     'ltv_daily': '{url}/stats/ltv',
+    'total_active_power_daily': '{url}/stats/total_active_power_daily',
 
     'count_top': '{url}/request/count/top',
     'count_hot': '{url}/request/count/hot',
