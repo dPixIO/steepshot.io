@@ -45,4 +45,5 @@ urlpatterns = [
 
     url(r'^coolness/requests$', CoolnessRequests.as_view(), name='coolness_requests'),
     url(r'^steepshot-votes$', SteepshotVotes.as_view(), name='steepshot_votes'),
+    url(r'^device-usage$', DeviceUsage.as_view(), name='device_usage'),
 ]
