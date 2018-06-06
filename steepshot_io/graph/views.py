@@ -734,7 +734,11 @@ class DeviceUsage(BaseView):
 
     def get_data(self):
         api_url = settings.REQUESTS_URL.get(self.name_url, '{url}').format(url=settings.STEEM_V1)
-        fetched_data = requests.get(api_url).json()
+
+        fetched_data = []
+        response = requests.get(api_url)
+        if response.status_code == 200:
+            fetched_data = response.json()
 
         data = {'headers': self.headers, 'data': []}
         for i in fetched_data:
@@ -780,7 +784,8 @@ class GetAllStats(View):
         {'votes_average_weekly': 'Average votes user per day'},
         {'timeouts_daily': 'Timeouts daily'},
         {'ltv_daily': 'LTV daily'},
-        {'total_active_power_daily': 'Total Active Power daily'}
+        {'total_active_power_daily': 'Total Active Power daily'},
+        {'device_usage': 'Amount of post creations by device type'},
     ]
 
     def get(self, request):
