@@ -8,6 +8,10 @@ class Subscribe(models.Model):
     def __str__(self):
         return self.email
 
+    def save(self, *args, **kwargs):
+        if not Subscribe.objects.filter(email=self.email):
+            super(Subscribe, self).save(*args, **kwargs)
+
 
 class TeamMembers(models.Model):
     first_name = models.CharField(max_length=50)
