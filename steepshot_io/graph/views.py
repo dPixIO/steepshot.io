@@ -795,3 +795,71 @@ class GetAllStats(View):
     def post(self, request, *args, **kwargs):
         name_url = request.POST['name_url']
         return redirect('graph:{}'.format(name_url))
+
+from django.http import JsonResponse
+
+class GetAllGraphsOnePage(View):
+
+    template_name = 'all_stats_one_page.html'
+    names_stats_endpoints = {
+        'active_users_monthly': {'title': 'MAU', 'data_x': 'date_to', 'data_y': 'active_users'},
+        'user_sessions_daily': {'title': 'Count sessions', 'data_x': 'day', 'data_y': 'count_sessions'},
+        'new_users_daily': {'title': 'Count new users daily', 'data_x': 'day', 'data_y': 'count_users'},
+    }
+    # names_stats_endpoints = [
+    #     {'url': 'active_users_monthly', 'title': 'MAU', 'date_x': 'date_to', 'date_y': 'active_users'},
+    #     {'url': 'user_sessions_daily', 'title': 'Count sessions', 'date_x': 'day', 'date_y': 'count_sessions'},
+        # {'new_users_daily': 'Count new users daily'},
+        # {'new_users_monthly': 'Count new users monthly'},
+        # {'new_users_percent_daily': 'Percent new users'},
+        # {'DAU': 'DAU'},
+        # {'DAU_new_users': 'DAU new users'},
+        # {'posts_average_per_author': 'Average posts per author'},
+        # {'posts_payout_users': 'Users payout'},
+        # {'count_posts_daily': 'Count posts'},
+        # {'posts_count_new_users': 'Count post from new users'},
+        # {'count_posts': 'Count posts monthly'},
+        # {'posts_fee_daily': 'Benefeciary payout'},
+        # {'posts_fee_weekly': 'Posts fee weekly'},
+        # {'posts_fee_author': 'Average fee author per day'},
+        # {'posts_fee_users': 'Average fee user per day'},
+        # {'ratio_daily': 'Daily ratio (Ratio of logged users and posts created by them)'},
+        # {'ratio_monthly': 'Monthly ratio'},
+        # {'count_requests': 'Count of requests for top, new, hot'},
+        # {'browse_users_request': 'Count users of requests for new, top, hot'},
+        # {'count_comments_weekly': 'Count comments'},
+        # {'comments_percentage': 'Comments percentage'},
+        # {'count_votes_daily': 'Count votes daily'},
+        # {'count_votes_monthly': 'Count votes monthly'},
+        # {'votes_average_weekly': 'Average votes user per day'},
+        # {'timeouts_daily': 'Timeouts daily'},
+        # {'ltv_daily': 'LTV daily'},
+        # {'total_active_power_daily': 'Total Active Power daily'},
+        # {'device_usage': 'Amount of post creations by device type'},
+    # ]
+
+    def get_data(self, name_graph):
+        api_url = settings.REQUESTS_URL.get(name_graph, '{url}').format(url=settings.STEEM_V1)
+        res = {
+            'data': [],
+            'data_x': self.names_stats_endpoints[name_graph]['data_x'],
+            'data_y': self.names_stats_endpoints[name_graph]['data_y'],
+            'title': self.names_stats_endpoints[name_graph]['title'],
+            'chart_div': name_graph,
+        }
+        response = requests.get(api_url)
+        if response.status_code == 200:
+            fetched_data = response.json()
+            fetched_data = sorted(fetched_data, key=lambda x: x[res['data_x']])
+            res['data'] = fetched_data
+        return res
+
+    def get(self, request):
+        if request.GET.get('graph'):
+            name_graph = request.GET.get('graph')
+            data = self.get_data(name_graph)
+            print(data)
+            print('=================')
+            return JsonResponse(data, safe=False)
+        else:
+            return render(request, self.template_name, {})

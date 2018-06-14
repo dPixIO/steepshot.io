@@ -4,7 +4,7 @@ from .views import *  # noqa
 
 urlpatterns = [
     url(r'^logout$', Logout.as_view(), name='logout'),
-    url(r'^all/stats$', GetAllStats.as_view(), name='all_stats'),
+    url(r'^all/stats$', GetAllGraphsOnePage.as_view(), name='all_stats'),
     url(r'^users/active$', UsersActive.as_view(), name='active_users_monthly'),
     url(r'^users/sessions$', UserSessions.as_view(), name='user_sessions_daily'),
     url(r'^users/new/daily$', UsersNewCountDaily.as_view(), name='new_users_daily'),
