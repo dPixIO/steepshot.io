@@ -16,13 +16,56 @@
 
 </style>
 <body>
+<div id="logout_graph">
+    <form method="get" action="{% url 'graph:logout' %}">
+        <input type="submit" class="btn" value="Logout">
+    </form>
+</div>
 <div class="container-page-all-graphs">
     <h1 class="h1-all-graphs">ALL STATS</h1>
     <div class="graph" id="active_users_monthly"></div>
     <div class="graph" id="user_sessions_daily"></div>
     <div class="graph" id="new_users_daily"></div>
+    <div class="graph" id="new_users_monthly"></div>
+    <div class="graph" id="new_users_percent_daily"></div>
+    <div class="graph" id="DAU"></div>
+    <div class="graph" id="DAU_new_users"></div>
+    <div class="graph" id="posts_payout_users"></div>
+    <div class="graph" id="posts_count_daily"></div>
+    <div class="graph" id="posts_count_new_users"></div>
+    <div class="graph" id="posts_fee_daily"></div>
+    <div class="graph" id="count_hot"></div>
+    <div class="graph" id="count_top"></div>
+    <div class="graph" id="count_new"></div>
+    <div class="graph" id="browse_users_count_new"></div>
+    <div class="graph" id="browse_users_count_hot"></div>
+    <div class="graph" id="browse_users_count_top"></div>
+    <div class="graph" id="total_active_power_daily"></div>
+    <div class="graph" id="timeouts_daily"></div>
 </div>
     <script>
+        var api = [
+            '?graph=active_users_monthly',
+            '?graph=user_sessions_daily',
+            '?graph=new_users_daily',
+            '?graph=new_users_monthly',
+            '?graph=new_users_percent_daily',
+            '?graph=DAU',
+            '?graph=DAU_new_users',
+            '?graph=posts_payout_users',
+            '?graph=posts_count_daily',
+            '?graph=posts_fee_daily',
+            '?graph=posts_count_new_users',
+            '?graph=count_hot',
+            '?graph=count_top',
+            '?graph=count_new',
+            '?graph=browse_users_count_new',
+            '?graph=browse_users_count_hot',
+            '?graph=browse_users_count_top',
+            '?graph=total_active_power_daily',
+            '?graph=timeouts_daily'
+        ];
+
     function format_date(date){
         var yyyy = date.getFullYear();
         var mm = parseInt(date.getMonth())+1;
@@ -122,7 +165,6 @@
     });}
 function get_dataa() {
 
-    var api = ['?graph=active_users_monthly', '?graph=user_sessions_daily', '?graph=new_users_daily'];
     api.forEach(function(item, i, arr) {
         $.getJSON('./stats' + item, function (data) {
             console.log(data);
