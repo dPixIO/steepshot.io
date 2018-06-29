@@ -1,0 +1,178 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?v=20180601">
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<style>
+
+</style>
+<body>
+<div id="logout_graph">
+    <form method="get" action="{% url 'graph:logout' %}">
+        <input type="submit" class="btn" value="Logout">
+    </form>
+</div>
+<div class="container-page-all-graphs">
+    <h1 class="h1-all-graphs">ALL STATS</h1>
+    <div class="graph" id="active_users_monthly"></div>
+    <div class="graph" id="user_sessions_daily"></div>
+    <div class="graph" id="new_users_daily"></div>
+    <div class="graph" id="new_users_monthly"></div>
+    <div class="graph" id="new_users_percent_daily"></div>
+    <div class="graph" id="DAU"></div>
+    <div class="graph" id="DAU_new_users"></div>
+    <div class="graph" id="posts_payout_users"></div>
+    <div class="graph" id="posts_count_daily"></div>
+    <div class="graph" id="posts_count_new_users"></div>
+    <div class="graph" id="posts_fee_daily"></div>
+    <div class="graph" id="count_hot"></div>
+    <div class="graph" id="count_top"></div>
+    <div class="graph" id="count_new"></div>
+    <div class="graph" id="browse_users_count_new"></div>
+    <div class="graph" id="browse_users_count_hot"></div>
+    <div class="graph" id="browse_users_count_top"></div>
+    <div class="graph" id="total_active_power_daily"></div>
+    <div class="graph" id="timeouts_daily"></div>
+</div>
+    <script>
+        var api = [
+            '?graph=active_users_monthly',
+            '?graph=user_sessions_daily',
+            '?graph=new_users_daily',
+            '?graph=new_users_monthly',
+            '?graph=new_users_percent_daily',
+            '?graph=DAU',
+            '?graph=DAU_new_users',
+            '?graph=posts_payout_users',
+            '?graph=posts_count_daily',
+            '?graph=posts_fee_daily',
+            '?graph=posts_count_new_users',
+            '?graph=count_hot',
+            '?graph=count_top',
+            '?graph=count_new',
+            '?graph=browse_users_count_new',
+            '?graph=browse_users_count_hot',
+            '?graph=browse_users_count_top',
+            '?graph=total_active_power_daily',
+            '?graph=timeouts_daily'
+        ];
+
+    function format_date(date){
+        var yyyy = date.getFullYear();
+        var mm = parseInt(date.getMonth())+1;
+        var dd = date.getDate();
+        if(dd<10)
+        {
+            dd='0'+dd;
+        }
+        if(mm<10)
+        {
+            mm='0'+mm;
+        }
+        return yyyy+'-'+mm+'-'+dd
+    }
+        function draw_graph(data_graph) {
+        var chart = AmCharts.makeChart(data_graph['chart_div'], {
+        "type": "serial",
+        "theme": "light",
+        "marginRight": 40,
+        "marginLeft": 40,
+        "autoMarginOffset": 20,
+        "mouseWheelZoomEnabled":true,
+        "valueAxes": [{
+            "id": "v1",
+            "axisAlpha": 0,
+            "position": "left",
+            "ignoreAxisWidth":true
+        }],
+        "titles": [
+		    {
+			    "text": data_graph['title'],
+			    "bold": false,
+			    "size": 30
+		    }
+        ],
+        "graphs": [{
+            "id": "g1",
+            "lineThickness": 2,
+            "title": "red line",
+            "useLineColorForBulletBorder": true,
+            "valueField": data_graph['data_y'],
+            "bulletSize": 4,
+            "bullet": "round",
+            "customBulletField": "customBullet",
+            "balloonFunction":
+                function(graphDataItem, graph) {
+                  var value = graphDataItem.values.value;
+                  var categ =  format_date(graphDataItem.category);
+                  return  categ + "<br>" + "<span style='font-size:18px'>Value:" + value.toFixed(2) + "</span>";
+            }
+        }
+        ],
+        "chartScrollbar": {
+            "graph": "g1",
+            "oppositeAxis":false,
+            "offset":30,
+            "scrollbarHeight": 80,
+            "backgroundAlpha": 0,
+            "selectedBackgroundAlpha": 0.1,
+            "selectedBackgroundColor": "#888888",
+            "graphFillAlpha": 0,
+            "graphLineAlpha": 0.5,
+            "selectedGraphFillAlpha": 0,
+            "selectedGraphLineAlpha": 1,
+            "autoGridCount":true,
+            "color":"#AAAAAA"
+        },
+        "chartCursor": {
+            "pan": true,
+            "valueLineEnabled": true,
+            "graphBulletSize": 3,
+            "valueLineBalloonEnabled": true,
+            "cursorAlpha":1,
+            "cursorColor":"#258cbb",
+            "limitToGraph":"g1",
+            "valueLineAlpha":0.2,
+            "valueZoomable":true,
+            "categoryBalloonDateFormat": "YYYY-MM-DD"
+        },
+        "valueScrollbar":{
+          "oppositeAxis":false,
+          "offset":50,
+          "scrollbarHeight":10
+        },
+        "categoryField": data_graph['data_x'],
+        "categoryAxis": {
+            "parseDates": true,
+            "dashLength": 1,
+            "minorGridEnabled": true,
+            "minPeriod": "DD",
+            "dateFormat": "YYYY-MM-DD"
+
+        },
+
+        "dataProvider": data_graph['data']
+
+    });}
+function get_dataa() {
+
+    api.forEach(function(item, i, arr) {
+        $.getJSON('./stats' + item, function (data) {
+            console.log(data);
+            draw_graph(data);
+        });
+    })
+}
+    get_dataa();
+    </script>
+</body>
+</html>

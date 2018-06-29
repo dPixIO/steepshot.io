@@ -11,9 +11,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import View
+from django.http import JsonResponse
 
 from steepshot_io.graph.data_modifiers import SumModifier, AverageModifier, BaseModifier
-from steepshot_io.graph.utils import get_date_range_from_request
+from steepshot_io.graph.utils import get_date_range_from_request, default_date_format
 from steepshot_io.dashboard.forms import UserLoginDasboardForm
 
 
@@ -713,8 +714,8 @@ class GetTotalActivePowerDaily(BaseView):
             apis=ApiUrls.steem,
             name_url='total_active_power_daily',
             api_query=self.request.GET,
-            data_x='date',
-            data_y='total'
+            data_x='created_at',
+            data_y='total_steem_power'
         )
 
 
@@ -752,46 +753,64 @@ class DeviceUsage(BaseView):
         return data
 
 
-class GetAllStats(View):
+class GetAllGraphsOnePage(BaseView):
 
-    template_name = 'all_stats.html'
+    template_name = 'all_stats_one_page.html'
+    names_stats_endpoints = {
+        'active_users_monthly': {'title': 'MAU', 'data_x': 'date_to', 'data_y': 'active_users'},
+        'user_sessions_daily': {'title': 'Count sessions', 'data_x': 'day', 'data_y': 'count_sessions'},
+        'new_users_daily': {'title': 'Count new users daily', 'data_x': 'day', 'data_y': 'count_users'},
+        'new_users_monthly': {'title': 'Count new  users monthly', 'data_x': 'date_to', 'data_y': 'count_new_users'},
+        'new_users_percent_daily': {'title': 'New users percent daily', 'data_x': 'day', 'data_y': 'percent'},
+        'DAU': {'title': 'DAU', 'data_x': 'day', 'data_y': 'active_users'},
+        'DAU_new_users': {'title': 'DAU new users', 'data_x': 'day', 'data_y': 'count_users'},
+        'posts_payout_users': {'title': 'Users payout', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
+        'posts_count_daily': {'title': 'Count posts daily', 'data_x': 'day', 'data_y': 'count_posts'},
+        'posts_count_new_users': {'title': 'Count posts daily from new users', 'data_x': 'day', 'data_y': 'count_posts'},
+        'posts_fee_daily': {'title': 'Benefeciaries payout', 'data_x': 'date', 'data_y': 'total_payout_per_day'},
+        'count_hot': {'title': 'Count of requests for hot', 'data_x': 'day', 'data_y': 'count_requests'},
+        'count_top': {'title': 'Count of requests for top', 'data_x': 'day', 'data_y': 'count_requests'},
+        'count_new': {'title': 'Count of requests for new', 'data_x': 'day', 'data_y': 'count_requests'},
+        'browse_users_count_new': {'title': 'Count users of requests for new', 'data_x': 'day', 'data_y': 'count_requests'},
+        'browse_users_count_hot': {'title': 'Count users of requests for hot', 'data_x': 'day', 'data_y': 'count_requests'},
+        'browse_users_count_top': {'title': 'Count users of requests for top', 'data_x': 'day', 'data_y': 'count_requests'},
+        'count_comments_weekly': {'title': 'Comments count', 'data_x': 'day', 'data_y': 'count_comments'},
+        'count_votes_weekly': {'title': 'Votes count for new', 'data_x': 'day', 'data_y': 'count_votes'},
+        'timeouts_daily': {'title': 'Timeouts daily', 'data_x': 'date', 'data_y': 'count'},
+        'total_active_power_daily': {'title': 'Total Active Power', 'data_x': 'created_at', 'data_y': 'total_steem_power'},
+    }
 
-    names_stats_endpoints = [
-        {'active_users_monthly': 'MAU'},
-        {'user_sessions_daily': 'Count sessions'},
-        {'new_users_daily': 'Count new users daily'},
-        {'new_users_monthly': 'Count new users monthly'},
-        {'new_users_percent_daily': 'Percent new users'},
-        {'DAU': 'DAU'},
-        {'DAU_new_users': 'DAU new users'},
-        {'posts_average_per_author': 'Average posts per author'},
-        {'posts_payout_users': 'Users payout'},
-        {'count_posts_daily': 'Count posts'},
-        {'posts_count_new_users': 'Count post from new users'},
-        {'count_posts': 'Count posts monthly'},
-        {'posts_fee_daily': 'Benefeciary payout'},
-        {'posts_fee_weekly': 'Posts fee weekly'},
-        {'posts_fee_author': 'Average fee author per day'},
-        {'posts_fee_users': 'Average fee user per day'},
-        {'ratio_daily': 'Daily ratio (Ratio of logged users and posts created by them)'},
-        {'ratio_monthly': 'Monthly ratio'},
-        {'count_requests': 'Count of requests for top, new, hot'},
-        {'browse_users_request': 'Count users of requests for new, top, hot'},
-        {'count_comments_weekly': 'Count comments'},
-        {'comments_percentage': 'Comments percentage'},
-        {'count_votes_daily': 'Count votes daily'},
-        {'count_votes_monthly': 'Count votes monthly'},
-        {'votes_average_weekly': 'Average votes user per day'},
-        {'timeouts_daily': 'Timeouts daily'},
-        {'ltv_daily': 'LTV daily'},
-        {'total_active_power_daily': 'Total Active Power daily'},
-        {'device_usage': 'Amount of post creations by device type'},
-    ]
+    def get_data(self, name_graph):
+        api_url = settings.REQUESTS_URL.get(name_graph, '{url}').format(url=settings.STEEM_V1)
+        res = {
+            'data': [],
+            'data_x': self.names_stats_endpoints[name_graph]['data_x'],
+            'data_y': self.names_stats_endpoints[name_graph]['data_y'],
+            'title': self.names_stats_endpoints[name_graph]['title'],
+            'chart_div': name_graph,
+        }
+        months = 3
+        days = 30
+        date_to = date.today()
+        date_from = date_to - timedelta(days=days * months)
+        api_query = {
+            'date_from': date_from,
+            'date_to': date_to
+        }
+        response = requests.get(api_url, params=api_query)
+        if response.status_code == 200:
+            fetched_data = response.json()
+            if 'result' in fetched_data:
+                fetched_data = fetched_data['result']
+            fetched_data = sorted(fetched_data, key=lambda x: x[res['data_x']])
+            res['data'] = fetched_data
+            print(len(res['data']))
+        return res
 
     def get(self, request):
-        all_url = self.names_stats_endpoints
-        return render(request, self.template_name, {'data': all_url})
-
-    def post(self, request, *args, **kwargs):
-        name_url = request.POST['name_url']
-        return redirect('graph:{}'.format(name_url))
+        if request.GET.get('graph'):
+            name_graph = request.GET.get('graph')
+            data = self.get_data(name_graph)
+            return JsonResponse(data, safe=False)
+        else:
+            return render(request, self.template_name, {})
