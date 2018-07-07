@@ -1690,3 +1690,20 @@ input:focus {
     margin-left: 40px;
 }
 
+.container-page-all-graphs {
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    margin: auto;
+}
+
+.graph{
+	width	: 100%;
+	height	: 600px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+.h1-all-graphs{
+    text-align: center;
+}
