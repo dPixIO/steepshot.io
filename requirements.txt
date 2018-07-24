@@ -7,11 +7,11 @@ django-redis==4.6.0
 django-qsstats-magic==0.7.2
 django-widget-tweaks==1.4.1
 Fabric3==1.12.post1
-gunicorn==19.3.0
+gunicorn==19.9.0
 Jinja2==2.9.6
 kombu==3.0.37
 packaging==16.8
-paramiko==1.18.3
+paramiko==2.4.1
 psycopg2==2.7.1
 pyparsing==2.2.0
 python-dateutil==2.5.3
