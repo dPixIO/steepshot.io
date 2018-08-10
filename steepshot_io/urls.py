@@ -20,7 +20,8 @@ from django.contrib import admin
 urlpatterns = [
     url(settings.ADMIN_URL, admin.site.urls),
     url(r'', include('steepshot_io.core.urls', namespace="core")),
-    url(r'graph/', include('steepshot_io.graph.urls', namespace="graph")),
-    url(r'table/', include('steepshot_io.table_stats.urls', namespace="table_stats")),
-    url(r'dashboard/', include('steepshot_io.dashboard.urls', namespace="dashboard")),
+    url(r'^api/', include('steepshot_io.api.urls', namespace="api")),
+    url(r'^graph/', include('steepshot_io.graph.urls', namespace="graph")),
+    url(r'^table/', include('steepshot_io.table_stats.urls', namespace="table_stats")),
+    url(r'^dashboard/', include('steepshot_io.dashboard.urls', namespace="dashboard")),
 ]
