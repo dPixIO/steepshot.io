@@ -113,9 +113,6 @@ REQUESTS_URL = {
     'device_usage': '{url}/stats/device-usage',
 }
 
-
-
-
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -127,11 +124,21 @@ INSTALLED_APPS = [
     'googlecharts',
     'widget_tweaks',
 
+    'steepshot_io.api',
     'steepshot_io.core',
     'steepshot_io.graph',
     'steepshot_io.table_stats',
     'steepshot_io.dashboard',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+    )
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
