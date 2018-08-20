@@ -719,6 +719,20 @@ class GetTotalActivePowerDaily(BaseView):
         )
 
 
+class GetTotalCuratorPowerDaily(BaseView):
+    title = 'Total Curator Power'
+    subtitle = 'Daily snapshot in %'
+
+    def get_data(self):
+        return self.fetch_data(
+            apis=ApiUrls.steem,
+            name_url='total_curator_power_daily',
+            api_query=self.request.GET,
+            data_x='created_at',
+            data_y='total_steem_power'
+        )
+
+
 class DeviceUsage(BaseView):
     title = 'Device usage'
     subtitle = 'Amount of post creations via device'

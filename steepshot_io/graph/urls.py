@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^timeouts/daily$', GetDailyTimeouts.as_view(), name='timeouts_daily'),
     url(r'^stats/ltv$', GetLtvDaily.as_view(), name='ltv_daily'),
     url(r'^stats/total_active_power_daily$', GetTotalActivePowerDaily.as_view(), name='total_active_power_daily'),
+    url(r'^stats/total_curator_power_daily$', GetTotalCuratorPowerDaily.as_view(), name='total_curator_power_daily'),
 
     url(r'^comments/count$', CommentsCount.as_view(), name='count_comments_weekly'),
     url(r'^comments/percentage$', CommentsPercentage.as_view(), name='comments_percentage'),
