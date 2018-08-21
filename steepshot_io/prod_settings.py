@@ -253,3 +253,12 @@ ADMIN_URL = r'^djadmin/'
 
 
 DEFAULT_DATE_FORMAT = "%Y-%m-%d"
+
+# Email settings
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'orderb.live.reports@gmail.com'
+EMAIL_HOST_PASSWORD = 'gektcnjqrbqgfhjkm669'
+EMAIL_USE_TLS = True
+
+WORK_REQUEST_EMAILS = ('pc@steepshot.io', 'pm@steepshot.io')
