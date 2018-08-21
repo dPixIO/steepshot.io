@@ -6,10 +6,13 @@ from ssl import SSLError, SSLZeroReturnError, SSLEOFError, CertificateError
 
 import OpenSSL
 import dateutil.parser
-from celery import task
+from typing import List
+
+from steepshot_io.celeryapp import app
+from django.core.mail import EmailMessage
 
 
-@task()
+@app.task
 def check_cert_expiration_date():
     # WARNING: The user from which this task is launched should be added to the sudoers.
     # For example:
@@ -65,3 +68,11 @@ def check_cert_expiration_date():
             print("The 'check_cert_expiration_date' task has been successfully completed!")
         else:
             print("{days} days left when certificate will expire.".format(days=get_days_left().days))
+
+
+@app.task(ignore_result=True)
+def send_email(content: str, emails: List[str]) -> None:
+    subject = 'Work request'
+    email = EmailMessage(subject, content, 'workrequest@steepshot.io', emails)
+    email.content_subtype = 'html'
+    email.send()
