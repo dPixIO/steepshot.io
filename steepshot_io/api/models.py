@@ -1,7 +1,9 @@
 from django.db import models
+from django.template.loader import render_to_string
 
+from steepshot_io.core.tasks import send_email
+from steepshot_io.prod_settings import WORK_REQUEST_EMAILS
 
-# Create your models here.
 
 class Duration:
     w = 'w'
@@ -41,3 +43,18 @@ class WorkRequest(models.Model):
     description = models.TextField()
     duration = models.CharField(max_length=7, choices=DURATION_CHOICES)
     urgency = models.CharField(max_length=7, choices=URGENCY_CHOICES)
+
+    def save(self, *args, **kwargs):
+        super(WorkRequest, self).save(*args, **kwargs)
+        duration = dict(DURATION_CHOICES)
+        ugrency = dict(URGENCY_CHOICES)
+        context = {
+            'name': self.name,
+            'email': self.email,
+            'project_name': self.project_name,
+            'description': self.description,
+            'duration': duration[self.duration],
+            'urgency': ugrency[self.urgency],
+        }
+        content = render_to_string('email.html', context)
+        send_email.delay(content, WORK_REQUEST_EMAILS)
