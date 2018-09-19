@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="3" class="table_stats">
+        <caption class="title_table">{{ title }}</caption>
+        {% for i in table %}
+            {% if forloop.first	 %}
+                <tr>
+                    {% for j in table_header %}
+                        <th class="table_stats_row">{{ j }}</th>
+                    {% endfor %}
+                </tr>
+            {% endif %}
+            <tr>
+            {% for j in i.1 %}
+                <td class="table_stats_row">{{ j }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+</table>
+</body>
+</html>
