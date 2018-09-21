@@ -112,6 +112,15 @@ REQUESTS_URL = {
     'coolness_requests': '{url}/stats/coolness/requests',
     'steepshot_votes': '{url}/stats/steepshot-votes',
     'device_usage': '{url}/stats/device-usage',
+
+    'instagram_users_number': '{url}/instagram/users/count',
+    'instagram_new_users_number': '{url}/instagram/users/new/count',
+    'instagram_posts_number': '{url}/instagram/posts/count',
+    'instagram_posts_average': '{url}/instagram/posts/average',
+    'instagram_posts_payout': '{url}/instagram/posts/payout',
+    'instagram_posts_payout_average': '{url}/instagram/posts/payout-average',
+    'instagram_voters_number': '{url}/instagram/voters/count',
+    'instagram_voters_average': '{url}/instagram/voters/average',
 }
 
 # Application definition
