@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+
+{% block contentmidle %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="w3-content" style="max-width:1100px;margin-top:80px;margin-bottom:80px">
+    <div class="w3-row-padding" id="about">
+        {% for member in team %}
+            <div class="w3-third w3-margin-bottom w3-center">
+              <div class="w3-card-4">
+                <img src="{{member.photo.url}}"  style="max-width: 100%; height: 250px; width: 350px"/>
+                  <div class="w3-container">
+                    <h3>{{ member.last_name }} {{ member.first_name }}</h3>
+                    <p class="w3-opacity">{{  member.position }} </p>
+                    <div class="w3-xlarge w3-section">
+                        <a href="{{ member.link_linkedin }}"><i class="fa fa-linkedin w3-hover-opacity"></i></a>
+                        <a href="{{ member.link_github }}"><i class="fa fa-github w3-hover-opacity"></i></a>
+                    </div>
+                </div>
+              </div>
+            </div>
+        {% endfor %}
+      </div>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+        <div class="clear"></div>
+        <div id="stile_faq">
+            <a href="https://www.facebook.com/dpixio/" target="_blank">Facebook</a>
+            <a href="https://twitter.com/dpixio" target="_blank">Twitter</a>
+            <a href="https://t.me/dpixio_en" target="_blank">Telegram</a>
+        </div>
+    </div>
+{% endblock %}

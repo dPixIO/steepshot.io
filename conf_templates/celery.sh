@@ -12,4 +12,4 @@ source %(ENV_PATH)s/bin/activate
 source %(ENV_PATH)s/bin/postactivate
 export DJANGO_SETTINGS_MODULE="%(SETTINGS_MODULE)s"
 
-exec celery -A steepshot_io worker -E -c 3 --loglevel=DEBUG --logfile="$LOG_FILE"
+exec celery -A dpix_io worker -E -c 3 --loglevel=DEBUG --logfile="$LOG_FILE"

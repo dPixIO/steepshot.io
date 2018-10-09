@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+{% load staticfiles %}
+{% block contenthead %}
+{% endblock %}
+{% block contentmidle %}
+    <table border="3" class="table_stats">
+        <caption class="title_table">DELEGATORS</caption>
+        {% for i in data %}
+            {% if forloop.first	 %}
+                <tr>
+                    {% for j in header_table %}
+                        <th class="table_stats_row">{{ j }}</th>
+                    {% endfor %}
+                </tr>
+            {% endif %}
+            <tr>
+                <td class="table_stats_row">{{ forloop.counter }}</td>
+                <td class="table_stats_row">{{ i.username }}</td>
+                <td class="table_stats_row">{{ i.participation_vests }}</td>
+                <td class="table_stats_row">{{ i.participation_dpay }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+{% block footer %}
+{% endblock %}

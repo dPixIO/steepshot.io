@@ -7,7 +7,7 @@ from fabric.api import env, lcd, task, sudo, local, prefix, cd, settings, requir
 from fabric.contrib.files import upload_template, contains, append, exists
 from fabric.operations import put, prompt
 
-from steepshot_io.deploy_settings import (
+from dpix_io.deploy_settings import (
     USER, WEB_HOST, LANDING_HOST, REMOTE_DEPLOY_DIR, PROJECT_NAME, REPOSITORY,
     DEPLOY_DIR, UBUNTU_PACKAGES, WORKON_HOME, ENV_NAME, LOCAL_CONF_DIR,
     ENV_PATH, DATABASE_URL, DB_USER, DB_PASSWORD, DB_NAME,
@@ -22,7 +22,7 @@ from steepshot_io.deploy_settings import (
 # This allows us to have .profile to be read when calling sudo
 # and virtualenvwrapper being activated using non-SSH user
 SUDO_PREFIX = 'sudo -i'
-FRONTEND_LOCAL_DIR = os.path.abspath(os.path.join('..', 'steepshot-web'))
+FRONTEND_LOCAL_DIR = os.path.abspath(os.path.join('..', 'dpix-web'))
 FRONTEND_BUILD_COMMAND = 'gulp build'
 
 logging.basicConfig(level=logging.INFO)
@@ -281,7 +281,7 @@ def clean_pyc():
 def migrate():
     with cd(DEPLOY_DIR):
         with settings(sudo_user=DEPLOYMENT_USER,
-                      sudo_prefix=SUDO_PREFIX), prefix('workon steepshot_io'):
+                      sudo_prefix=SUDO_PREFIX), prefix('workon dpix_io'):
             sudo('python manage.py migrate')
 
 
@@ -392,7 +392,7 @@ def config(restart_after=True):
     deploy_nginx_config()
     sudo('chown -R {}:{} {}'.format(DEPLOYMENT_USER, DEPLOYMENT_GROUP, remote_conf_path))
     # sudo('systemd daemon-reload')
-    # path = os.path.join(LOCAL_CONF_DIR, 'ssl_certificate', 'www.steepshot.org.certchain.crt')
+    # path = os.path.join(LOCAL_CONF_DIR, 'ssl_certificate', 'www.dpix.org.certchain.crt')
     # upload_template(path, remote_ssl_certificate_path, context={}, use_sudo=True),
 
     config_virtualenv()
@@ -447,7 +447,7 @@ def check_status():
 
 
 @task
-def check_steepshot_service():
+def check_dpix_service():
     sudo('systemctl --no-pager --full status %s' % BACKEND_SERVICE)
 
 

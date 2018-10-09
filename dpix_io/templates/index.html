@@ -1,0 +1,216 @@
+<!DOCTYPE HTML>
+
+{% load staticfiles %}
+
+<html id="main-page" class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>dPix</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="google-site-verification" content="ZPQZrZPVPhIRbNGpJCYHTjLDJ37rs_lDUkPHBMg4Y5s" />
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <!--<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" >-->
+        <link id="favicon" rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
+        <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+        <link rel="stylesheet" href="{% static 'css/main.css' %}?v=20180601">
+        <script src="{% static 'js/vendor/modernizr-2.8.3.min.js' %}"></script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116830613-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-116830613-1');
+        </script>
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body >
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+
+    <div class="wrapper" >
+	    {% block contenthead %}
+
+	        <div id="header">
+	             <span class="home-icon" id="hmi">
+	                <a></a>
+	             </span>
+	            <ul id="menu">
+	                <li id="st-blog" class="li"> <a href="https://dsite.io/@dpixio" target="_blank"> dSite Blog </a></li>
+	                <!--<li class="li"> <a href=""> About Us </a></li>-->
+	                <li class="li"> <a href="https://dsocial.io/@dpixio" target="_blank"> dSocial Page </a></li>
+	                <li class="li"> <a href="{% url 'core:faq' %}"> FAQ </a></li>
+	                <li class="li"><a href="mailto:community@dpix.io" target="_blank">Contact Us</a></li>
+	            </ul>
+	            <div id="tgmenu" onclick="tgmenu()">
+	                <div class="bar1"></div>
+	                <div class="bar2"></div>
+	                <div class="bar3"></div>
+	            </div>
+	        </div>
+	    {% endblock %}
+
+	    {% block messages %}
+	        {% if messages %}
+	        <ul class="messages">
+	            {% for message in messages %}
+	                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	            {% endfor %}
+	        </ul>
+	        {% endif %}
+	    {% endblock %}
+
+	    {% block contentmidle %}
+	        <div id="main_content">
+	            <div id="panel1" class="">
+	                <div class="textbox1">
+	                	<p class="backtext" id="backtext"></p>
+
+	                    <div class="frontext" id="frontext">
+	                        <h1>
+	                            Platform that rewards people for sharing
+	                        their lifestyle and visual experience
+	                        </h1>
+	                    </div>
+	                </div>
+
+					<!-- SCROLL BETWEEN PANELS DOESN'T WORK WITHOUT DIVs -->
+	                <div id="mimg" class="mimg">
+	                    <!--<img src="{% static 'img/Main device@2x2.png' %}"/>-->
+	                </div>
+
+	                <div id="mimga" class="mimga">
+	                    <!--<img src="{% static 'img/Main device@2x2.png' %}"/>-->
+	                </div>
+
+	                <div id="mimg2" class="mimg2">
+	                    <!--<img src="{% static 'img/Main device@2x2.png' %}"/>-->
+	                </div>
+
+	                <div id="mimg3" class="mimg3">
+	                    <!--<img src="{% static 'img/Main device@2x2.png' %}"/>-->
+	                </div>
+
+					<iframe id="ytbe-video" src="https://www.youtube.com/embed/4kCU0SRAKQg?ecver=1"
+							frameborder="0" allowfullscreen>
+					</iframe>
+	            </div>
+
+	            <div ID="panel2" class="hd">
+	                <div class="textp2">
+	                    <h1>
+	                        Share moments, earn coins!
+	                    </h1>
+
+	                    <h2>
+	                        We`re happy to announce dPix, a platform that reward people for
+	                        sharing their lifestyle and visual experience.
+	                    </h2>
+
+	                    <h2>
+	                        You can use it to share cool pictures you`ve taken with your mobile phone,
+	                        curate and comment photos your friends make and never worry that any third
+	                        party will censor your images.
+	                    </h2>
+	                </div>
+
+	                <div id="simg">
+	                    <img src="{% static 'img/2@2x.png' %}"/>
+	                </div>
+
+	                <div id="simga">
+	                    <img src="{% static 'img/2@2x.png' %}"/>
+	                </div>
+	            </div>
+
+	            <div id="buttons">
+	                <p> Download application:</p>
+                    <a href="https://itunes.apple.com/app/dpix/id1288494457?mt=8" class="apple" target="_blank">APP STORE </a>
+					<!--<a href="" class="apple">APP STORE </a>-->
+	                <a href="https://play.google.com/store/apps/details?id=com.droid.dpix&rdid=com.droid.dpix" class="android" target="_blank">GOOGLE PLAY</a>
+
+	                <p>Go to the website:</p>
+	                <a href="https://beta.dpix.io" class="alpha_dpix" target='_blank'>dPix for Web</a>
+	            </div>
+
+	            <div id="panel3" class="hd" onclick="tl()">
+	                <h1>
+	                    Sign up to our newsletter
+	                </h1>
+
+	                <h2>
+	                    We never spam. We`ll only let you know when new products are here.
+	                </h2>
+
+	                <div id="textfield">
+	                    <form id="request-form" method="post">
+	                        {% csrf_token %}
+	                        {{ form }}
+	                        <input id="submit" class="submit-input" type="submit" value="SEND REQUEST"/>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+
+            <div id="contr" onclick="fpg()">
+                <p class="cntrbtn"></p>
+                <p class="cntrbtn1"></p>
+                <p class="cntrbtn1"></p>
+            </div>
+
+		    <div id="modal_form">
+		        <span id="modal_close">x</span>
+
+		        <div id="modal_form_text">
+		            <h2>Coming soon...</h2>
+		        </div>
+		    </div>
+
+		    <div id="overlay"></div>
+	    {% endblock %}
+
+	    {% block footer %}
+	        <div id="soc_links">
+	            <a href="https://www.facebook.com/dpixio/" target="_blank">Facebook</a>
+	            <a href="https://twitter.com/dpixio" target="_blank">Twitter</a>
+	            <a href="https://t.me/dpixio" target="_blank">Telegram</a>
+	        </div>
+	    {% endblock %}
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="{% static 'js/vendor/jquery-1.11.2.min.js' %}"><\/script>')</script>
+    <script src="{% static 'js/plugins.js' %}?v=20170707"></script>
+
+    {% if messages %}
+        <script>
+            $(document).ready(function() {
+                setTimeout(function () {$('.messages').hide('slow'); }, 7000);
+            });
+        </script>
+    {% endif %}
+
+    <script src="{% static 'js/main.js' %}?v=20180601"> </script>
+    <script src="{% static 'js/modal-window.js' %}"> </script>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <script>
+        (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+        function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+        e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+        e.src='//www.google-analytics.com/analytics.js';
+        r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+        ga('create','UA-XXXXX-X','auto');ga('send','pageview');
+    </script>
+
+	{% block scripts %}
+	{% endblock %}
+
+    </body>
+</html>

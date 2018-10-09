@@ -10,8 +10,8 @@ server {
     {%-if ENV == "VAGRANT" %}
     {# Do not use certificates on vagrant installation #}
     {%- else %}
-    ssl_certificate /etc/letsencrypt/live/steepshot.io/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/steepshot.io/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/dpix.io/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/dpix.io/privkey.pem;
     {%- endif %}
 
     access_log {{ DEPLOY_DIR }}/logs/nginx-access.log;

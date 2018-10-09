@@ -22,4 +22,4 @@ exec gunicorn --pythonpath "%(DEPLOY_DIR)s" \
     --group "%(GROUP)s" \
     --log-level "info" \
     --log-file "$LOG_FILE" \
-    steepshot_io.wsgi:application
+    dpix_io.wsgi:application

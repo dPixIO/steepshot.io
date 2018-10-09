@@ -23,7 +23,7 @@
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 MAILTO=paul.martynov@gmail.com
-HOME_DIR=/home/steepshot_io/steepshot_io
-ACTIVATE_SCRIPT=/home/steepshot_io/.virtualenvs/steepshot_io/bin/activate
-POSTACTIVATE_SCRIPT=/home/steepshot_io/.virtualenvs/steepshot_io/bin/postactivate
-0 1    * * 1   cd $HOME_DIR && source $ACTIVATE_SCRIPT && source $POSTACTIVATE_SCRIPT && export DJANGO_SETTINGS_MODULE="steepshot_io.prod_settings" && python manage.py check_cert_expiration_date
+HOME_DIR=/home/dpix_io/dpix_io
+ACTIVATE_SCRIPT=/home/dpix_io/.virtualenvs/dpix_io/bin/activate
+POSTACTIVATE_SCRIPT=/home/dpix_io/.virtualenvs/dpix_io/bin/postactivate
+0 1    * * 1   cd $HOME_DIR && source $ACTIVATE_SCRIPT && source $POSTACTIVATE_SCRIPT && export DJANGO_SETTINGS_MODULE="dpix_io.prod_settings" && python manage.py check_cert_expiration_date
